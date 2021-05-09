@@ -929,8 +929,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: {fileID: 11400000, guid: 07f8401cb2d82754a95a9a45995edaee, type: 2}
-  createableItem: {fileID: 25246912884308753, guid: d764b1e61829e8a4eb28abc7ee00f275, type: 3}
-  database: {fileID: 11400000, guid: 6f55bf831705b1943be57ec6ad9f181b, type: 2}
 --- !u!114 &1616522846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -947,6 +945,8 @@ MonoBehaviour:
   blockBreaking: {fileID: 1640185844}
   pickaxe: {fileID: 1675765549}
   selector: {fileID: 1522298289}
+  database: {fileID: 11400000, guid: 6f55bf831705b1943be57ec6ad9f181b, type: 2}
+  createableItem: {fileID: 25246912884308753, guid: d764b1e61829e8a4eb28abc7ee00f275, type: 3}
   miningSpeed: 3
 --- !u!1 &1640185844 stripped
 GameObject:

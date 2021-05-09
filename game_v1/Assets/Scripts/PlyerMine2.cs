@@ -10,6 +10,8 @@ public class PlyerMine2 : MonoBehaviour
     public GameObject blockBreaking;
     public GameObject pickaxe;
     public GameObject selector;
+    public ItemDatabaseObject database;
+    public GameObject createableItem;
 
     Animator breakingAnim;
     public float miningSpeed = 3;
@@ -75,6 +77,7 @@ public class PlyerMine2 : MonoBehaviour
                     pickaxeAnim.Play("Idle");
                     tilemap.SetTile(posSelectedTile, null);
                     timeSinceMiningStart = 0;
+                    GenerateItem(selectedTile.name);
                 }
             }
         }
@@ -104,6 +107,22 @@ public class PlyerMine2 : MonoBehaviour
             Debug.Log($"mx: {mx}");
 
             prevMx = mx;
+        }
+    }
+    void GenerateItem(string name)
+    {
+        for (int i = 0; i < database.Items.Length; i++)
+        {
+            if (name.Contains("dirt2") || name.Contains("grass")) //just a temporary fix, need to find a way to convert the name to an ID with various names for one ID
+            {
+                name = "Dirt";
+            }
+            if (name == database.Items[i].name)
+            {
+                createableItem.GetComponent<GroundItem>().item = database.Items[i];
+                Instantiate(createableItem, posSelectedTile + new Vector3(0.5f,0.5f,0), Quaternion.identity);
+                //createableItem.GetComponent<Rigidbody2D>().AddForce(new Vector2(20, 0),ForceMode2D.Impulse); attempt to give the items an inital velocity when they spawn
+            }
         }
     }
 }

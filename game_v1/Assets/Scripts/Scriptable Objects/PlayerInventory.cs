@@ -11,7 +11,6 @@ public class PlayerInventory : MonoBehaviour
     /// <param name="other"></param>
     public void OnTriggerEnter2D(Collider2D other) // activates when the collider is triggered
     {
-
         var item = other.GetComponent<GroundItem>(); // tries to get the item component of the triggering object
         if (item)                               
         {
@@ -21,10 +20,23 @@ public class PlayerInventory : MonoBehaviour
     }
     public void Update()
     {
-       
+        ChangeSelectedSlot();
     }
     private void OnApplicationQuit() // clears the inventory after the game is quit
     {
-        inventory.Container.Items.Clear();
+        inventory.Container.Items = new InventorySlot[36];
+    }
+    public void ChangeSelectedSlot()
+    {
+        if (Input.mouseScrollDelta.y > 0)
+        {
+            inventory.selectedSlot++;
+            inventory.selectedSlot = inventory.selectedSlot % 9;
+        }
+        if (Input.mouseScrollDelta.y < 0)
+        {
+            inventory.selectedSlot--;
+            inventory.selectedSlot = (inventory.selectedSlot+9) % 9;
+        }
     }
 }

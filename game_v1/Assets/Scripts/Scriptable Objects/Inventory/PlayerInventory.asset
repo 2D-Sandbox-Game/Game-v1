@@ -14,4 +14,185 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   database: {fileID: 11400000, guid: 6f55bf831705b1943be57ec6ad9f181b, type: 2}
   Container:
-    Items: []
+    Items:
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+    - id: -1
+      item:
+        name: 
+        id: 0
+      amount: 0
+  selectedSlot: 3

@@ -7,24 +7,38 @@ public class InventoryObject : ScriptableObject
 {
     public ItemDatabaseObject database;
     public Inventory Container;
+    public int selectedSlot = 0;
     public void AddItem(Item item, int amount)
     {
-        for (int i = 0; i < Container.Items.Count; i++)
+        for (int i = 0; i < Container.Items.Length; i++)
         {
-            if (Container.Items[i].item.id == item.id) // checks if item is already in the inventory
+            if (Container.Items[i].id == item.id) // checks if item is already in the inventory
             {
                 Container.Items[i].AddAmount(amount); // adds amount to existing item
                 return;
             }
         }
-        Container.Items.Add(new InventorySlot(item.id,item, amount));
+        SetEmptySlot(item, amount);
+    }
+    public InventorySlot SetEmptySlot(Item item, int amount)
+    {
+        for (int i = 0; i < Container.Items.Length; i++)
+        {
+            if (Container.Items[i].id < 0)
+            {
+                Container.Items[i].UpdateSlot(item.id, item, amount);
+                return Container.Items[i];
+            }
+        }
+        return null;
+        //inventory full adjust later
     }
 }
 
 [System.Serializable]
 public class Inventory
 {
-    public List<InventorySlot> Items = new List<InventorySlot>();
+    public InventorySlot[] Items = new InventorySlot[36];
 }
 [System.Serializable]
 public class InventorySlot // combines a given item in a slot with an amount
@@ -33,6 +47,18 @@ public class InventorySlot // combines a given item in a slot with an amount
     public Item item;
     public int amount;
     public InventorySlot(int id, Item item, int amount)
+    {
+        this.id = id;
+        this.item = item;
+        this.amount = amount;
+    }
+    public InventorySlot()
+    {
+        id = -1;
+        item = null;
+        amount = 0;
+    }
+    public void UpdateSlot(int id, Item item, int amount)
     {
         this.id = id;
         this.item = item;

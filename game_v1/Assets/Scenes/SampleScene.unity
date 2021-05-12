@@ -175,10 +175,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventory: {fileID: 11400000, guid: 07f8401cb2d82754a95a9a45995edaee, type: 2}
   inventoryPrefab: {fileID: 8711449429727585583, guid: b25108ca226318b42bf7686121173a5e, type: 3}
-  xStart: -270
-  yStart: 100
-  xSpaceBetweenItems: 80
-  ySpaceBetweenItems: 80
+  xStart: -285
+  yStart: 120
+  xSpaceBetweenItems: 50
+  ySpaceBetweenItems: 50
 --- !u!114 &266005354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,7 +192,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

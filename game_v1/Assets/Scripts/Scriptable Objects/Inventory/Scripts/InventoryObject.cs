@@ -20,6 +20,7 @@ public class InventoryObject : ScriptableObject
         }
         SetEmptySlot(item, amount);
     }
+
     public InventorySlot SetEmptySlot(Item item, int amount)
     {
         for (int i = 0; i < Container.Items.Length; i++)

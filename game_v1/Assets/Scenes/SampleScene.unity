@@ -761,6 +761,7 @@ GameObject:
   - component: {fileID: 1616522843}
   - component: {fileID: 1616522844}
   - component: {fileID: 1616522846}
+  - component: {fileID: 1616522845}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -928,7 +929,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79619297483e75a4e9412a50bc9af44f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  database: {fileID: 11400000, guid: 6f55bf831705b1943be57ec6ad9f181b, type: 2}
   inventory: {fileID: 11400000, guid: 07f8401cb2d82754a95a9a45995edaee, type: 2}
+--- !u!114 &1616522845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616522837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dd733f4d6faf5a4a985cdc0c7667af9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventory: {fileID: 11400000, guid: 07f8401cb2d82754a95a9a45995edaee, type: 2}
+  pickaxe: {fileID: 1675765549}
 --- !u!114 &1616522846
 MonoBehaviour:
   m_ObjectHideFlags: 0

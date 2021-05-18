@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
+    public ItemDatabaseObject database;
     public InventoryObject inventory; // carries the player's inventory
     /// <summary>
     /// On collision add item to players inventory
@@ -12,11 +13,16 @@ public class PlayerInventory : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D other) // activates when the collider is triggered
     {
         var item = other.GetComponent<GroundItem>(); // tries to get the item component of the triggering object
-        if (item)                               
+        if (item)
         {
             inventory.AddItem(new Item(item.item), 1); // adds item to the inventory
             Destroy(other.gameObject); // deletes the item as it is now in the inventory
         }
+    }
+    public void Start()
+    {
+        inventory.AddItem(new Item(database.Items[3]), 1);
+        inventory.AddItem(new Item(database.Items[4]), 1);
     }
     public void Update()
     {
@@ -36,7 +42,7 @@ public class PlayerInventory : MonoBehaviour
         if (Input.mouseScrollDelta.y < 0)
         {
             inventory.selectedSlot--;
-            inventory.selectedSlot = (inventory.selectedSlot+9) % 9;
+            inventory.selectedSlot = (inventory.selectedSlot + 9) % 9;
         }
     }
 }

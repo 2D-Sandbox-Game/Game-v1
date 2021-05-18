@@ -18,12 +18,12 @@ public class SelectedTool : MonoBehaviour
         if (inventory.Container.Items[inventory.selectedSlot].id == 3)
         {
             pickaxe.SetActive(true);
-            GetComponent<PlyerMine2>().enabled = true;
+            GetComponent<PlayerMine>().enabled = true;
         }
         else
         {
             pickaxe.SetActive(false);
-            GetComponent<PlyerMine2>().enabled = false;
+            GetComponent<PlayerMine>().enabled = false;
         }
     }
 }

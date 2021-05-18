@@ -79,6 +79,7 @@ public class PlayerMine : MonoBehaviour
                     timeSinceMiningStart = 0;
                     GenerateItem(selectedTile.name);
                 }
+
             }
         }
 

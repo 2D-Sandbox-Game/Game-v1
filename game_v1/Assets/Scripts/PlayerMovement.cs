@@ -21,11 +21,11 @@ public class PlayerMovement : MonoBehaviour
         {
             if (mx == -1)
             {
-                gameObject.GetComponent<SpriteRenderer>().flipX = true;
+                transform.localScale = new Vector3(-1, 1, 1);
             }
             else
             {
-                gameObject.GetComponent<SpriteRenderer>().flipX = false;
+                transform.localScale = new Vector3(1, 1, 1);
             }
 
             Debug.Log($"mx: {mx}");

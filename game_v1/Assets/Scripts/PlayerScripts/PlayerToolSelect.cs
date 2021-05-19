@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelectedTool : MonoBehaviour
+public class PlayerToolSelect : MonoBehaviour
 {
     public InventoryObject inventory;
     public GameObject pickaxe;
+    public GameObject sword;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +25,17 @@ public class SelectedTool : MonoBehaviour
         {
             pickaxe.SetActive(false);
             GetComponent<PlayerMine>().enabled = false;
+        }
+
+        if (inventory.Container.Items[inventory.selectedSlot].id == 4)
+        {
+            sword.SetActive(true);
+            GetComponent<PlayerAttack>().enabled = true;
+        }
+        else
+        {
+            sword.SetActive(false);
+            GetComponent<PlayerAttack>().enabled = false;
         }
     }
 }

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: dreck
+  m_Name: dirt2
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300000, guid: e38bebd5ef306e747a7bfa222872b3ee, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1e158e232326e7c4694d7afd01ec7f63, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1

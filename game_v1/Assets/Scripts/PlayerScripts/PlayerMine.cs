@@ -9,7 +9,6 @@ public class PlayerMine : MonoBehaviour
     public Tilemap tilemap;
     public GameObject blockBreaking;
     public GameObject pickaxe;
-    public GameObject selector;
     public ItemDatabaseObject database;
     public GameObject createableItem;
 
@@ -50,15 +49,7 @@ public class PlayerMine : MonoBehaviour
         if (mousePosTranslated != posSelectedTile)
         {
             timeSinceMiningStart = 0;
-
-            selector.GetComponent<SpriteRenderer>().color = Color.clear;
             posSelectedTile = mousePosTranslated;
-
-            if (selectedTile != null)
-            {
-                selector.transform.position = new Vector3(0.5f + posSelectedTile.x, 0.5f + posSelectedTile.y);
-                selector.GetComponent<SpriteRenderer>().color = Color.white;
-            }
         }
 
         if (selectedTile != null)
@@ -112,9 +103,11 @@ public class PlayerMine : MonoBehaviour
     }
     void GenerateItem(string name)
     {
+        Debug.Log(name);
+
         for (int i = 0; i < database.Items.Length; i++)
         {
-            if (name.Contains("dirt2") || name.Contains("grass")) //just a temporary fix, need to find a way to convert the name to an ID with various names for one ID
+            if (name.Contains("dirt") || name.Contains("grass")) //just a temporary fix, need to find a way to convert the name to an ID with various names for one ID
             {
                 name = "Dirt";
             }
@@ -125,6 +118,8 @@ public class PlayerMine : MonoBehaviour
                 //createableItem.GetComponent<Rigidbody2D>().AddForce(new Vector2(20, 0),ForceMode2D.Impulse); attempt to give the items an inital velocity when they spawn
             }
         }
+
+        
     }
 }
 

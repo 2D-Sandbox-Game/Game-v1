@@ -103,13 +103,17 @@ public class PlayerMine : MonoBehaviour
     }
     void GenerateItem(string name)
     {
-        Debug.Log(name);
+        //Debug.Log(name);
 
         for (int i = 0; i < database.Items.Length; i++)
         {
             if (name.Contains("dirt") || name.Contains("grass")) //just a temporary fix, need to find a way to convert the name to an ID with various names for one ID
             {
                 name = "Dirt";
+            }
+            else if(name.Contains("stone"))
+            {
+                name = "Stone";
             }
             if (name == database.Items[i].name)
             {
@@ -118,8 +122,6 @@ public class PlayerMine : MonoBehaviour
                 //createableItem.GetComponent<Rigidbody2D>().AddForce(new Vector2(20, 0),ForceMode2D.Impulse); attempt to give the items an inital velocity when they spawn
             }
         }
-
-        
     }
 }
 

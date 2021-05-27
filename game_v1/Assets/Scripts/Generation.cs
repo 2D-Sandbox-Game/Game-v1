@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEditor;
+using System.Linq;
 
 public class Generation : MonoBehaviour
 {
@@ -14,9 +16,9 @@ public class Generation : MonoBehaviour
     [Range(0, 1)]
     [SerializeField] float modifier = 1;
 
-    [SerializeField] float mul1 = 1;
-    [SerializeField] float mul2 = 1;
-    [SerializeField] float mul3 = 1;
+    //[SerializeField] float mul1 = 1;
+    //[SerializeField] float mul2 = 1;
+    //[SerializeField] float mul3 = 1;
 
     public int seed;
 
@@ -29,7 +31,7 @@ public class Generation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        seed = Random.Range(-1000000, 1000000);
+        seed = UnityEngine.Random.Range(-1000000, 1000000);
         GenerateWorld();
     }
 
@@ -37,24 +39,30 @@ public class Generation : MonoBehaviour
     {
         int[] perlinHeight;
 
+        int repetitions = 3;
+        float[] mod = new float[repetitions];
+        mod = mod.Select(x => UnityEngine.Random.Range(0.8f, 1f)).ToArray();
+
+        //Array.ForEach(mod, x => Debug.Log($"Nr: {x}"));
+
         for (int x = 0; x < width; x++)
         {
-            perlinHeight = AddPerlinNoiseArray(AddPerlinNoiseArray(CreatePerlinNoiseArray(mul1), CreatePerlinNoiseArray(mul2)), CreatePerlinNoiseArray(mul3));
-            //perlinHeight = CreatePerlinNoiseArray();
+            perlinHeight = RecursivePerlinNoiseCombination(0, mod);
 
             for (int y = 0; y < perlinHeight[x]; y++)
             {
-                int perlinRot = Mathf.RoundToInt(Mathf.PerlinNoise(x * modifier + seed, y * modifier + seed));
+                int perlinCave = Mathf.RoundToInt(Mathf.PerlinNoise(x * modifier + seed, y * modifier + seed));
 
-                if (perlinHeight[x] - y > 10)
+
+                if (perlinCave == 1 && perlinHeight[x] - y > 10)
                 {
-                    map.SetTile(new Vector3Int(x - width / 2, y - height, 0), stone);
+                    map.SetTile(new Vector3Int(x - width / 2, y - height, 0), null);
                 }
                 else
                 {
-                    if (perlinRot == 1)
+                    if (perlinHeight[x] - y > 40)
                     {
-                        map.SetTile(new Vector3Int(x - width / 2, y - height, 0), dirt2);
+                        map.SetTile(new Vector3Int(x - width / 2, y - height, 0), stone);
                     }
                     else
                     {
@@ -63,11 +71,16 @@ public class Generation : MonoBehaviour
                 }
             }
 
-            map.SetTile(new Vector3Int(x - width / 2, perlinHeight[x] - height, 0), grass);
+            TileBase highestTile = map.GetTile(new Vector3Int(x - width / 2, perlinHeight[x] - 1 - height, 0));
+
+            if (highestTile != null && highestTile.name == "dirt")
+            {
+                map.SetTile(new Vector3Int(x - width / 2, perlinHeight[x] - height, 0), grass);
+            }
         }
     }
 
-    int[] CreatePerlinNoiseArray(float mod = 1)
+    int[] CreatePerlinNoiseArray(float mod)
     {
         int[] arr = new int[width];
 
@@ -77,9 +90,8 @@ public class Generation : MonoBehaviour
             //{
             //    Debug.Log($"{Mathf.PerlinNoise(x / (smooth * mod), seed) * height} ");
             //}
-            
-            arr[x] = Mathf.RoundToInt(Mathf.PerlinNoise(x / (smooth * mod), seed) * height);
-            arr[x] += height / 2;
+            arr[x] = Mathf.RoundToInt(Mathf.PerlinNoise(x / (smooth * mod), seed) * 40);
+            arr[x] += (int)(height * 0.75);
         }
 
         return arr;
@@ -95,6 +107,17 @@ public class Generation : MonoBehaviour
         }
 
         return temp;
+    }
+
+    int[] RecursivePerlinNoiseCombination(int repetitions, float[] mod)
+    {
+        if (repetitions == 0)
+        {
+
+            return CreatePerlinNoiseArray(mod[repetitions]);
+        }
+
+        return AddPerlinNoiseArray(RecursivePerlinNoiseCombination(repetitions - 1, mod), CreatePerlinNoiseArray(mod[repetitions]));
     }
 
     // Update is called once per frame

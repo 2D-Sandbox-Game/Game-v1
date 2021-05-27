@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public float movementSpeed = 10;
     public float JumpForce = 1;
     
-    Rigidbody2D rb;
+    public static Rigidbody2D rb;
     Animator animator;
     float mx;
     float prevMx = 1;

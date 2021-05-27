@@ -66,6 +66,25 @@ public class PlayerInventory : MonoBehaviour
         {
             inventory.selectedSlot = 3;
         }
-
+        else if (Input.GetKey(KeyCode.Alpha5))
+        {
+            inventory.selectedSlot = 4;
+        }
+        else if (Input.GetKey(KeyCode.Alpha6))
+        {
+            inventory.selectedSlot = 5;
+        }
+        else if (Input.GetKey(KeyCode.Alpha7))
+        {
+            inventory.selectedSlot = 6;
+        }
+        else if (Input.GetKey(KeyCode.Alpha8))
+        {
+            inventory.selectedSlot = 7;
+        }
+        else if (Input.GetKey(KeyCode.Alpha9))
+        {
+            inventory.selectedSlot = 8;
+        }
     }
 }

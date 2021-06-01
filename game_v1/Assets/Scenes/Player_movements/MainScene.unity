@@ -266,7 +266,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -457.5378, y: 280.2993}
+  m_AnchoredPosition: {x: -457.53778, y: 280.2993}
   m_SizeDelta: {x: -915.071, y: -560.589}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &266005353
@@ -1011,6 +1011,7 @@ GameObject:
   - component: {fileID: 1457198714}
   - component: {fileID: 1457198715}
   - component: {fileID: 1457198716}
+  - component: {fileID: 1457198717}
   m_Layer: 0
   m_Name: Fall_control
   m_TagString: Untagged
@@ -1060,6 +1061,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d1bbedcad7bc314a97027b51baeef3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &1457198717
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457198713}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 803f6749356449d4bb67d3c156f0baa6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1472927415
 GameObject:
   m_ObjectHideFlags: 0
@@ -1219,6 +1239,7 @@ GameObject:
   - component: {fileID: 1616522847}
   - component: {fileID: 1616522848}
   - component: {fileID: 1616522849}
+  - component: {fileID: 1616522850}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1446,7 +1467,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b01e62cf2885a843b508b011c8b4d4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
   lives:
   - {fileID: 599890133}
   - {fileID: 959607187}
@@ -1469,6 +1489,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 259501039}
+--- !u!114 &1616522850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616522837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1bd9a76cc8efb84a833af3a3ef31a6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 1797999104}
 --- !u!1 &1640185844 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3930236067433048590, guid: 55394eb25852dcc4a99bf73f2821af28, type: 3}

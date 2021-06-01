@@ -44,14 +44,9 @@ public class PlayerHealth : MonoBehaviour
         }
         if (health % 2 != 0 && lives.Length > health / 2)
             lives[health / 2].sprite = halfHeart;
-        if (health == 0) 
-            animator.Play("Die");
     }
 
-    void Die()
-    {
-            gameObject.SetActive(false);
-    }
+
 
     void HealthDamage(float damage)  // in testing mode
     {

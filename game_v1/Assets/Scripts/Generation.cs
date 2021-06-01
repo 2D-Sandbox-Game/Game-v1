@@ -6,7 +6,6 @@ using UnityEditor;
 
 public class Generation : MonoBehaviour
 {
-
     public int height = 512;
     public int width = 512;
 
@@ -26,11 +25,15 @@ public class Generation : MonoBehaviour
     public Tile stone;
     public Tile grass;
 
+    public static Vector3 playerSpawn; // Variable von Player
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         seed = Random.Range(-1000000, 1000000);
         GenerateWorld();
+        playerSpawn = SpawnPoint(new Vector3Int(0,0,0)); 
+        Debug.Log(playerSpawn);
     }
 
     void GenerateWorld()
@@ -109,4 +112,24 @@ public class Generation : MonoBehaviour
             map.ClearAllTiles();
         }
     }
+    public Vector3 SpawnPoint(Vector3Int x)
+    {
+        if(map.GetTile(x)==null)
+        {
+            while(map.GetTile(x)==null) // move down
+            {
+                Debug.Log(x);
+                x.y--;
+            }
+        } else 
+        {
+            while(map.GetTile(x)!=null) // move up
+            {
+                Debug.Log(x);
+                x.y++;
+            }
+        }
+        return map.CellToWorld(x);;
+    }
+
 }

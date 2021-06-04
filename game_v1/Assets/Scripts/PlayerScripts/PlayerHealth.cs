@@ -53,7 +53,7 @@ public class PlayerHealth : MonoBehaviour
         animator.Play("PlayerDamage");
         if (damage < 0)
         {
-            rb.AddForce(new Vector2(0, 10f), ForceMode2D.Impulse);
+            rb.AddForce(new Vector2(0, 10f), ForceMode2D.Impulse); //
 
             damage = damage * -1;
         }

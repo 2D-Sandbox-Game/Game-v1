@@ -15,15 +15,15 @@ public class PlayerDie : MonoBehaviour
     void Update()
     {
         if(PlayerHealth.health==0)
-            Die();
+            animator.Play("Die");
+            
     }
     void Die()
     {
-        animator.Play("Die");
         gameObject.SetActive(false);
-        Generation G = new Generation();
+        /*Generation G = new Generation();
         Generation.playerSpawn = G.SpawnPoint(new Vector3Int(0,(int)Generation.playerSpawn.y,0));
-        Destroy(G);
+        Destroy(G);*/
         PlayerSpawn.player.transform.position = Generation.playerSpawn;
         PlayerHealth.health = 10;
         gameObject.SetActive(true);

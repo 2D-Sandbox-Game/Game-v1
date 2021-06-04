@@ -13,7 +13,7 @@ public class Fall_Damage : MonoBehaviour
         {
             PlayerHealth.animator.Play("Damage"); // Run animation of damage
             PlayerHealth.health += (int)(PlayerMovement.rb.velocity.y + 27)/3; 
-            //Debug.Log(PlayerMovement.rb.velocity.y);
+            Debug.Log(PlayerMovement.rb.velocity.y);
         }
     }
 

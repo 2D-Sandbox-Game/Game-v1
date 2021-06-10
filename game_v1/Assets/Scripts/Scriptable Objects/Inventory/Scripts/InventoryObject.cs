@@ -12,7 +12,7 @@ public class InventoryObject : ScriptableObject
     {
         for (int i = 0; i < Container.Items.Length; i++)
         {
-            if (Container.Items[i].id == item.id) // checks if item is already in the inventory
+            if (Container.Items[i].id == item.id /*&& Container.Items[i].amount < 99*/) // checks if item is already in the inventory
             {
                 Container.Items[i].AddAmount(amount); // adds amount to existing item
                 return;
@@ -45,9 +45,10 @@ public class InventoryObject : ScriptableObject
     {
         for (int i = 0; i < Container.Items.Length; i++)
         {
-            if (Container.Items[i].item == item)
+            if (Container.Items[i].item.id == item.id)
             {
                 Container.Items[i].UpdateSlot(-1, null, 0);
+                return;
             }
         }
     }
@@ -90,6 +91,10 @@ public class InventorySlot // combines a given item in a slot with an amount
         if (amount > value)
         {
             amount -= value;
+        }
+        else if (amount == value)
+        {
+            UpdateSlot(-1, null, 0);
         }
         else
         {

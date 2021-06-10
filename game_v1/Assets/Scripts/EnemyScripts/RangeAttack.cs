@@ -5,6 +5,8 @@ using UnityEngine;
 public class RangeAttack : MonoBehaviour
 {
     public float speed;
+    public GameObject arrow;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,5 +17,10 @@ public class RangeAttack : MonoBehaviour
     void Update()
     {
         transform.Translate(Vector3.left * speed * Time.deltaTime);
+        
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Destroy(arrow);
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class HealthBar : MonoBehaviour
 {
     public GameObject healthBar;
+    public GameObject healthBarBackground;
     public float maxHealth;
     public float currentHealth; //Leben und Methode zum Schaden erhalten
     // Start is called before the first frame update
@@ -14,6 +15,7 @@ public class HealthBar : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
+        healthBar.GetComponent<Image>().color = Color.green;
     }
 
     // Update is called once per frame
@@ -42,6 +44,7 @@ public class HealthBar : MonoBehaviour
             currentHealth = 0;
             Destroy(objectToDestroy);
             Destroy(healthBar);
+            Destroy(healthBarBackground);
         }
         healthBar.GetComponent<Image>().fillAmount = currentHealth / 10f;
 

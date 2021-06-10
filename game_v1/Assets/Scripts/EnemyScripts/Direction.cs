@@ -11,6 +11,7 @@ public class Direction : MonoBehaviour
     Vector3 temp;
     public float speed;
     public Transform target;
+    public Animator animator;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +24,7 @@ public class Direction : MonoBehaviour
         if (Vector2.Distance(transform.position, target.position) > 2)
         {
             transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+            animator.SetFloat("Speed", Mathf.Abs(speed));
             if (transform.position.x > target.position.x)
             {
                 sr.flipX = true;

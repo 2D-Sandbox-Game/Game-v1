@@ -8,36 +8,33 @@ using System.Linq;
 
 public class Generation : MonoBehaviour
 {
+    public static int height = 512;
+    public static int width = 512;
 
-    public int height = 512;
-    public int width = 512;
-
-    public float smooth = 1;
+    public static float smooth = 90;
     [Range(0, 1)]
-    [SerializeField] float modifier = 1;
+    public static float caveMod = 0.02f;
 
-    //[SerializeField] float mul1 = 1;
-    //[SerializeField] float mul2 = 1;
-    //[SerializeField] float mul3 = 1;
+    public static int seed;
 
-    public int seed;
+    public enum BlockType { None, Dirt, Stone, Grass, Cave };
 
-    public Tilemap map;
-    public Tile dirt;
-    public Tile dirt2;
-    public Tile stone;
-    public Tile grass;
+    [Range(0, 1)]
+    public float alpha;
 
-    // Start is called before the first frame update
-    void Start()
+    public static int[,] perlinArr;
+    public static int[] perlinHeight;
+
+
+    private void Awake()
     {
         seed = UnityEngine.Random.Range(-1000000, 1000000);
-        GenerateWorld();
+        perlinArr = GenerateWorld(width, height, seed, caveMod, ref perlinHeight);
     }
 
-    void GenerateWorld()
+    static int[,] GenerateWorld(int width, int height, int seed, float caveMod, ref int[] perlinHeight)
     {
-        int[] perlinHeight;
+        int[,] perlinArr = new int[width, height];
 
         int repetitions = 3;
         float[] mod = new float[repetitions];
@@ -51,36 +48,50 @@ public class Generation : MonoBehaviour
 
             for (int y = 0; y < perlinHeight[x]; y++)
             {
-                int perlinCave = Mathf.RoundToInt(Mathf.PerlinNoise(x * modifier + seed, y * modifier + seed));
+                int perlinCave = Mathf.RoundToInt(Mathf.PerlinNoise(x * caveMod + seed, y * caveMod + seed));
 
-
-                if (perlinCave == 1 && perlinHeight[x] - y > 10)
+                if (perlinCave == 1 && perlinHeight[x] - y > 20)
                 {
-                    map.SetTile(new Vector3Int(x - width / 2, y - height, 0), null);
+                    perlinArr[x, y] = (int)BlockType.Cave;
+                    //map.SetTile(new Vector3Int(x - width / 2, y - height, 0), stone);
+                    //map.SetTileFlags(new Vector3Int(x - width / 2, y - height, 0), TileFlags.None);
+                    //map.SetColor(new Vector3Int(x - width / 2, y - height, 0), Color.HSVToRGB(0, 0, 0.35f));
                 }
                 else
                 {
                     if (perlinHeight[x] - y > 40)
                     {
-                        map.SetTile(new Vector3Int(x - width / 2, y - height, 0), stone);
+                        perlinArr[x, y] = (int)BlockType.Stone;
+                        //map.SetTile(new Vector3Int(x - width / 2, y - height, 0), stone);
+                        //map.SetTileFlags(new Vector3Int(x - width / 2, y - height, 0), TileFlags.None);
+                        //map.SetColor(new Vector3Int(x - width / 2, y - height, 0), Color.HSVToRGB(0, 0, 0.35f));
                     }
                     else
                     {
-                        map.SetTile(new Vector3Int(x - width / 2, y - height, 0), dirt);
+                        perlinArr[x, y] = (int)BlockType.Dirt;
+                        //map.SetTile(new Vector3Int(x - width / 2, y - height, 0), dirt);
+                        //map.SetTileFlags(new Vector3Int(x - width / 2, y - height, 0), TileFlags.None);
+                        //map.SetColor(new Vector3Int(x - width / 2, y - height, 0), Color.HSVToRGB(0,0, 0.35f));
                     }
                 }
             }
 
-            TileBase highestTile = map.GetTile(new Vector3Int(x - width / 2, perlinHeight[x] - 1 - height, 0));
+            //TileBase highestTile = map.GetTile(new Vector3Int(x, perlinHeight[x], 0));
 
-            if (highestTile != null && highestTile.name == "dirt")
+            if (perlinArr[x, perlinHeight[x] - 1] == 1)
             {
-                map.SetTile(new Vector3Int(x - width / 2, perlinHeight[x] - height, 0), grass);
+                perlinArr[x, perlinHeight[x]] = (int)BlockType.Grass;
+                //map.SetTile(new Vector3Int(x - width / 2, perlinHeight[x] - height, 0), grass);
+                //map.SetTileFlags(new Vector3Int(x - width / 2, perlinHeight[x] - height, 0), TileFlags.None);
+                //map.SetColor(new Vector3Int(x - width / 2, perlinHeight[x] - height, 0), Color.HSVToRGB(0, 0, 0.35f));
+
             }
         }
+
+        return perlinArr;
     }
 
-    int[] CreatePerlinNoiseArray(float mod)
+    static int[] CreatePerlinNoiseArray(float mod)
     {
         int[] arr = new int[width];
 
@@ -97,7 +108,7 @@ public class Generation : MonoBehaviour
         return arr;
     }
 
-    int[] AddPerlinNoiseArray(int[] arr1, int[] arr2)
+    static int[] AddPerlinNoiseArray(int[] arr1, int[] arr2)
     {
         int[] temp = new int[width];
 
@@ -109,7 +120,7 @@ public class Generation : MonoBehaviour
         return temp;
     }
 
-    int[] RecursivePerlinNoiseCombination(int repetitions, float[] mod)
+    static int[] RecursivePerlinNoiseCombination(int repetitions, float[] mod)
     {
         if (repetitions == 0)
         {
@@ -123,13 +134,13 @@ public class Generation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            GenerateWorld();
-        }
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            map.ClearAllTiles();
-        }
+        //if (Input.GetKeyDown(KeyCode.J))
+        //{
+        //    GenerateWorld();
+        //}
+        //if (Input.GetKeyDown(KeyCode.K))
+        //{
+        //    map.ClearAllTiles();
+        //}
     }
 }

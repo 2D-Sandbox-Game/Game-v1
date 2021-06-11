@@ -4,16 +4,17 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class PlayerSpawn : MonoBehaviour
-{   
+{
+    public static Vector3 playerSpawn;
     [SerializeField] Tilemap map;
-    public static Rigidbody2D player;
+    Transform player;
 
     // Start is called before the first frame update
     void Start()
     {
-        player = GetComponent<Rigidbody2D>();
-        Debug.Log(Generation.playerSpawn.y++);
-        player.transform.position = Generation.playerSpawn;
+        player = GetComponent<Transform>();
+        playerSpawn = map.CellToWorld(new Vector3Int(Generation.width / 2, Generation.perlinHeight[Generation.width / 2] + 2, 0));
+        player.transform.position = playerSpawn;
 
     }
 

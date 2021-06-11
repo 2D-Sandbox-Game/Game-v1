@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Test2
   m_EditorClassIdentifier: 
   recipeComponents:
-  - item: {fileID: 11400000, guid: 6f0c6c1ac977f7c4bb88c2260f6ecdee, type: 2}
-    amountNeeded: 1
   - item: {fileID: 11400000, guid: 57a0d93b714a5c24eadf76b3ed9d4223, type: 2}
+    amountNeeded: 1
+  - item: {fileID: 11400000, guid: 6f0c6c1ac977f7c4bb88c2260f6ecdee, type: 2}
     amountNeeded: 1
   craftableItem: {fileID: 11400000, guid: 8d36169abbf406344944d414b9f447e8, type: 2}

@@ -6,14 +6,14 @@ using UnityEngine.UI;
 public class PlayerHealth : MonoBehaviour
 {
     // Health Variables
-    public int health = 6;
+    public static int health = 10;
     public Image[] lives;
     public Sprite fullHeart;
     public Sprite hollowHeart;
     public Sprite halfHeart;
 
     Rigidbody2D rb;
-    Animator animator;
+    public static Animator animator;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,7 +28,9 @@ public class PlayerHealth : MonoBehaviour
         if (health > lives.Length * 2)
             health = lives.Length * 2;
         else if (health < 0)
+        {
             health = 0;
+        }
         for (int i = 0; i < lives.Length; i++)
         {
             if (i < health / 2)
@@ -44,12 +46,14 @@ public class PlayerHealth : MonoBehaviour
             lives[health / 2].sprite = halfHeart;
     }
 
-    void HealthDamage(float damage)  // Laeuft nicht vollstaendig
+
+
+    void HealthDamage(float damage)  // in testing mode
     {
         animator.Play("PlayerDamage");
         if (damage < 0)
         {
-            rb.AddForce(new Vector2(0, 10f), ForceMode2D.Impulse);
+            rb.AddForce(new Vector2(0, 10f), ForceMode2D.Impulse); //
 
             damage = damage * -1;
         }

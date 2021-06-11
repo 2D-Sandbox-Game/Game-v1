@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public float movementSpeed = 10;
     public float JumpForce = 1;
     
-    Rigidbody2D rb;
+    public static Rigidbody2D rb;
     Animator animator;
     float mx;
     float prevMx = 1;
@@ -74,8 +74,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector2 movement = new Vector2(mx * curentSpeed, rb.velocity.y);
-        rb.velocity = movement;
+        if(!animator.GetBool("Damage"))
+        {
+            Vector2 movement = new Vector2(mx * curentSpeed, rb.velocity.y);
+            rb.velocity = movement;
+        }
     }
+    
+
 
 }

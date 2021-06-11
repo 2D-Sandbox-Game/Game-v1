@@ -22,6 +22,8 @@ public class GenerationFG : MonoBehaviour
         perlinArr = Generation.perlinArr;
         tilemapFG = GetComponent<Tilemap>();
         GenerateForeground(perlinArr, tiles);
+
+        //playerSpawn = SpawnPoint(new Vector3Int(0, 0, 0));
     }
 
     void GenerateForeground(int[,] perlinArr, Tile[] tiles)
@@ -37,4 +39,25 @@ public class GenerationFG : MonoBehaviour
             }
         }
     }
+
+    //public Vector3 SpawnPoint(Vector3Int x)
+    //{
+    //    if (tilemapFG.GetTile(x) == null)
+    //    {
+    //        while (tilemapFG.GetTile(x) == null) // move down
+    //        {
+    //            Debug.Log(x);
+    //            x.y--;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        while (tilemapFG.GetTile(x) != null) // move up
+    //        {
+    //            Debug.Log(x);
+    //            x.y++;
+    //        }
+    //    }
+    //    return tilemapFG.CellToWorld(x); ;
+    //}
 }

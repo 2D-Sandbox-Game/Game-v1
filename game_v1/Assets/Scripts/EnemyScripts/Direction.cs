@@ -24,7 +24,12 @@ public class Direction : MonoBehaviour
         if (Vector2.Distance(transform.position, target.position) > 2)
         {
             transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
-            animator.SetFloat("Speed", Mathf.Abs(speed));
+
+            if (animator)
+            {
+                animator.SetFloat("Speed", Mathf.Abs(speed));
+            }
+            
             if (transform.position.x > target.position.x)
             {
                 sr.flipX = true;

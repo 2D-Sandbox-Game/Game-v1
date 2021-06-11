@@ -33,11 +33,27 @@ public class Selector : MonoBehaviour
             GetComponent<SpriteRenderer>().color = Color.clear;
             posSelectedTile = mousePosTranslated;
 
-            if (selectedTile != null)
+            if (selectedTile != null || IsNextToExistingTile(posSelectedTile))
             {
                 transform.position = new Vector3(0.5f + posSelectedTile.x, 0.5f + posSelectedTile.y);
                 GetComponent<SpriteRenderer>().color = Color.white;
             }
         }
+    }
+
+    bool IsNextToExistingTile(Vector3Int tilePos)
+    {
+        Vector3Int[] directions = { new Vector3Int(-1, 0, 0), new Vector3Int(0, 1, 0), new Vector3Int(1, 0, 0), new Vector3Int(0, -1, 0) };
+
+        foreach (var dir in directions)
+        {
+
+            if (tilemap.GetTile(tilePos + dir) != null)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

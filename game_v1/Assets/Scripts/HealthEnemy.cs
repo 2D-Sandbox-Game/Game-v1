@@ -46,6 +46,6 @@ public class HealthEnemy : MonoBehaviour
 
         }
 
-        //Debug.Log(collision.gameObject.tag);
+        Debug.Log(collision.gameObject.tag);
     }
 }

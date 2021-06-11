@@ -6,9 +6,10 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
-public class DisplayInventory : MonoBehaviour
+public class DisplayCrafting : MonoBehaviour
 {
-    public InventoryObject inventory;
+    
+    public InventoryObject craftingInventory;
     public GameObject inventoryPrefab;
     public int xStart;
     public int yStart;
@@ -24,7 +25,7 @@ public class DisplayInventory : MonoBehaviour
     public void CreateDisplay()
     {
         itemsDisplayed = new Dictionary<GameObject, InventorySlot>();
-        for (int i = 0; i < inventory.Container.Items.Length; i++)
+        for (int i = 0; i < craftingInventory.Container.Items.Length; i++)
         {
             var obj = Instantiate(inventoryPrefab, Vector3.zero, Quaternion.identity, transform);
             obj.GetComponent<RectTransform>().localPosition = GetPosition(i);
@@ -35,7 +36,7 @@ public class DisplayInventory : MonoBehaviour
             AddEvent(obj, EventTriggerType.EndDrag, delegate { OnDragEnd(obj); });
             AddEvent(obj, EventTriggerType.Drag, delegate { OnDrag(obj); });
 
-            itemsDisplayed.Add(obj, inventory.Container.Items[i]);
+            itemsDisplayed.Add(obj, craftingInventory.Container.Items[i]);
         }
     }
 
@@ -44,30 +45,28 @@ public class DisplayInventory : MonoBehaviour
     {
         UpdateSelectedSlot();
     }
+   
     public void UpdateSelectedSlot()
     {
-        int idx = 0;
+        
         foreach (KeyValuePair<GameObject, InventorySlot> slot in itemsDisplayed)
         {
             if (slot.Value.id >= 0)
             {
-                slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = inventory.database.GetItem[slot.Value.item.id].uiDisplay;
+                slot.Key.SetActive(true);
+                slot.Key.transform.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+                slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = craftingInventory.database.GetItem[slot.Value.item.id].uiDisplay;
                 slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
                 slot.Key.GetComponentInChildren<TextMeshProUGUI>().text = slot.Value.amount == 1 ? "" : slot.Value.amount.ToString();
-                slot.Key.transform.GetComponent<Image>().color = new Color(1, 1, 1, 1);
             }
             else
             {
+                slot.Key.transform.GetComponent<Image>().color = new Color(1, 1, 1, 0);
                 slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = null;
                 slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
                 slot.Key.GetComponentInChildren<TextMeshProUGUI>().text = "";
-                slot.Key.transform.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+                slot.Key.SetActive(false);
             }
-            if (idx == inventory.selectedSlot)
-            {
-                slot.Key.transform.GetComponent<Image>().color = new Color(0, 0, 1, 1);
-            }
-            idx++;
         }
     }
     public Vector3 GetPosition(int i)
@@ -99,14 +98,14 @@ public class DisplayInventory : MonoBehaviour
     }
     public void OnDragStart(GameObject obj)
     {
-        var mouseObject = new GameObject();
+        var mouseObject = new GameObject("Crafting Object");
         var rt = mouseObject.AddComponent<RectTransform>();
         rt.sizeDelta = new Vector2(2.332f, 2.332f);
         mouseObject.transform.SetParent(transform.parent);
         if (itemsDisplayed[obj].id >= 0)
         {
             var img = mouseObject.AddComponent<Image>();
-            img.sprite = inventory.database.GetItem[itemsDisplayed[obj].id].uiDisplay;
+            img.sprite = craftingInventory.database.GetItem[itemsDisplayed[obj].id].uiDisplay;
             img.raycastTarget = false;
         }
         MouseData.obj = mouseObject;
@@ -114,16 +113,9 @@ public class DisplayInventory : MonoBehaviour
     }
     public void OnDragEnd(GameObject obj)
     {
-        if (MouseData.hoverObj)
-        {
-            inventory.MoveItem(itemsDisplayed[obj], itemsDisplayed[MouseData.hoverObj]);
-        }
-        else
-        {
-            //drop item
-            //inventory.RemoveItem(itemsDisplayed[obj].item);
-        }
+        Debug.Log("Crafting");
         Destroy(MouseData.obj);
+        GetComponent<CraftingInventory>().Craft(itemsDisplayed[obj].item.id);
         MouseData.item = null;
     }
     public void OnDrag(GameObject obj)
@@ -141,32 +133,4 @@ public class DisplayInventory : MonoBehaviour
         public static InventorySlot hoverItem;
         public static GameObject hoverObj;
     }
-
-    //public void UpdateDisplay()
-    //{
-    //    foreach (KeyValuePair<GameObject, InventorySlot>  slot in itemsDisplayed)
-    //    {
-    //        if (slot.Value.id >= 0)
-    //        {
-    //            slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = inventory.database.GetItem[slot.Value.item.id].uiDisplay;
-    //            slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
-    //            slot.Key.GetComponentInChildren<TextMeshProUGUI>().text = slot.Value.amount == 1 ? "" : slot.Value.amount.ToString();
-    //        }
-    //        else
-    //        {
-    //            slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = null;
-    //            slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
-    //            slot.Key.GetComponentInChildren<TextMeshProUGUI>().text = "";
-    //        }
-    //    }
-    //}
-
-    //public void InstatiateItemInDisplay(int i, InventorySlot slot)
-    //{
-    //    var obj = Instantiate(inventoryPrefab, Vector3.zero, Quaternion.identity, transform);
-    //    obj.transform.GetChild(0).GetComponentInChildren<Image>().sprite = inventory.database.GetItem[slot.item.id].uiDisplay;
-    //    obj.GetComponent<RectTransform>().localPosition = GetPosition(i);
-    //    obj.GetComponentInChildren<TextMeshProUGUI>().text = slot.amount.ToString();
-    //    itemsDisplayed.Add(slot, obj);
-    //}
 }

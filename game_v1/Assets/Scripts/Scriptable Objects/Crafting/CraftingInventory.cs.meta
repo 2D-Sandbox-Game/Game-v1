@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: f919e70d4775e1742bedd66e37ea1339
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - database: {fileID: 11400000, guid: 03d75f0c96b3bd249b081ecebb7f32dd, type: 2}
+  - playerInventory: {fileID: 11400000, guid: 07f8401cb2d82754a95a9a45995edaee, type: 2}
+  - craftingInventory: {fileID: 11400000, guid: 7003e2c0749423e47875611c3f9b363f, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

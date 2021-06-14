@@ -489,7 +489,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bf22b0391d218142ad535eb548c509c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alpha: 0
+  smooth: 60
+  caveMod: 0.02
+  copperMod: 30
+  ironMod: -31
+  goldMod: 25
+  seed: 0
 --- !u!156049354 &339954971
 Grid:
   m_ObjectHideFlags: 0
@@ -1309,6 +1314,9 @@ MonoBehaviour:
   dirt: {fileID: 11400000, guid: 6e90ad18c08a87440973c5bb4135c396, type: 2}
   stone: {fileID: 11400000, guid: 25f12635b0eec504b962b4d1a2fd6cd9, type: 2}
   grass: {fileID: 11400000, guid: 1e93438a4531c2842a29884186a72bb8, type: 2}
+  copper: {fileID: 11400000, guid: bf74f623f9f4d4f4993ea9b965846b36, type: 2}
+  iron: {fileID: 11400000, guid: fea5ea16ffdd2494da2614be2098c87c, type: 2}
+  gold: {fileID: 11400000, guid: 32166e4400270e44e9436972ce2a4ffd, type: 2}
 --- !u!19719996 &960047562
 TilemapCollider2D:
   m_ObjectHideFlags: 0
@@ -3020,6 +3028,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1034851224}
+    - target: {fileID: 3909785817948696301, guid: a6276ff0baaa00d49a958436cdaaa017, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3909785817948696302, guid: a6276ff0baaa00d49a958436cdaaa017, type: 3}
       propertyPath: m_Pivot.x
       value: 0

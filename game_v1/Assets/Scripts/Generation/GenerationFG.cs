@@ -7,17 +7,23 @@ public class GenerationFG : MonoBehaviour
 {
     int[,] perlinArr;
     Tilemap tilemapFG;
-    Tile[] tiles = new Tile[3];
+    Tile[] tiles = new Tile[6];
 
     public Tile dirt;
     public Tile stone;
     public Tile grass;
+    public Tile copper;
+    public Tile iron;
+    public Tile gold;
 
     void Start()
     {
         tiles[0] = dirt;
         tiles[1] = stone;
         tiles[2] = grass;
+        tiles[3] = copper;
+        tiles[4] = iron;
+        tiles[5] = gold;
 
         perlinArr = Generation.perlinArr;
         tilemapFG = GetComponent<Tilemap>();
@@ -32,7 +38,7 @@ public class GenerationFG : MonoBehaviour
         {
             for (int y = 0; y < perlinArr.GetLength(1); y++)
             {
-                if(perlinArr[x, y] >= 1 && perlinArr[x, y] <= 3)
+                if(perlinArr[x, y] >= 1 && perlinArr[x, y] <= tiles.Length)
                 {
                     tilemapFG.SetTile(new Vector3Int(x, y, 0), tiles[perlinArr[x, y] - 1]);
                 }

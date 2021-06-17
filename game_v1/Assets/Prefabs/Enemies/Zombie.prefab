@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3401981867317290406}
   - component: {fileID: 3401981867317290407}
   - component: {fileID: 3401981867317290404}
+  - component: {fileID: 1823702960527118601}
   m_Layer: 0
   m_Name: Zombie
   m_TagString: Enemy
@@ -145,7 +146,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 5
 --- !u!61 &3401981867317290407
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -190,3 +191,18 @@ MonoBehaviour:
   currentHealth: 10
   objectToDestroy: {fileID: 3401981867317290413}
   damageGeist: 1
+--- !u!114 &1823702960527118601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3401981867317290413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03446d003f2a8134a8eb782c79157b04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  power: 0
+  enemy: {fileID: 3401981867317290413}
+  JumpForce: 10

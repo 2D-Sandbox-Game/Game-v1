@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 7664728420523619578}
   - component: {fileID: 7664728420523619579}
   - component: {fileID: 7664728420523619589}
-  - component: {fileID: 7664728420523619588}
   - component: {fileID: 7664728420523619576}
+  - component: {fileID: -709029001976300971}
   m_Layer: 0
-  m_Name: ghost1 1
+  m_Name: Ghost
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -111,24 +111,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.16, y: 0.24}
   m_EdgeRadius: 0
---- !u!114 &7664728420523619588
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7664728420523619582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0044c60439bb48d478783746a9cc5aa8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthBar: {fileID: 0}
-  healthBarBackground: {fileID: 0}
-  maxHealth: 10
-  currentHealth: 10
-  objectToDestroy: {fileID: 7664728420523619582}
-  damageGeist: 1
 --- !u!114 &7664728420523619576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,3 +130,21 @@ MonoBehaviour:
   speed: 5
   target: {fileID: 0}
   animator: {fileID: 0}
+--- !u!114 &-709029001976300971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7664728420523619582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0044c60439bb48d478783746a9cc5aa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBar: {fileID: 0}
+  healthBarBackground: {fileID: 0}
+  maxHealth: 5
+  currentHealth: 5
+  objectToDestroy: {fileID: 7664728420523619582}
+  damageGeist: 1

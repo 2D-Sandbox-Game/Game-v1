@@ -8,9 +8,11 @@ using UnityEngine.Events;
 
 public class DisplayCrafting : MonoBehaviour
 {
-    
+
     public InventoryObject craftingInventory;
     public GameObject inventoryPrefab;
+    public GameObject craftingPreview;
+    private GameObject craftingPreviewDisplay;
     public int xStart;
     public int yStart;
     public int xSpaceBetweenItems;
@@ -45,10 +47,10 @@ public class DisplayCrafting : MonoBehaviour
     {
         UpdateSelectedSlot();
     }
-   
+
     public void UpdateSelectedSlot()
     {
-        
+
         foreach (KeyValuePair<GameObject, InventorySlot> slot in itemsDisplayed)
         {
             if (slot.Value.id >= 0)
@@ -89,12 +91,22 @@ public class DisplayCrafting : MonoBehaviour
         if (itemsDisplayed.ContainsKey(obj))
         {
             MouseData.hoverItem = itemsDisplayed[obj];
+            craftingPreviewDisplay = Instantiate(craftingPreview, transform.position , Quaternion.identity, obj.transform);
+            int i = 0;
+            foreach (RecipeComponent component in GetComponent<CraftingInventory>().ItemsToRecipe(itemsDisplayed[obj].item.id).recipeComponents)
+            {
+                craftingPreviewDisplay.transform.GetChild(i).GetChild(0).GetComponentInChildren<Image>().sprite = component.item.uiDisplay;
+                craftingPreviewDisplay.transform.GetChild(i).GetComponentInChildren<TextMeshProUGUI>().text = component.amountNeeded == 1 ? "" : component.amountNeeded.ToString();
+                i++;
+            }
+            
         }
     }
     public void OnExit(GameObject obj)
     {
         MouseData.hoverObj = null;
         MouseData.hoverItem = null;
+        Destroy(craftingPreviewDisplay);
     }
     public void OnDragStart(GameObject obj)
     {

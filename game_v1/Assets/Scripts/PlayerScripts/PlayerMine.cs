@@ -123,5 +123,16 @@ public class PlayerMine : MonoBehaviour
             }
         }
     }
+    void GenerateItem(int itemId)
+    {
+        for (int i = 0; i < database.Items.Length; i++)
+        {
+            if (database.Items[i].id == itemId)
+            {
+                createableItem.GetComponent<GroundItem>().item = database.Items[i];
+                Instantiate(createableItem, posSelectedTile + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
+            }
+        }
+    }
 }
 

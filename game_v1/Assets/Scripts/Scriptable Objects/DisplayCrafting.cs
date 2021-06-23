@@ -8,7 +8,6 @@ using UnityEngine.Events;
 
 public class DisplayCrafting : MonoBehaviour
 {
-
     public InventoryObject craftingInventory;
     public GameObject inventoryPrefab;
     public GameObject craftingPreview;
@@ -34,9 +33,7 @@ public class DisplayCrafting : MonoBehaviour
 
             AddEvent(obj, EventTriggerType.PointerEnter, delegate { OnEnter(obj); });
             AddEvent(obj, EventTriggerType.PointerExit, delegate { OnExit(obj); });
-            AddEvent(obj, EventTriggerType.BeginDrag, delegate { OnDragStart(obj); });
-            AddEvent(obj, EventTriggerType.EndDrag, delegate { OnDragEnd(obj); });
-            AddEvent(obj, EventTriggerType.Drag, delegate { OnDrag(obj); });
+            AddEvent(obj, EventTriggerType.PointerClick, delegate { OnClick(obj); });
 
             itemsDisplayed.Add(obj, craftingInventory.Container.Items[i]);
         }
@@ -47,10 +44,12 @@ public class DisplayCrafting : MonoBehaviour
     {
         UpdateSelectedSlot();
     }
-
+    public void OnDisable()
+    {
+        Destroy(craftingPreviewDisplay);
+    }
     public void UpdateSelectedSlot()
     {
-
         foreach (KeyValuePair<GameObject, InventorySlot> slot in itemsDisplayed)
         {
             if (slot.Value.id >= 0)
@@ -87,11 +86,10 @@ public class DisplayCrafting : MonoBehaviour
 
     public void OnEnter(GameObject obj)
     {
-        MouseData.hoverObj = obj;
-        if (itemsDisplayed.ContainsKey(obj))
+        if ((itemsDisplayed.ContainsKey(obj)) && craftingPreviewDisplay == null)
         {
-            MouseData.hoverItem = itemsDisplayed[obj];
-            craftingPreviewDisplay = Instantiate(craftingPreview, transform.position , Quaternion.identity, obj.transform);
+            craftingPreviewDisplay = Instantiate(craftingPreview, Vector3.zero , Quaternion.identity, obj.transform.parent);
+            craftingPreviewDisplay.transform.position = obj.transform.position + new Vector3(0f, -5f,0f);
             int i = 0;
             foreach (RecipeComponent component in GetComponent<CraftingInventory>().ItemsToRecipe(itemsDisplayed[obj].item.id).recipeComponents)
             {
@@ -99,50 +97,19 @@ public class DisplayCrafting : MonoBehaviour
                 craftingPreviewDisplay.transform.GetChild(i).GetComponentInChildren<TextMeshProUGUI>().text = component.amountNeeded == 1 ? "" : component.amountNeeded.ToString();
                 i++;
             }
-            
         }
     }
     public void OnExit(GameObject obj)
     {
-        MouseData.hoverObj = null;
-        MouseData.hoverItem = null;
         Destroy(craftingPreviewDisplay);
     }
-    public void OnDragStart(GameObject obj)
+    public void OnClick(GameObject obj)
     {
-        var mouseObject = new GameObject("Crafting Object");
-        var rt = mouseObject.AddComponent<RectTransform>();
-        rt.sizeDelta = new Vector2(2.332f, 2.332f);
-        mouseObject.transform.SetParent(transform.parent);
-        if (itemsDisplayed[obj].id >= 0)
-        {
-            var img = mouseObject.AddComponent<Image>();
-            img.sprite = craftingInventory.database.GetItem[itemsDisplayed[obj].id].uiDisplay;
-            img.raycastTarget = false;
-        }
-        MouseData.obj = mouseObject;
-        MouseData.item = itemsDisplayed[obj];
-    }
-    public void OnDragEnd(GameObject obj)
-    {
-        Debug.Log("Crafting");
-        Destroy(MouseData.obj);
+        CraftingRecipe recipe = GetComponent<CraftingInventory>().ItemsToRecipe(itemsDisplayed[obj].id);
         GetComponent<CraftingInventory>().Craft(itemsDisplayed[obj].item.id);
-        MouseData.item = null;
-    }
-    public void OnDrag(GameObject obj)
-    {
-        if (MouseData.obj != null)
+        if (!GetComponent<CraftingInventory>().CanCraft(recipe))
         {
-            MouseData.obj.GetComponent<RectTransform>().position = Camera.main.ScreenToWorldPoint(Input.mousePosition) + new Vector3(0, 0, 10);
+            Destroy(craftingPreviewDisplay);
         }
-    }
-
-    public static class MouseData
-    {
-        public static GameObject obj;
-        public static InventorySlot item;
-        public static InventorySlot hoverItem;
-        public static GameObject hoverObj;
     }
 }

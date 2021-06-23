@@ -122,19 +122,19 @@ public class DisplayInventory : MonoBehaviour
         }
         else
         {
-            if (itemsDisplayed[obj] is InventorySlot inventorySlot && inventorySlot.id >= 0)
-            {
-                Transform t = GameObject.Find("Player").transform;
-                creatableItem.GetComponent<GroundItem>().item = database.Items[inventorySlot.id];
+            //if (itemsDisplayed[obj] is InventorySlot inventorySlot && inventorySlot.id >= 0)
+            //{
+            //    Transform t = GameObject.Find("Player").transform;
+            //    creatableItem.GetComponent<GroundItem>().item = database.Items[inventorySlot.id];
 
-                for (int i = 0; i < inventorySlot.amount; i++)
-                {
-                    Instantiate(creatableItem, t.position + new Vector3(3, 3, 0), Quaternion.identity);
-                }
-                inventory.RemoveItem(inventorySlot.item);
-            }
-            ////drop item
-
+            //    for (int i = 0; i < inventorySlot.amount; i++)
+            //    {
+            //        Instantiate(creatableItem, t.position + new Vector3(3, 3, 0), Quaternion.identity);
+            //    }
+            //    inventory.RemoveItem(inventorySlot.item);
+            //}
+            //drop item
+            // unstable
         }
         Destroy(MouseData.obj);
         MouseData.item = null;

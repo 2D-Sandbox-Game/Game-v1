@@ -45,7 +45,7 @@ public class CraftingInventory : MonoBehaviour
         }
         return false;
     }
-    private bool CanCraft(CraftingRecipe recipe)
+    public bool CanCraft(CraftingRecipe recipe)
     {
         foreach (RecipeComponent component in recipe.recipeComponents)
         {
@@ -66,7 +66,6 @@ public class CraftingInventory : MonoBehaviour
                 {
                     return true;
                 }
-
             }
         }
         return false;
@@ -77,7 +76,6 @@ public class CraftingInventory : MonoBehaviour
     }
     public void Craft(int id)
     {
-        Debug.Log("Crafting");
         CraftingRecipe recipe = itemsToRecipe[id];
         if (recipe != null)
         {

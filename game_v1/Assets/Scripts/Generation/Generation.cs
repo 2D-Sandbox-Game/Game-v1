@@ -22,7 +22,7 @@ public class Generation : MonoBehaviour
 
     public int seed;
 
-    public enum BlockType { None, Dirt, Stone, Grass, Copper, Iron, Gold, Cave };
+    public enum BlockType { None, Dirt, Stone, Grass, Copper, Iron, Gold, Cave, Tree, Sapling};
 
     public static int[,] perlinArr;
     public static int[] perlinHeight;

@@ -17,9 +17,11 @@ public class SkyLighting : MonoBehaviour
         mapArr = Generation.perlinArr;
         highestPointsArr = Generation.perlinHeight;
 
-        gameObject.transform.position = new Vector3(0, 0);
+        //gameObject.transform.position = new Vector3(0, 0);
         //SetShapePath(GetComponent<Light2D>(), Test());
-        SetShapePath(GetComponent<Light2D>(), GetSkyVectorPath(mapArr,  highestPointsArr));
+        //SetShapePath(GetComponent<Light2D>(), GetSkyVectorPath(mapArr, highestPointsArr));
+
+        GenerateLightSources(mapArr);
     }
 
     // Update is called once per frame
@@ -132,6 +134,27 @@ public class SkyLighting : MonoBehaviour
         return vectorArr.ToArray();
     }
 
-
+    void GenerateLightSources(int[,] perlinArr)
+    {
+        for (int i = 0; i < perlinArr.GetLength(0); i++)
+        {
+            for (int j = 0; j < perlinArr.GetLength(1); j++)
+            {
+                if (perlinArr[i, j] == 0 && perlinArr[i, j - 1] != 0)
+                {
+                    GameObject obj = new GameObject();
+                    
+                    obj.AddComponent<Light2D>();
+                    Light2D light = obj.GetComponent<Light2D>();
+                    light.lightType = Light2D.LightType.Point;
+                    light.pointLightInnerRadius = 1.3f;
+                    light.pointLightOuterRadius = 25.3f;
+                    obj.transform.parent = gameObject.transform;
+                    obj.transform.position = new Vector3(i + 0.5f, j + 0.5f, 0);
+                    
+                }
+            }
+        }
+    }
 
 }

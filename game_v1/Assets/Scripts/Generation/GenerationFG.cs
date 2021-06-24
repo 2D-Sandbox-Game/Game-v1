@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Reflection;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class GenerationFG : MonoBehaviour
 {
@@ -25,6 +27,7 @@ public class GenerationFG : MonoBehaviour
         tiles[4] = iron;
         tiles[5] = gold;
 
+
         perlinArr = Generation.perlinArr;
         tilemapFG = GetComponent<Tilemap>();
         GenerateForeground(perlinArr, tiles);
@@ -40,6 +43,8 @@ public class GenerationFG : MonoBehaviour
             {
                 if(perlinArr[x, y] >= 1 && perlinArr[x, y] <= tiles.Length)
                 {
+                    
+
                     tilemapFG.SetTile(new Vector3Int(x, y, 0), tiles[perlinArr[x, y] - 1]);
                 }
             }

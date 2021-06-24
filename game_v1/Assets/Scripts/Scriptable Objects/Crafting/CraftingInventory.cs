@@ -45,7 +45,7 @@ public class CraftingInventory : MonoBehaviour
         }
         return false;
     }
-    private bool CanCraft(CraftingRecipe recipe)
+    public bool CanCraft(CraftingRecipe recipe)
     {
         foreach (RecipeComponent component in recipe.recipeComponents)
         {
@@ -66,14 +66,16 @@ public class CraftingInventory : MonoBehaviour
                 {
                     return true;
                 }
-
             }
         }
         return false;
     }
+    public CraftingRecipe ItemsToRecipe(int id)
+    {
+        return itemsToRecipe[id];
+    }
     public void Craft(int id)
     {
-        Debug.Log("Crafting");
         CraftingRecipe recipe = itemsToRecipe[id];
         if (recipe != null)
         {
@@ -83,8 +85,7 @@ public class CraftingInventory : MonoBehaviour
                 {
                     if (playerInventory.Container.Items[i].id == component.item.id)
                     {
-                        playerInventory.Container.Items[i].SubAmount(component.amountNeeded);
-                        playerInventory.AddItem(new Item(recipe.craftableItem), 1);
+                        playerInventory.Container.Items[i].SubAmount(component.amountNeeded);                        
                         break;
                     }
                 }
@@ -93,6 +94,7 @@ public class CraftingInventory : MonoBehaviour
             {
                 slot.SubAmount(slot.amount);
             }
+            playerInventory.AddItem(new Item(recipe.craftableItem), 1);
         }
     }
     private void OnApplicationQuit() // clears the inventory after the game is quit

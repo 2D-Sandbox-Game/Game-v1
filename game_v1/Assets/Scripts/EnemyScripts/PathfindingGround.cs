@@ -7,7 +7,6 @@ public class PathfindingGround : MonoBehaviour
 {
     public float speed;
     public Transform target;
-    //public CharacterController controller;
     public Animator animator;
     void Start()
     {
@@ -22,18 +21,5 @@ public class PathfindingGround : MonoBehaviour
             transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
             animator.SetFloat("Speed", Mathf.Abs(speed));
         }
-        //controller = GetComponent<CharacterController>();
-        //controller.stepOffset = 2.0f;
     }
-    /*private void OnCollisionEnter2D(Collision2D col)
-    {
-        foreach (ContactPoint2D cp in col.contacts)
-        {
-            if(cp.collider == myCol)
-            {
-                controller = GetComponent<CharacterController>();
-                controller.stepOffset = 2.0f;
-            }
-        }
-    }*/
 }

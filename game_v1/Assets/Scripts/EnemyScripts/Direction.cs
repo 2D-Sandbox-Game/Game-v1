@@ -6,7 +6,7 @@ public class Direction : MonoBehaviour
 {
     public Vector3 newPos;
     public Vector3 startpos;
-    public SpriteRenderer sr;
+    SpriteRenderer sr;
     public GameObject go;
     Vector3 temp;
     public float speed;
@@ -16,6 +16,7 @@ public class Direction : MonoBehaviour
     void Start()
     {
         sr = go.GetComponent<SpriteRenderer>();
+
     }
 
     // Update is called once per frame
@@ -30,7 +31,7 @@ public class Direction : MonoBehaviour
                 animator.SetFloat("Speed", Mathf.Abs(speed));
             }
             
-            if (transform.position.x > target.position.x)
+            if (transform.position.x > target.position.x) //Enemies are flipped so that they always run forward
             {
                 sr.flipX = true;
             }

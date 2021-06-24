@@ -8,10 +8,11 @@ public class HealthBar : MonoBehaviour
     public GameObject healthBar;
     public GameObject healthBarBackground;
     public float maxHealth;
-    public float currentHealth; //Leben und Methode zum Schaden erhalten
-    // Start is called before the first frame update
+    public float currentHealth; 
     public GameObject objectToDestroy;
     public int damageGeist = 1;
+    float waitTime = 0.5f;
+    float elapsedTime = 0.0f;
     void Start()
     {
         currentHealth = maxHealth;
@@ -22,10 +23,26 @@ public class HealthBar : MonoBehaviour
     void Update()
     {
 
+        if ((elapsedTime >= waitTime) && (objectToDestroy.GetComponent<Direction>().enabled == false))
+        {
+            objectToDestroy.GetComponent<Direction>().enabled = true;
+            if (objectToDestroy.GetComponent<Animator>() != null)
+            {
+                objectToDestroy.GetComponent<Animator>().enabled = true;
+            }
+        }
+        elapsedTime += Time.deltaTime;
     }
 
     void ApplyDamage(float damage)
     {
+        objectToDestroy.GetComponent<Direction>().enabled = false;
+        if (objectToDestroy.GetComponent<Animator>() != null)
+        {
+            objectToDestroy.GetComponent<Animator>().enabled = false;
+        }
+        elapsedTime = 0;
+
         if (currentHealth > 0)
         {
             currentHealth -= damage;
@@ -46,22 +63,18 @@ public class HealthBar : MonoBehaviour
             Destroy(healthBar);
             Destroy(healthBarBackground);
         }
-        healthBar.GetComponent<Image>().fillAmount = currentHealth / 10f;
-
+        healthBar.GetComponent<Image>().fillAmount = currentHealth / 10f;        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-            //Debug.Log(collision.transform.position.x +" | "+ transform.position.x);
             if (collision.transform.position.x < transform.position.x)
                 collision.gameObject.SendMessage("HealthDamage", -damageGeist, SendMessageOptions.DontRequireReceiver);
             else
                 collision.gameObject.SendMessage("HealthDamage", damageGeist, SendMessageOptions.DontRequireReceiver);
 
         }
-
-        //Debug.Log(collision.gameObject.tag);
     }
 }

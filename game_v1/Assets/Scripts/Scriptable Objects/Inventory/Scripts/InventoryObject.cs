@@ -12,7 +12,7 @@ public class InventoryObject : ScriptableObject
     {
         for (int i = 0; i < Container.Items.Length; i++)
         {
-            if (Container.Items[i].id == item.id /*&& Container.Items[i].amount < 99*/) // checks if item is already in the inventory
+            if ((Container.Items[i].id == item.id) && (item.type != ItemType.Equipment) /*&& Container.Items[i].amount < 99*/) // checks if item is already in the inventory
             {
                 Container.Items[i].AddAmount(amount); // adds amount to existing item
                 return;

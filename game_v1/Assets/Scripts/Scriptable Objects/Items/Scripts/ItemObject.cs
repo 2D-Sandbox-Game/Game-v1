@@ -22,9 +22,11 @@ public class Item
 {
     public string name;
     public int id;
+    public ItemType type;
     public Item(ItemObject itemObject)
     {
         name = itemObject.name;
         id = itemObject.id;
+        type = itemObject.type;
     }
 }

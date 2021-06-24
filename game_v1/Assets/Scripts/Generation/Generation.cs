@@ -11,16 +11,18 @@ public class Generation : MonoBehaviour
     public static int height = 512;
     public static int width = 512;
 
-    public static float smooth = 90;
+    public float smooth = 90;
+    //public float oreFrequency = 40;
     [Range(0, 1)]
-    public static float caveMod = 0.02f;
+    public float caveMod = 0.02f;
 
-    public static int seed;
+    public float copperMod = 20;
+    public float ironMod = 30;
+    public float goldMod = 40;
 
-    public enum BlockType { None, Dirt, Stone, Grass, Cave };
+    public int seed;
 
-    [Range(0, 1)]
-    public float alpha;
+    public enum BlockType { None, Dirt, Stone, Grass, Copper, Iron, Gold, Cave, Tree, Sapling};
 
     public static int[,] perlinArr;
     public static int[] perlinHeight;
@@ -32,7 +34,7 @@ public class Generation : MonoBehaviour
         perlinArr = GenerateWorld(width, height, seed, caveMod, ref perlinHeight);
     }
 
-    static int[,] GenerateWorld(int width, int height, int seed, float caveMod, ref int[] perlinHeight)
+    int[,] GenerateWorld(int width, int height, int seed, float caveMod, ref int[] perlinHeight)
     {
         int[,] perlinArr = new int[width, height];
 
@@ -49,49 +51,56 @@ public class Generation : MonoBehaviour
             for (int y = 0; y < perlinHeight[x]; y++)
             {
                 int perlinCave = Mathf.RoundToInt(Mathf.PerlinNoise(x * caveMod + seed, y * caveMod + seed));
+                //int perlinCopper = Mathf.RoundToInt(Mathf.PerlinNoise(x * copperMod * copperMod * copperMod + seed, y * copperMod * copperMod * copperMod + seed));
+                //int  = Mathf.RoundToInt(Mathf.PerlinNoise(x * ironMod + seed, y * ironMod + seed));
+                // perlinGold = Mathf.RoundToInt(Mathf.PerlinNoise(x * goldMod + seed, y * goldMod + seed));
+                float perlinCopper = Mathf.PerlinNoise((x/ copperMod) + seed, (y / copperMod) + seed);
+                float perlinIron = Mathf.PerlinNoise((x / ironMod) + seed, (y / ironMod) + seed);
+                float perlinGold = Mathf.PerlinNoise((x / goldMod) + seed, (y / goldMod) + seed);
 
                 if (perlinCave == 1 && perlinHeight[x] - y > 20)
                 {
                     perlinArr[x, y] = (int)BlockType.Cave;
-                    //map.SetTile(new Vector3Int(x - width / 2, y - height, 0), stone);
-                    //map.SetTileFlags(new Vector3Int(x - width / 2, y - height, 0), TileFlags.None);
-                    //map.SetColor(new Vector3Int(x - width / 2, y - height, 0), Color.HSVToRGB(0, 0, 0.35f));
                 }
                 else
                 {
                     if (perlinHeight[x] - y > 40)
                     {
-                        perlinArr[x, y] = (int)BlockType.Stone;
-                        //map.SetTile(new Vector3Int(x - width / 2, y - height, 0), stone);
-                        //map.SetTileFlags(new Vector3Int(x - width / 2, y - height, 0), TileFlags.None);
-                        //map.SetColor(new Vector3Int(x - width / 2, y - height, 0), Color.HSVToRGB(0, 0, 0.35f));
+                        if (perlinCopper > 0.75)
+                        {
+                            perlinArr[x, y] = (int)BlockType.Copper;
+                        }
+                        else if (perlinIron > 0.80)
+                        {
+                            perlinArr[x, y] = (int)BlockType.Iron;
+                        }
+                        else if (perlinGold > 0.85)
+                        {
+                            perlinArr[x, y] = (int)BlockType.Gold;
+                        }
+                        else
+                        {
+                            perlinArr[x, y] = (int)BlockType.Stone;
+                        }
                     }
                     else
                     {
                         perlinArr[x, y] = (int)BlockType.Dirt;
-                        //map.SetTile(new Vector3Int(x - width / 2, y - height, 0), dirt);
-                        //map.SetTileFlags(new Vector3Int(x - width / 2, y - height, 0), TileFlags.None);
-                        //map.SetColor(new Vector3Int(x - width / 2, y - height, 0), Color.HSVToRGB(0,0, 0.35f));
+
                     }
                 }
             }
 
-            //TileBase highestTile = map.GetTile(new Vector3Int(x, perlinHeight[x], 0));
-
             if (perlinArr[x, perlinHeight[x] - 1] == 1)
             {
                 perlinArr[x, perlinHeight[x]] = (int)BlockType.Grass;
-                //map.SetTile(new Vector3Int(x - width / 2, perlinHeight[x] - height, 0), grass);
-                //map.SetTileFlags(new Vector3Int(x - width / 2, perlinHeight[x] - height, 0), TileFlags.None);
-                //map.SetColor(new Vector3Int(x - width / 2, perlinHeight[x] - height, 0), Color.HSVToRGB(0, 0, 0.35f));
-
             }
         }
 
         return perlinArr;
     }
 
-    static int[] CreatePerlinNoiseArray(float mod)
+    int[] CreatePerlinNoiseArray(float mod)
     {
         int[] arr = new int[width];
 
@@ -108,7 +117,7 @@ public class Generation : MonoBehaviour
         return arr;
     }
 
-    static int[] AddPerlinNoiseArray(int[] arr1, int[] arr2)
+    int[] AddPerlinNoiseArray(int[] arr1, int[] arr2)
     {
         int[] temp = new int[width];
 
@@ -120,7 +129,7 @@ public class Generation : MonoBehaviour
         return temp;
     }
 
-    static int[] RecursivePerlinNoiseCombination(int repetitions, float[] mod)
+    int[] RecursivePerlinNoiseCombination(int repetitions, float[] mod)
     {
         if (repetitions == 0)
         {

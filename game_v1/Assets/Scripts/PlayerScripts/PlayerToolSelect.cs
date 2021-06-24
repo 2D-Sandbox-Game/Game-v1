@@ -7,6 +7,7 @@ public class PlayerToolSelect : MonoBehaviour
     public InventoryObject inventory;
     public GameObject pickaxe;
     public GameObject sword;
+    public GameObject axe;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +37,17 @@ public class PlayerToolSelect : MonoBehaviour
         {
             sword.SetActive(false);
             GetComponent<PlayerAttack>().enabled = false;
+        }
+
+        if (inventory.Container.Items[inventory.selectedSlot].id == 5)
+        {
+            axe.SetActive(true);
+            //GetComponent<PlayerAttack>().enabled = true;
+        }
+        else
+        {
+            axe.SetActive(false);
+            //GetComponent<PlayerAttack>().enabled = false;
         }
     }
 }

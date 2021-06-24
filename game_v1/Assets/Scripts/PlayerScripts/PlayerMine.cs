@@ -14,6 +14,7 @@ public class PlayerMine : MonoBehaviour
 
     Animator breakingAnim;
     public float miningSpeed = 3;
+    public float reach = 5;
     float miningDuration;
 
     Animator pickaxeAnim;
@@ -24,8 +25,7 @@ public class PlayerMine : MonoBehaviour
     Vector3Int posSelectedTile = Vector3Int.zero;
     float timeSinceMiningStart;
 
-    float mx;
-    float prevMx = 1;
+    List<GameObject> trees;
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +34,8 @@ public class PlayerMine : MonoBehaviour
         pickaxeAnim = pickaxe.GetComponent<Animator>();
         breakingAnim.speed = miningSpeed;
         miningDuration = 1 / miningSpeed;
+
+        trees = GenerateTrees.trees;
     }
 
     // Update is called once per frame
@@ -52,7 +54,7 @@ public class PlayerMine : MonoBehaviour
             posSelectedTile = mousePosTranslated;
         }
 
-        if (selectedTile != null)
+        if (selectedTile != null && !TreeOnBlock(posSelectedTile) && WithinBounds(posSelectedTile, reach))
         {
             if (Input.GetKey(KeyCode.Mouse0))
             {
@@ -67,6 +69,7 @@ public class PlayerMine : MonoBehaviour
                     breakingAnim.Play("Idle");
                     pickaxeAnim.Play("Idle");
                     tilemap.SetTile(posSelectedTile, null);
+                    Generation.perlinArr[posSelectedTile.x, posSelectedTile.y] = 0;
                     timeSinceMiningStart = 0;
                     GenerateItem(selectedTile.name);
                 }
@@ -81,7 +84,6 @@ public class PlayerMine : MonoBehaviour
             timeSinceMiningStart = 0;
         }
 
-        mx = Input.GetAxisRaw("Horizontal");
 
         //if (mx != prevMx && mx != 0)
         //{
@@ -122,6 +124,25 @@ public class PlayerMine : MonoBehaviour
                 //createableItem.GetComponent<Rigidbody2D>().AddForce(new Vector2(20, 0),ForceMode2D.Impulse); attempt to give the items an inital velocity when they spawn
             }
         }
+    }
+
+    bool TreeOnBlock(Vector3Int pos)
+    {
+        foreach (GameObject tree in trees)
+        {
+            if (tree.transform.position == pos + new Vector3(0,1,0))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    bool WithinBounds(Vector3Int clickPos, float reach)
+    {
+        Vector3 playerPos = gameObject.transform.position;
+        return (playerPos - clickPos).magnitude <= reach;
     }
 }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HealthEnemy : MonoBehaviour
 {
-    public float currentHealth = 5; //Leben und Methode zum Schaden erhalten
+    public float currentHealth = 5; //health of the enemy
     // Start is called before the first frame update
     public GameObject objectToDestroy;
     public int damageGeist = 1;
@@ -38,14 +38,11 @@ public class HealthEnemy : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            //Debug.Log(collision.transform.position.x +" | "+ transform.position.x);
             if (collision.transform.position.x < transform.position.x)
                 collision.gameObject.SendMessage("HealthDamage", -damageGeist, SendMessageOptions.DontRequireReceiver);
             else
                 collision.gameObject.SendMessage("HealthDamage", damageGeist, SendMessageOptions.DontRequireReceiver);
 
         }
-
-        //Debug.Log(collision.gameObject.tag);
     }
 }

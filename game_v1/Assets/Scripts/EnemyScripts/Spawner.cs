@@ -56,7 +56,7 @@ public class Spawner : MonoBehaviour
             enemy.GetComponent<HealthBar>().healthBarBackground = hbB;
 
             elapsedTime = 0f;
-            waitTime = random.Next(30, 180);
+            waitTime = random.Next(5, 10);
         }
     }
 }

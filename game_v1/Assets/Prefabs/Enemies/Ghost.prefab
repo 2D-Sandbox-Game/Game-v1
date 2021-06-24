@@ -147,4 +147,4 @@ MonoBehaviour:
   maxHealth: 5
   currentHealth: 5
   objectToDestroy: {fileID: 7664728420523619582}
-  damageGeist: 1
+  damageGeist: 2

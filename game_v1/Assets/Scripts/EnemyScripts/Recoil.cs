@@ -6,7 +6,7 @@ public class Recoil : MonoBehaviour
 {
     float force = 3;
     public GameObject enemy;
-    float waitTime = 2.0f;//2Sekunden warten als standart Wert
+    float waitTime = 2.0f; 
     float elapsedTime = 0.0f;
     Rigidbody2D r;
 

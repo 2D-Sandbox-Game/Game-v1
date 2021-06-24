@@ -15,4 +15,4 @@ MonoBehaviour:
   recipeComponents:
   - item: {fileID: 11400000, guid: 57a0d93b714a5c24eadf76b3ed9d4223, type: 2}
     amountNeeded: 3
-  craftableItem: {fileID: 11400000, guid: c1ed5f0626186994aa0aecee15b20376, type: 2}
+  craftableItem: {fileID: 11400000, guid: 2b0572a89bda80f419a8c7a8d4b05ae3, type: 2}

@@ -17,7 +17,7 @@ public class PlayerToolSelect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (inventory.Container.Items[inventory.selectedSlot].id == 3)
+        if (inventory.Container.Items[inventory.selectedSlot].id == 11)
         {
             pickaxe.SetActive(true);
             GetComponent<PlayerMine>().enabled = true;
@@ -28,7 +28,7 @@ public class PlayerToolSelect : MonoBehaviour
             GetComponent<PlayerMine>().enabled = false;
         }
 
-        if (inventory.Container.Items[inventory.selectedSlot].id == 4)
+        if (inventory.Container.Items[inventory.selectedSlot].id == 10)
         {
             sword.SetActive(true);
             GetComponent<PlayerAttack>().enabled = true;
@@ -39,7 +39,7 @@ public class PlayerToolSelect : MonoBehaviour
             GetComponent<PlayerAttack>().enabled = false;
         }
 
-        if (inventory.Container.Items[inventory.selectedSlot].id == 5)
+        if (inventory.Container.Items[inventory.selectedSlot].id == 12)
         {
             axe.SetActive(true);
             //GetComponent<PlayerAttack>().enabled = true;

@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     
     public static Rigidbody2D rb;
     Animator animator;
-    float mx;
+    public float mx;
     float prevMx = 1;
 
     // Start is called before the first frame update

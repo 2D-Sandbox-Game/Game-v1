@@ -5,9 +5,9 @@ using UnityEngine.Tilemaps;
 using System.Reflection;
 using UnityEngine.Experimental.Rendering.Universal;
 
-public class GenerationFG : MonoBehaviour
+public class GenerationFG : Generation
 {
-    int[,] perlinArr;
+    //int[,] perlinArr;
     Tilemap tilemapFG;
     Tile[] tiles = new Tile[6];
 
@@ -28,24 +28,22 @@ public class GenerationFG : MonoBehaviour
         tiles[5] = gold;
 
 
-        perlinArr = Generation.perlinArr;
+        //perlinArr = Generation.perlinArr;
         tilemapFG = GetComponent<Tilemap>();
         GenerateForeground(perlinArr, tiles);
 
         //playerSpawn = SpawnPoint(new Vector3Int(0, 0, 0));
     }
 
-    void GenerateForeground(int[,] perlinArr, Tile[] tiles)
+    void GenerateForeground(BlockType[,] perlinArr, Tile[] tiles)
     {
         for (int x = 0; x < perlinArr.GetLength(0); x++)
         {
             for (int y = 0; y < perlinArr.GetLength(1); y++)
             {
-                if(perlinArr[x, y] >= 1 && perlinArr[x, y] <= tiles.Length)
+                if(perlinArr[x, y] > BlockType.None && perlinArr[x, y] < BlockType.Cave)
                 {
-                    
-
-                    tilemapFG.SetTile(new Vector3Int(x, y, 0), tiles[perlinArr[x, y] - 1]);
+                    tilemapFG.SetTile(new Vector3Int(x, y, 0), tiles[(int)perlinArr[x, y] - 1]);
                 }
             }
         }

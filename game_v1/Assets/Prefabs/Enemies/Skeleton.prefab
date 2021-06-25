@@ -122,7 +122,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   newPos: {x: 0, y: 0, z: 0}
   startpos: {x: 0, y: 0, z: 0}
-  sr: {fileID: 0}
   go: {fileID: 3142994059263796531}
   speed: 5
   target: {fileID: 0}
@@ -204,7 +203,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03446d003f2a8134a8eb782c79157b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 3142994059263796531}
+  obj: {fileID: 3142994059263796531}
+  yOffset: 1.2
 --- !u!114 &3142994059263796490
 MonoBehaviour:
   m_ObjectHideFlags: 0

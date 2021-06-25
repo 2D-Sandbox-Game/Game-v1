@@ -20,11 +20,13 @@ public class Generation : MonoBehaviour
     public float ironMod = 30;
     public float goldMod = 40;
 
+    public int dirtLayerSize = 2;
+
     public int seed;
 
-    public enum BlockType { None, Dirt, Stone, Grass, Copper, Iron, Gold, Cave, Tree, Sapling};
+    public enum BlockType { None, Dirt, Stone, Grass, Copper, Iron, Gold, Wood, Tree, Sapling, Cave};
 
-    public static int[,] perlinArr;
+    public static BlockType[,] perlinArr;
     public static int[] perlinHeight;
 
 
@@ -34,9 +36,31 @@ public class Generation : MonoBehaviour
         perlinArr = GenerateWorld(width, height, seed, caveMod, ref perlinHeight);
     }
 
-    int[,] GenerateWorld(int width, int height, int seed, float caveMod, ref int[] perlinHeight)
+    void Update()
     {
-        int[,] perlinArr = new int[width, height];
+        if (Input.GetKey(KeyCode.M))
+        {
+            string g = "";
+
+            for (int x = 0; x < perlinArr.GetLength(0); x++)
+            {
+                string s = "";
+
+                for (int y = 0; y < perlinArr.GetLength(1); y++)
+                {
+                    s += $"{(int)perlinArr[x, y]}";
+                }
+
+                g += $"{s}\n";
+            }
+
+            Debug.Log(g);
+        }
+    }
+
+    BlockType[,] GenerateWorld(int width, int height, int seed, float caveMod, ref int[] perlinHeight)
+    {
+        BlockType[,] perlinArr = new BlockType[width, height];
 
         int repetitions = 3;
         float[] mod = new float[repetitions];
@@ -58,9 +82,9 @@ public class Generation : MonoBehaviour
                 float perlinIron = Mathf.PerlinNoise((x / ironMod) + seed, (y / ironMod) + seed);
                 float perlinGold = Mathf.PerlinNoise((x / goldMod) + seed, (y / goldMod) + seed);
 
-                if (perlinCave == 1 && perlinHeight[x] - y > 20)
+                if (perlinCave == 1 && perlinHeight[x] - y > dirtLayerSize)
                 {
-                    perlinArr[x, y] = (int)BlockType.Cave;
+                    perlinArr[x, y] = BlockType.Cave;
                 }
                 else
                 {
@@ -68,32 +92,32 @@ public class Generation : MonoBehaviour
                     {
                         if (perlinCopper > 0.75)
                         {
-                            perlinArr[x, y] = (int)BlockType.Copper;
+                            perlinArr[x, y] = BlockType.Copper;
                         }
                         else if (perlinIron > 0.80)
                         {
-                            perlinArr[x, y] = (int)BlockType.Iron;
+                            perlinArr[x, y] = BlockType.Iron;
                         }
                         else if (perlinGold > 0.85)
                         {
-                            perlinArr[x, y] = (int)BlockType.Gold;
+                            perlinArr[x, y] = BlockType.Gold;
                         }
                         else
                         {
-                            perlinArr[x, y] = (int)BlockType.Stone;
+                            perlinArr[x, y] = BlockType.Stone;
                         }
                     }
                     else
                     {
-                        perlinArr[x, y] = (int)BlockType.Dirt;
+                        perlinArr[x, y] = BlockType.Dirt;
 
                     }
                 }
             }
 
-            if (perlinArr[x, perlinHeight[x] - 1] == 1)
+            if (perlinArr[x, perlinHeight[x] - 1] == BlockType.Dirt)
             {
-                perlinArr[x, perlinHeight[x]] = (int)BlockType.Grass;
+                perlinArr[x, perlinHeight[x]] = BlockType.Grass;
             }
         }
 
@@ -141,15 +165,15 @@ public class Generation : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        //if (Input.GetKeyDown(KeyCode.J))
-        //{
-        //    GenerateWorld();
-        //}
-        //if (Input.GetKeyDown(KeyCode.K))
-        //{
-        //    map.ClearAllTiles();
-        //}
-    }
+    //void Update()
+    //{
+    //    //if (Input.GetKeyDown(KeyCode.J))
+    //    //{
+    //    //    GenerateWorld();
+    //    //}
+    //    //if (Input.GetKeyDown(KeyCode.K))
+    //    //{
+    //    //    map.ClearAllTiles();
+    //    //}
+    //}
 }

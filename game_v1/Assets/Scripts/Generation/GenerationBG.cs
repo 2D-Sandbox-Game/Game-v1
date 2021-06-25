@@ -3,24 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class GenerationBG : MonoBehaviour
+public class GenerationBG : Generation
 {
-    int[,] perlinArr;
-    int[] perlinHeight;
+    //BlockType[,] perlinArr;
+    //int[] perlinHeight;
     Tilemap tilemapBG;
-
     public Tile tileBG;
 
     void Start()
     {
-        perlinArr = Generation.perlinArr;
-        perlinHeight = Generation.perlinHeight;
+        //perlinArr = Generation.perlinArr;
+        //perlinHeight = Generation.perlinHeight;
 
         tilemapBG = GetComponent<Tilemap>();
         GenerateBackground(perlinArr, perlinHeight, tileBG);
     }
 
-    void GenerateBackground(int[,] perlinArr, int[] perlinHeight, Tile tiles)
+    void GenerateBackground(BlockType[,] perlinArr, int[] perlinHeight, Tile tileBG)
     {
         for (int x = 0; x < perlinArr.GetLength(0); x++)
         {

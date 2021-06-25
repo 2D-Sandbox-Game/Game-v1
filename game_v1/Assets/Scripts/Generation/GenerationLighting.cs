@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class GenerationLighting : MonoBehaviour
 {
-    int[,] perlinArr;
+    Generation.BlockType[,] perlinArr;
     float[,] lightValueArr;
     Tilemap tilemapLight;
     Vector3Int bottomLeft;
@@ -69,7 +69,7 @@ public class GenerationLighting : MonoBehaviour
 
 
 
-    float[,] GenerateLightValueArray(int[,] perlinArr, Vector3Int bottomLeftOff, Vector3Int topRightOff)
+    float[,] GenerateLightValueArray(Generation.BlockType[,] perlinArr, Vector3Int bottomLeftOff, Vector3Int topRightOff)
     {
 
 

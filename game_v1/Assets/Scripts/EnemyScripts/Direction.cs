@@ -21,7 +21,7 @@ public class Direction : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {   
+    {
         if (Vector2.Distance(transform.position, target.position) > 2)
         {
             transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
@@ -30,7 +30,7 @@ public class Direction : MonoBehaviour
             {
                 animator.SetFloat("Speed", Mathf.Abs(speed));
             }
-            
+
             if (transform.position.x > target.position.x) //Enemies are flipped so that they always run forward
             {
                 sr.flipX = true;
@@ -40,6 +40,7 @@ public class Direction : MonoBehaviour
                 sr.flipX = false;
             }
             temp = newPos;
-        }       
+        }
     }
+
 }

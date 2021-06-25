@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Linq;
 
 public class CutTrees : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class CutTrees : MonoBehaviour
     public GameObject blockBreaking;
     //public ItemDatabaseObject database;
     //public GameObject createableItem;
+    public ItemDatabaseObject database;
+    public GameObject droppedWood;
+    public GameObject droppedAcorns;
 
     Animator breakingAnim;
     public float miningSpeed = 3;
@@ -23,6 +27,7 @@ public class CutTrees : MonoBehaviour
     Vector3Int posSelectedTile = Vector3Int.zero;
     float timeSinceMiningStart;
 
+    Generation.BlockType[,] mapArr;
     List<GameObject> trees;
 
     // Start is called before the first frame update
@@ -33,6 +38,7 @@ public class CutTrees : MonoBehaviour
         breakingAnim.speed = miningSpeed;
         miningDuration = 1 / miningSpeed;
 
+        mapArr = Generation.perlinArr;
         trees = GenerateTrees.trees;
     }
 
@@ -49,6 +55,8 @@ public class CutTrees : MonoBehaviour
         if (mousePosTranslated != posSelectedTile)
         {
             timeSinceMiningStart = 0;
+            breakingAnim.Play("Idle");
+            axeAnim.Play("Idle");
             posSelectedTile = mousePosTranslated;
         }
 
@@ -64,17 +72,11 @@ public class CutTrees : MonoBehaviour
 
                 if (timeSinceMiningStart > miningDuration)
                 {
-                    Debug.Log("aaa");
                     breakingAnim.Play("Idle");
                     axeAnim.Play("Idle");
-                    DeleteTree(posSelectedTile);
-
-                    foreach (GameObject tree in trees)
-                    {
-                        Debug.Log(tree.name);
-                    }
-
                     timeSinceMiningStart = 0;
+
+                    DeleteTree(posSelectedTile);                    
                 }
 
             }
@@ -86,32 +88,24 @@ public class CutTrees : MonoBehaviour
             axeAnim.Play("Idle");
             timeSinceMiningStart = 0;
         }
-        
-
     }
 
-    //void GenerateItem(string name)
-    //{
-    //    //Debug.Log(name);
+    void GenerateItem(GameObject tree)
+    {
+        int amountWood = tree.GetComponentsInChildren<Transform>().Length * 4;
 
-    //    for (int i = 0; i < database.Items.Length; i++)
-    //    {
-    //        if (name.Contains("dirt") || name.Contains("grass")) //just a temporary fix, need to find a way to convert the name to an ID with various names for one ID
-    //        {
-    //            name = "Dirt";
-    //        }
-    //        else if (name.Contains("stone"))
-    //        {
-    //            name = "Stone";
-    //        }
-    //        if (name == database.Items[i].name)
-    //        {
-    //            createableItem.GetComponent<GroundItem>().item = database.Items[i];
-    //            Instantiate(createableItem, posSelectedTile + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
-    //            //createableItem.GetComponent<Rigidbody2D>().AddForce(new Vector2(20, 0),ForceMode2D.Impulse); attempt to give the items an inital velocity when they spawn
-    //        }
-    //    }
-    //}
+        droppedWood.GetComponent<GroundItem>().item = database.Items[9];
+        for (int i = 0; i < amountWood; i++)
+        {
+            Instantiate(droppedWood, posSelectedTile + new Vector3(0.4f, 0.5f, 0), Quaternion.identity);
+        }
+
+        droppedAcorns.GetComponent<GroundItem>().item = database.Items[8];
+        for (int i = 0; i < Random.Range(1,3); i++)
+        {
+            Instantiate(droppedAcorns, posSelectedTile + new Vector3(0.6f, 0.5f, 0), Quaternion.identity);
+        }
+    }
 
     bool TreeExists(Vector3Int pos)
     {
@@ -132,20 +126,33 @@ public class CutTrees : MonoBehaviour
         {
             if (tree.transform.position == pos)
             {
+                GenerateItem(tree);
+                RemoveTreeFromMap(tree, pos, mapArr);
                 trees.Remove(tree);
-
-                //foreach (gameobject treepart in tree)
-                //{
-                //    generation.perlinarr[(int)treepart.transform.position.x, (int)treepart.transform.position.y] = 0;
-                //}
-
-                //for (int i = 0; i < length; i++)
-                //{
-                //    gameobject child = tree.transform.GetChild(;
-                //}
-
                 Destroy(tree);
                 return;
+            }
+        }
+    }
+
+    void RemoveTreeFromMap(GameObject tree, Vector3Int pos, Generation.BlockType[,] mapArr)
+    {
+        int trunkLength = tree.GetComponentsInChildren<Transform>().Length - 3;
+        //Debug.Log(trunkLength);
+
+        for (int i = 0; i <= trunkLength; i++)
+        {
+            mapArr[pos.x, pos.y + i] = Generation.BlockType.None;
+        }
+
+        for (int i = pos.x - 1; i < pos.x + 2; i++)
+        {
+            for (int j = pos.y + trunkLength + 1; j < pos.y + trunkLength + 4; j++)
+            {
+                if (i >= 0 && i < mapArr.GetLength(0) && j >= 0 && j < mapArr.GetLength(1))
+                {
+                    mapArr[i, j] = Generation.BlockType.None;
+                }
             }
         }
     }

@@ -125,7 +125,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   newPos: {x: 0, y: 0, z: 0}
   startpos: {x: 0, y: 0, z: 0}
-  sr: {fileID: 0}
   go: {fileID: 7664728420523619582}
   speed: 5
   target: {fileID: 0}

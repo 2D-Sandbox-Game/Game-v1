@@ -8,7 +8,7 @@ using System;
 
 public class SkyLighting : MonoBehaviour
 {
-    int[,] mapArr;
+    Generation.BlockType[,] mapArr;
     int[] highestPointsArr;
 
     // Start is called before the first frame update
@@ -56,7 +56,7 @@ public class SkyLighting : MonoBehaviour
         return vectorArr.ToArray();
     }
 
-    Vector3[] GetSkyVectorPath(int[,] mapArr, int[] highestPointsArr)
+    Vector3[] GetSkyVectorPath(Generation.BlockType[,] mapArr, int[] highestPointsArr)
     {
         int x = 0;
         int y = highestPointsArr[0] + 1;
@@ -134,7 +134,7 @@ public class SkyLighting : MonoBehaviour
         return vectorArr.ToArray();
     }
 
-    void GenerateLightSources(int[,] perlinArr)
+    void GenerateLightSources(Generation.BlockType[,] perlinArr)
     {
         for (int i = 0; i < perlinArr.GetLength(0); i++)
         {

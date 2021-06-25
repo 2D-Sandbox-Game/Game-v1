@@ -17,8 +17,10 @@ public class PlayerDie : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(PlayerHealth.health==0)
+        if (PlayerHealth.health == 0)
+        {
             animator.Play("Die");
+        }
     }
 
     void Die()

@@ -12,14 +12,16 @@ public class PlaceBlocks : MonoBehaviour
 
     public Tilemap tilemap;
 
-    TileBase selectedTile = null;
+    //TileBase selectedTile = null;
     Vector3 mousePos = Vector3.zero;
     Vector3Int mousePosTranslated = Vector3Int.zero;
+
+    Generation.BlockType[,] mapArr;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        mapArr = Generation.perlinArr;
     }
 
     // Update is called once per frame
@@ -29,7 +31,7 @@ public class PlaceBlocks : MonoBehaviour
         //Mouse Position On tile Map
         //Converts worlds space click point to tile map click point.
         mousePosTranslated = tilemap.WorldToCell(mousePos);
-        selectedTile = tilemap.GetTile(mousePosTranslated);
+        //selectedTile = tilemap.GetTile(mousePosTranslated);
 
         // Sets the currently selected Inventory 
         selectedInventorySlot = inventory.Container.Items[inventory.selectedSlot];
@@ -42,58 +44,53 @@ public class PlaceBlocks : MonoBehaviour
 
         //Debug.Log($"Slot {inventory.selectedSlot}: ID: {inventory.Container.Items[inventory.selectedSlot].item.id}");
 
-        if (selectedInventorySlot.id != -1 && 
-            inventory.database.Items.Where(item => item.id == selectedInventorySlot.item.id).ToList()[0].type == ItemType.Block && 
-            Generation.perlinArr[mousePosTranslated.x, mousePosTranslated.y] == (int)Generation.BlockType.None && 
-            Input.GetKey(KeyCode.Mouse0) && 
-            IsNextToExistingTile(mousePosTranslated) &&
-            !IsInPlayerPosition(mousePosTranslated))
+        if (Input.GetKey(KeyCode.Mouse0) && PlaceableObjectInSlot(selectedInventorySlot) && !BlockExists(mousePosTranslated, mapArr) && IsNextToExistingTile(mousePosTranslated) && !IsInPlayerPosition(mousePosTranslated))
         {
-            PlaceBlock();
+            PlaceBlock(selectedInventorySlot, tilemap, mousePosTranslated, mapArr);
         }
     }
 
-    void PlaceBlock()
+    void PlaceBlock(InventorySlot selectedSlot, Tilemap tilemap, Vector3Int pos, Generation.BlockType[,] mapArr)
     {
         Tile tile = ScriptableObject.CreateInstance<Tile>();
 
         // Gets the sprite of the selected item from the database 
-        tile.sprite = inventory.database.Items.Where(item => item.id == selectedInventorySlot.item.id).ToList()[0].uiDisplay;
+        tile.sprite = inventory.database.Items.Where(item => item.id == selectedSlot.item.id).ToList()[0].uiDisplay;
         tile.name = tile.sprite.name;
 
-        tilemap.SetTile(mousePosTranslated, tile);
-        selectedInventorySlot.amount--;
+        tilemap.SetTile(pos, tile);
+        selectedSlot.amount--;
 
-        int blockTypePerlinArr;
-        switch (selectedInventorySlot.item.name.ToLower())
-        {
-            case "dirt":
-                blockTypePerlinArr = (int)Generation.BlockType.Dirt;
-                break;
-            case "stone":
-                blockTypePerlinArr = (int)Generation.BlockType.Stone;
-                break;
-            case "copper":
-                blockTypePerlinArr = (int)Generation.BlockType.Copper;
-                break;
-            case "iron":
-                blockTypePerlinArr = (int)Generation.BlockType.Iron;
-                break;
-            case "gold":
-                blockTypePerlinArr = (int)Generation.BlockType.Gold;
-                break;
-            default:
-                throw new ArgumentException("Block not found");
-        }
+        //int blockTypePerlinArr;
+        //switch (selectedInventorySlot.item.name.ToLower())
+        //{
+        //    case "dirt":
+        //        blockTypePerlinArr = (int)Generation.BlockType.Dirt;
+        //        break;
+        //    case "stone":
+        //        blockTypePerlinArr = (int)Generation.BlockType.Stone;
+        //        break;
+        //    case "copper":
+        //        blockTypePerlinArr = (int)Generation.BlockType.Copper;
+        //        break;
+        //    case "iron":
+        //        blockTypePerlinArr = (int)Generation.BlockType.Iron;
+        //        break;
+        //    case "gold":
+        //        blockTypePerlinArr = (int)Generation.BlockType.Gold;
+        //        break;
+        //    default:
+        //        throw new ArgumentException("Block not found");
+        //}
 
-        Generation.perlinArr[mousePosTranslated.x, mousePosTranslated.y] = blockTypePerlinArr;
+        mapArr[pos.x, pos.y] = (Generation.BlockType)selectedSlot.item.id;
 
-        if (selectedInventorySlot.amount == 0)
+        if (selectedSlot.amount == 0)
         {
             // Deletes the item
-            selectedInventorySlot.id = -1;
-            selectedInventorySlot.item.id = 0;
-            selectedInventorySlot.item.name = "";
+            selectedSlot.id = -1;
+            selectedSlot.item.id = 0;
+            selectedSlot.item.name = "";
         }
     }
 
@@ -134,4 +131,15 @@ public class PlaceBlocks : MonoBehaviour
         return false;
     }
 
+    bool PlaceableObjectInSlot(InventorySlot selectedSlot)
+    {
+        return selectedSlot.id != -1 && selectedSlot.item.id > (int)Generation.BlockType.None && selectedSlot.item.id < (int)Generation.BlockType.Tree;
+    }
+
+    bool BlockExists(Vector3Int pos, Generation.BlockType[,] mapArr)
+    {
+        Generation.BlockType blockTypeAtPos = mapArr[pos.x, pos.y];
+
+        return blockTypeAtPos > Generation.BlockType.None && blockTypeAtPos < Generation.BlockType.Cave;
+    }
 }

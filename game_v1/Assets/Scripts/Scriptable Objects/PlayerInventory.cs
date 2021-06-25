@@ -21,10 +21,10 @@ public class PlayerInventory : MonoBehaviour
     }
     public void Start()
     {
-        inventory.AddItem(new Item(database.Items[3]), 1);
-        inventory.AddItem(new Item(database.Items[4]), 1);
-        inventory.AddItem(new Item(database.Items[5]), 1);
-        inventory.AddItem(new Item(database.Items[6]), 10);
+        inventory.AddItem(new Item(database.Items[10]), 1);
+        inventory.AddItem(new Item(database.Items[11]), 1);
+        inventory.AddItem(new Item(database.Items[12]), 1);
+        //inventory.AddItem(new Item(database.Items[8]), 10);
     }
     public void Update()
     {

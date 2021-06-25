@@ -11,7 +11,7 @@ public class GenerateTrees : MonoBehaviour
 
     public static List<GameObject> trees = new List<GameObject>();
 
-    int[,] mapArr;
+    Generation.BlockType[,] mapArr;
     int[] highestPoints;
 
     // Start is called before the first frame update
@@ -31,33 +31,28 @@ public class GenerateTrees : MonoBehaviour
 
     void GenTrees(int[] highestPoints)
     {
-        int treeCount = 0;
+        //int treeCount = 0;
 
         for (int x = 1; x < highestPoints.Length; x++)
         {
             if (TreeCanBePlaced(x, highestPoints) && Random.Range(0, 10) == 0)
             {
-                GameObject tree = CreateTreeObject(Random.Range(3, 13));
-                tree.tag = "Tree";
-                tree.name = $"Tree {treeCount++}";
+                GameObject tree = new GameObject();
                 tree.transform.position = new Vector3(x, highestPoints[x] + 1);
+                tree.tag = "Tree";
+                tree.name = "Tree";
                 tree.transform.parent = gameObject.transform;
 
-
-                //foreach (GameObject treePart in tree.GetComponentInChildren<Transform>())
-                //{
-                //    //Generation.perlinArr[(int)treePart.transform.position.x, (int)treePart.transform.position.y] = (int)Generation.BlockType.Tree;
-                //}
+                CreateTreeObject(Random.Range(3, 13), ref tree);
 
                 trees.Add(tree);
             }
         }
     }
 
-    GameObject CreateTreeObject(int trunkLength)
+    void CreateTreeObject(int trunkLength, ref GameObject tree)
     {
-        GameObject tree = new GameObject();
-        Vector3 pos = new Vector3(0, 0, 0);
+        Vector3 pos = tree.transform.position;
 
         pos += new Vector3(0.5f, 0.5f, 0);
         AddTreePart("Stump", tree, stumpSprite, pos);
@@ -70,8 +65,6 @@ public class GenerateTrees : MonoBehaviour
 
         pos += new Vector3(0, 2, 0);
         AddTreePart("Crown", tree, crownSprite, pos);
-
-        return tree;
     }
 
     void AddTreePart(string name, GameObject parent, Sprite sprite, Vector3 pos)
@@ -81,8 +74,24 @@ public class GenerateTrees : MonoBehaviour
         treePart.AddComponent<SpriteRenderer>().sprite = sprite;
         treePart.transform.parent = parent.transform;
         treePart.transform.position += pos;
-
-        //Generation.perlinArr[(int)pos.x, (int)pos.y] = (int)Generation.BlockType.Tree;
+        
+        if (name == "Crown")
+        {
+            for (int i = (int)pos.x - 1; i < (int)pos.x + 2; i++)
+            {
+                for (int j = (int)pos.y - 1; j < (int)pos.y + 2; j++)
+                {
+                    if (i >= 0 && i < mapArr.GetLength(0) && j >= 0 && j < mapArr.GetLength(1))
+                    {
+                        mapArr[i, j] = Generation.BlockType.Tree;
+                    }                    
+                }
+            }
+        }
+        else
+        {
+            mapArr[(int)pos.x, (int)pos.y] = Generation.BlockType.Tree;
+        }
     }
 
     bool TreeCanBePlaced(int xPos, int[] highestPoint)

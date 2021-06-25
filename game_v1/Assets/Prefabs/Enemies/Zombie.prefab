@@ -121,7 +121,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   newPos: {x: 0, y: 0, z: 0}
   startpos: {x: 0, y: 0, z: 0}
-  sr: {fileID: 0}
   go: {fileID: 3401981867317290413}
   speed: 5
   target: {fileID: 0}
@@ -145,7 +144,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 5
 --- !u!61 &3401981867317290407
 BoxCollider2D:
@@ -203,4 +202,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03446d003f2a8134a8eb782c79157b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 3401981867317290413}
+  obj: {fileID: 3401981867317290413}
+  yOffset: 1.2

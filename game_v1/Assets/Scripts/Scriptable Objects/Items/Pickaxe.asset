@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a5bf257a4f41264981dba526eff0609, type: 3}
   m_Name: Pickaxe
   m_EditorClassIdentifier: 
-  id: 3
+  id: 11
   uiDisplay: {fileID: 21300000, guid: 0a822ffd466f15941850f8a460ce6c13, type: 3}
   type: 1
   description: 

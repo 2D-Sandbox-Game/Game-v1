@@ -10,6 +10,8 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
 
     public void OnAfterDeserialize()
     {
+        GetItem = new Dictionary<int, ItemObject>();
+
         for (int i = 0; i < Items.Length; i++)
         {
             Items[i].id = i;
@@ -20,5 +22,11 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
     public void OnBeforeSerialize()
     {
         GetItem = new Dictionary<int, ItemObject>();
+
+        for (int i = 0; i < Items.Length; i++)
+        {
+            Items[i].id = i;
+            GetItem.Add(i, Items[i]);
+        }
     }
 }

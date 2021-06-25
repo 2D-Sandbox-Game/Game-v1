@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c5bfb4f47d820408c2a0960519b588, type: 3}
   m_Name: Grass
   m_EditorClassIdentifier: 
-  id: 4
+  id: 3
   uiDisplay: {fileID: 21300000, guid: ccb6ba6a2d5ec3844840c717812a074a, type: 3}
   type: 2
   description: 

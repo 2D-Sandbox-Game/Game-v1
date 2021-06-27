@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Recipes
   m_EditorClassIdentifier: 
   recipeDatabase:
-  - {fileID: 11400000, guid: 1e2aa98ca7db0f34b9c0945e4d3f72b1, type: 2}
-  - {fileID: 11400000, guid: b55b670a37f84a14eba2190e2487f613, type: 2}
-  - {fileID: 11400000, guid: 8fcda8e334c8aa240b20c05c09dead81, type: 2}
+  - {fileID: 11400000, guid: 919d2cd3bf5e4544191e6f2c38cd48ed, type: 2}
+  - {fileID: 11400000, guid: a4ea22d29d815eb4fac7302521a27a6d, type: 2}
+  - {fileID: 11400000, guid: e82129e76ee04bc43b47f332434b00fb, type: 2}

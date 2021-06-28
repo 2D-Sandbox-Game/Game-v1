@@ -11,7 +11,7 @@ public class DisplayInventory : MonoBehaviour
     public InventoryObject inventory;
     public ItemDatabaseObject database;
     public GameObject inventoryPrefab;
-    public GameObject creatableItem;
+    public GroundItem creatableItem;
     public int xStart;
     public int yStart;
     public int xSpaceBetweenItems;
@@ -123,15 +123,24 @@ public class DisplayInventory : MonoBehaviour
         else
         {
             //if (itemsDisplayed[obj] is InventorySlot inventorySlot && inventorySlot.id >= 0)
-            //{
+            //{               
             //    Transform t = GameObject.Find("Player").transform;
-            //    creatableItem.GetComponent<GroundItem>().item = database.Items[inventorySlot.id];
+            //    creatableItem.GetComponent<GroundItem>().item = database.Items[inventorySlot.item.id];
+                
 
-            //    for (int i = 0; i < inventorySlot.amount; i++)
+            //    if (creatableItem.item.type == ItemType.Equipment)
             //    {
-            //        Instantiate(creatableItem, t.position + new Vector3(3, 3, 0), Quaternion.identity);
+            //        Instantiate(creatableItem, t.position + new Vector3(3, 1, 0), Quaternion.identity);
+            //        inventory.RemoveItem(inventorySlot.item);
             //    }
-            //    inventory.RemoveItem(inventorySlot.item);
+            //    else
+            //    {
+            //        for (int i = 0; i < inventorySlot.amount; i++)
+            //        {
+            //            Instantiate(creatableItem, t.position + new Vector3(3, 1, 0), Quaternion.identity);
+            //        }
+            //        inventory.RemoveItem(inventorySlot.item);
+            //    }
             //}
             //drop item
             // unstable

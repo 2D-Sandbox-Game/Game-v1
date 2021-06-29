@@ -31,7 +31,7 @@ public class GenerationFG : Generation
         //perlinArr = Generation.perlinArr;
         tilemapFG = GetComponent<Tilemap>();
         GenerateForeground(perlinArr, tiles);
-
+        //GenerationFinished(perlinHeight);
         //playerSpawn = SpawnPoint(new Vector3Int(0, 0, 0));
     }
 
@@ -41,7 +41,7 @@ public class GenerationFG : Generation
         {
             for (int y = 0; y < perlinArr.GetLength(1); y++)
             {
-                if(perlinArr[x, y] > BlockType.None && perlinArr[x, y] < BlockType.Cave)
+                if(perlinArr[x, y] > BlockType.None && perlinArr[x, y] < BlockType.Wood)
                 {
                     tilemapFG.SetTile(new Vector3Int(x, y, 0), tiles[(int)perlinArr[x, y] - 1]);
                 }

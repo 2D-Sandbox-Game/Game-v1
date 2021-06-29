@@ -11,6 +11,7 @@ public class PlaceBlocks : MonoBehaviour
     InventorySlot selectedInventorySlot;
 
     public Tilemap tilemap;
+    public float reach = 5;
 
     //TileBase selectedTile = null;
     Vector3 mousePos = Vector3.zero;
@@ -44,7 +45,7 @@ public class PlaceBlocks : MonoBehaviour
 
         //Debug.Log($"Slot {inventory.selectedSlot}: ID: {inventory.Container.Items[inventory.selectedSlot].item.id}");
 
-        if (Input.GetKey(KeyCode.Mouse0) && PlaceableObjectInSlot(selectedInventorySlot) && !BlockExists(mousePosTranslated, mapArr) && IsNextToExistingTile(mousePosTranslated) && !IsInPlayerPosition(mousePosTranslated))
+        if (Input.GetKey(KeyCode.Mouse0) && PlaceableObjectInSlot(selectedInventorySlot) && WithinBounds(mousePosTranslated, reach) && !BlockExists(mousePosTranslated, mapArr) && IsNextToExistingTile(mousePosTranslated) && !IsInPlayerPosition(mousePosTranslated))
         {
             PlaceBlock(selectedInventorySlot, tilemap, mousePosTranslated, mapArr);
         }
@@ -60,28 +61,6 @@ public class PlaceBlocks : MonoBehaviour
 
         tilemap.SetTile(pos, tile);
         selectedSlot.amount--;
-
-        //int blockTypePerlinArr;
-        //switch (selectedInventorySlot.item.name.ToLower())
-        //{
-        //    case "dirt":
-        //        blockTypePerlinArr = (int)Generation.BlockType.Dirt;
-        //        break;
-        //    case "stone":
-        //        blockTypePerlinArr = (int)Generation.BlockType.Stone;
-        //        break;
-        //    case "copper":
-        //        blockTypePerlinArr = (int)Generation.BlockType.Copper;
-        //        break;
-        //    case "iron":
-        //        blockTypePerlinArr = (int)Generation.BlockType.Iron;
-        //        break;
-        //    case "gold":
-        //        blockTypePerlinArr = (int)Generation.BlockType.Gold;
-        //        break;
-        //    default:
-        //        throw new ArgumentException("Block not found");
-        //}
 
         mapArr[pos.x, pos.y] = (Generation.BlockType)selectedSlot.item.id;
 
@@ -141,5 +120,12 @@ public class PlaceBlocks : MonoBehaviour
         Generation.BlockType blockTypeAtPos = mapArr[pos.x, pos.y];
 
         return blockTypeAtPos > Generation.BlockType.None && blockTypeAtPos < Generation.BlockType.Cave;
+    }
+
+    bool WithinBounds(Vector3Int clickPos, float reach)
+    {
+        Vector3 playerPos = gameObject.transform.position;
+
+        return (playerPos - clickPos).magnitude <= reach;
     }
 }

@@ -10,9 +10,10 @@ public class HealthBar : MonoBehaviour
     public float maxHealth;
     public float currentHealth; 
     public GameObject objectToDestroy;
-    public int damageGeist = 1;
+    //public int damageGeist = 1;
     float waitTime = 0.5f;
     float elapsedTime = 0.0f;
+    bool doAttack = true;
     void Start()
     {
         currentHealth = maxHealth;
@@ -66,15 +67,25 @@ public class HealthBar : MonoBehaviour
         healthBar.GetComponent<Image>().fillAmount = currentHealth / 10f;        
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Player")
-        {
-            if (collision.transform.position.x < transform.position.x)
-                collision.gameObject.SendMessage("HealthDamage", -damageGeist, SendMessageOptions.DontRequireReceiver);
-            else
-                collision.gameObject.SendMessage("HealthDamage", damageGeist, SendMessageOptions.DontRequireReceiver);
+    //private void OnTriggerStay2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.tag == "Player" && doAttack)
+    //    {
+    //        if (collision.transform.position.x < transform.position.x)
+    //            collision.gameObject.SendMessage("HealthDamage", -damageGeist, SendMessageOptions.DontRequireReceiver);
+    //        else
+    //            collision.gameObject.SendMessage("HealthDamage", damageGeist, SendMessageOptions.DontRequireReceiver);
 
-        }
-    }
+    //        doAttack = false;
+    //        StartCoroutine(WaitForSecondAttack());
+    //    }
+
+    //    //Debug.Log("teeeest");
+    //}
+
+    //private IEnumerator WaitForSecondAttack()
+    //{
+    //    yield return new WaitForSeconds(2f);
+    //    doAttack = true;
+    //}
 }

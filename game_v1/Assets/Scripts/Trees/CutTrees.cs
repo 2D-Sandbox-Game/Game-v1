@@ -60,25 +60,21 @@ public class CutTrees : MonoBehaviour
             posSelectedTile = mousePosTranslated;
         }
 
-        if (TreeExists(posSelectedTile) && WithinBounds(posSelectedTile, reach))
+        if (Input.GetKey(KeyCode.Mouse0) && TreeExists(posSelectedTile) && WithinBounds(posSelectedTile, reach))
         {
-            if (Input.GetKey(KeyCode.Mouse0))
+            blockBreaking.transform.position = new Vector3(0.5f + posSelectedTile.x, 0.5f + posSelectedTile.y);
+            breakingAnim.Play("BlockBreaking");
+            axeAnim.Play("AxeSwinging");
+
+            timeSinceMiningStart += Time.deltaTime;
+
+            if (timeSinceMiningStart > miningDuration)
             {
-                blockBreaking.transform.position = new Vector3(0.5f + posSelectedTile.x, 0.5f + posSelectedTile.y);
-                breakingAnim.Play("BlockBreaking");
-                axeAnim.Play("AxeSwinging");
+                breakingAnim.Play("Idle");
+                axeAnim.Play("Idle");
+                timeSinceMiningStart = 0;
 
-                timeSinceMiningStart += Time.deltaTime;
-
-                if (timeSinceMiningStart > miningDuration)
-                {
-                    breakingAnim.Play("Idle");
-                    axeAnim.Play("Idle");
-                    timeSinceMiningStart = 0;
-
-                    DeleteTree(posSelectedTile);                    
-                }
-
+                DeleteTree(posSelectedTile);
             }
         }
 
@@ -101,7 +97,7 @@ public class CutTrees : MonoBehaviour
         }
 
         droppedAcorns.GetComponent<GroundItem>().item = database.Items[8];
-        for (int i = 0; i < Random.Range(1,3); i++)
+        for (int i = 0; i < Random.Range(1, 3); i++)
         {
             Instantiate(droppedAcorns, posSelectedTile + new Vector3(0.6f, 0.5f, 0), Quaternion.identity);
         }
@@ -111,7 +107,7 @@ public class CutTrees : MonoBehaviour
     {
         foreach (GameObject tree in trees)
         {
-            if (tree.transform.position == pos)
+            if (tree.name.Contains("Tree") && tree.transform.position == pos)
             {
                 return true;
             }

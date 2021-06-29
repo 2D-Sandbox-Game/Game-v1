@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+//using UnityEditor;
 
 public class GroundItem : MonoBehaviour, ISerializationCallbackReceiver
 {
@@ -16,7 +16,7 @@ public class GroundItem : MonoBehaviour, ISerializationCallbackReceiver
     public void OnBeforeSerialize()
     {
        
-        EditorUtility.SetDirty(GetComponentInChildren<SpriteRenderer>());
+        //EditorUtility.SetDirty(GetComponentInChildren<SpriteRenderer>());
         GetComponentInChildren<SpriteRenderer>().sprite = item.uiDisplay;
     }
 

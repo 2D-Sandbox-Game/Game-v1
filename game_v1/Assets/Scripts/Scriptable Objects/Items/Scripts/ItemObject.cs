@@ -14,8 +14,6 @@ public abstract class ItemObject : ScriptableObject
     public int id;
     public Sprite uiDisplay; // holds display for the item
     public ItemType type;
-    [TextArea(15, 20)]
-    public string description;
 }
 [System.Serializable]
 public class Item

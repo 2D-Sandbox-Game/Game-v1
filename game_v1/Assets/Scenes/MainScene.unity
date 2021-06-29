@@ -2581,6 +2581,87 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62030ee60fb9b5a4082bbe49a838fd7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &1350113955
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8664819292058670812, guid: 18143f68b0ec1824796edfca6ed4e3e2, type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8664819292058670812, guid: 18143f68b0ec1824796edfca6ed4e3e2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8664819292058670812, guid: 18143f68b0ec1824796edfca6ed4e3e2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8664819292058670812, guid: 18143f68b0ec1824796edfca6ed4e3e2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8664819292058670812, guid: 18143f68b0ec1824796edfca6ed4e3e2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8664819292058670812, guid: 18143f68b0ec1824796edfca6ed4e3e2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8664819292058670812, guid: 18143f68b0ec1824796edfca6ed4e3e2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8664819292058670812, guid: 18143f68b0ec1824796edfca6ed4e3e2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8664819292058670812, guid: 18143f68b0ec1824796edfca6ed4e3e2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8664819292058670812, guid: 18143f68b0ec1824796edfca6ed4e3e2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8664819292058670812, guid: 18143f68b0ec1824796edfca6ed4e3e2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8664819292058670814, guid: 18143f68b0ec1824796edfca6ed4e3e2, type: 3}
+      propertyPath: m_Name
+      value: EnemySpawner (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8664819292058670815, guid: 18143f68b0ec1824796edfca6ed4e3e2, type: 3}
+      propertyPath: life
+      value: 
+      objectReference: {fileID: 1512546512}
+    - target: {fileID: 8664819292058670815, guid: 18143f68b0ec1824796edfca6ed4e3e2, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1567399440}
+    - target: {fileID: 8664819292058670815, guid: 18143f68b0ec1824796edfca6ed4e3e2, type: 3}
+      propertyPath: enemyPrefabs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8664819292058670815, guid: 18143f68b0ec1824796edfca6ed4e3e2, type: 3}
+      propertyPath: enemyPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 7664728420523619582, guid: 7b1ef2101cad09e4aa4770bda5f48eed, type: 3}
+    - target: {fileID: 8664819292058670815, guid: 18143f68b0ec1824796edfca6ed4e3e2, type: 3}
+      propertyPath: enemyPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 3401981867317290413, guid: 9fbcbfad6bd4bb340bff347d8a397dce, type: 3}
+    - target: {fileID: 8664819292058670815, guid: 18143f68b0ec1824796edfca6ed4e3e2, type: 3}
+      propertyPath: enemyPrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 3142994059263796531, guid: d6200fe0759170a4cb4d6bdc09b683aa, type: 3}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 18143f68b0ec1824796edfca6ed4e3e2, type: 3}
 --- !u!1 &1512546512 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3909785817948696290, guid: a6276ff0baaa00d49a958436cdaaa017, type: 3}

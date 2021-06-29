@@ -59,7 +59,6 @@ public class PlayerMine : MonoBehaviour
             posSelectedTile = mousePosTranslated;
         }
 
-
         if (Input.GetKey(KeyCode.Mouse0) && BlockExists(posSelectedTile, mapArr) && !TreeOnBlock(posSelectedTile, trees) && WithinBounds(posSelectedTile, reach))
         {
             blockBreaking.transform.position = new Vector3(0.5f + posSelectedTile.x, 0.5f + posSelectedTile.y);
@@ -80,34 +79,18 @@ public class PlayerMine : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyUp(KeyCode.Mouse0) || !BlockExists(posSelectedTile, mapArr))
+        if (Input.GetKeyUp(KeyCode.Mouse0) || (!BlockExists(posSelectedTile, mapArr) && !SaplingExists(posSelectedTile)))
         {
             breakingAnim.Play("Idle");
             pickaxeAnim.Play("Idle");
             timeSinceMiningStart = 0;
         }
 
-
-        //if (mx != prevMx && mx != 0)
-        //{
-        //    if (mx == -1)
-        //    {
-        //        pickaxe.GetComponent<SpriteRenderer>().flipX = true;
-        //        pickaxe.transform.position += new Vector3(-1, 0);
-        //    }
-        //    else
-        //    {
-        //        pickaxe.GetComponent<SpriteRenderer>().flipX = false;
-        //        pickaxe.transform.position += new Vector3(1, 0);
-        //    }
-
-        //    Debug.Log($"mx: {mx}");
-
-        //    prevMx = mx;
-        //}
     }
     void GenerateItem(Generation.BlockType blockType)
     {
+        Debug.Log(blockType);
+
         if (blockType == Generation.BlockType.Grass)
         {
             blockType = Generation.BlockType.Dirt;
@@ -163,7 +146,21 @@ public class PlayerMine : MonoBehaviour
     {
         //Debug.Log(pos);
         Generation.BlockType blockTypeAtPos = mapArr[pos.x, pos.y];
+        //Debug.Log(blockTypeAtPos);
         return blockTypeAtPos > Generation.BlockType.None && blockTypeAtPos < Generation.BlockType.Tree;
+    }
+
+    bool SaplingExists(Vector3Int pos)
+    {
+        foreach (GameObject tree in trees)
+        {
+            if (tree.name.Contains("Sapling") && tree.transform.position == pos)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 

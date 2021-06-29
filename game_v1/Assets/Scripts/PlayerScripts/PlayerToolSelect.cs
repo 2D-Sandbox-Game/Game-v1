@@ -21,11 +21,13 @@ public class PlayerToolSelect : MonoBehaviour
         {
             pickaxe.SetActive(true);
             GetComponent<PlayerMine>().enabled = true;
+            GameObject.Find("Trees").GetComponent<MineSapling>().enabled = true;
         }
         else
         {
             pickaxe.SetActive(false);
             GetComponent<PlayerMine>().enabled = false;
+            GameObject.Find("Trees").GetComponent<MineSapling>().enabled = false;
         }
 
         if (inventory.Container.Items[inventory.selectedSlot].id == 10)

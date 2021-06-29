@@ -50,18 +50,18 @@ public class PlayerHealth : MonoBehaviour
 
     void HealthDamage(float damage)  // in testing mode
     {
-        animator.Play("PlayerDamage");
+        animator.Play("Damage");
         if (damage < 0)
         {
-            rb.AddForce(new Vector2(0, 10f), ForceMode2D.Impulse); //
+            //rb.AddForce(new Vector2(0, 10f), ForceMode2D.Impulse); //
 
             damage = damage * -1;
         }
-        else
-        {
-            rb.AddForce(new Vector2(0, 10f), ForceMode2D.Impulse);
-            rb.velocity = new Vector2(5f, rb.velocity.y);
-        }
+        //else
+        //{
+        //    rb.AddForce(new Vector2(0, 10f), ForceMode2D.Impulse);
+        //    rb.velocity = new Vector2(5f, rb.velocity.y);
+        //}
         health -= (int)damage;
 
     }

@@ -50,7 +50,7 @@ public class GenerateTrees : MonoBehaviour
         }
     }
 
-    void CreateTreeObject(int trunkLength, ref GameObject tree)
+    public void CreateTreeObject(int trunkLength, ref GameObject tree)
     {
         Vector3 pos = tree.transform.position;
 
@@ -94,7 +94,7 @@ public class GenerateTrees : MonoBehaviour
         }
     }
 
-    bool TreeCanBePlaced(int xPos, int[] highestPoint)
+    public bool TreeCanBePlaced(int xPos, int[] highestPoint)
     {
         for (int i = xPos - 2; i < xPos + 2; i++)
         {
@@ -122,7 +122,7 @@ public class GenerateTrees : MonoBehaviour
 
         foreach (GameObject tree in trees)
         {
-            if (tree.transform.position == pos)
+            if (tree.transform.position == pos && tree.name.Contains("Tree"))
             {
                 return true;
             }

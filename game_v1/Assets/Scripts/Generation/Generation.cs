@@ -29,33 +29,41 @@ public class Generation : MonoBehaviour
     public static BlockType[,] perlinArr;
     public static int[] perlinHeight;
 
+    public delegate void Del(int[] arr);
+    public Del GenerationFinished;
 
-    private void Awake()
+    void Awake()
     {
         seed = UnityEngine.Random.Range(-1000000, 1000000);
         perlinArr = GenerateWorld(width, height, seed, caveMod, ref perlinHeight);
     }
 
+    private void Start()
+    {
+        GenerationFinished += new Del(GameObject.Find("Player").GetComponent<PlayerSpawn>().Spawn);
+        //GenerationFinished(perlinHeight);
+    }
+
     void Update()
     {
-        if (Input.GetKey(KeyCode.M))
-        {
-            string g = "";
+        //if (Input.GetKey(KeyCode.M))
+        //{
+        //    string g = "";
 
-            for (int x = 0; x < perlinArr.GetLength(0); x++)
-            {
-                string s = "";
+        //    for (int x = 0; x < perlinArr.GetLength(0); x++)
+        //    {
+        //        string s = "";
 
-                for (int y = 0; y < perlinArr.GetLength(1); y++)
-                {
-                    s += $"{(int)perlinArr[x, y]}";
-                }
+        //        for (int y = 0; y < perlinArr.GetLength(1); y++)
+        //        {
+        //            s += $"{(int)perlinArr[x, y]}";
+        //        }
 
-                g += $"{s}\n";
-            }
+        //        g += $"{s}\n";
+        //    }
 
-            Debug.Log(g);
-        }
+        //    Debug.Log(g);
+        //}
     }
 
     BlockType[,] GenerateWorld(int width, int height, int seed, float caveMod, ref int[] perlinHeight)

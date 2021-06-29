@@ -31,7 +31,7 @@ public class GenerationFG : Generation
         //perlinArr = Generation.perlinArr;
         tilemapFG = GetComponent<Tilemap>();
         GenerateForeground(perlinArr, tiles);
-
+        //GenerationFinished(perlinHeight);
         //playerSpawn = SpawnPoint(new Vector3Int(0, 0, 0));
     }
 

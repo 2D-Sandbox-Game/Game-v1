@@ -14,8 +14,7 @@ public abstract class ItemObject : ScriptableObject
     public int id;
     public Sprite uiDisplay; // holds display for the item
     public ItemType type;
-    [TextArea(15, 20)]
-    public string description;
+    public float stats;
 }
 [System.Serializable]
 public class Item
@@ -23,10 +22,12 @@ public class Item
     public string name;
     public int id;
     public ItemType type;
+    public float stats;
     public Item(ItemObject itemObject)
     {
         name = itemObject.name;
         id = itemObject.id;
         type = itemObject.type;
+        stats = itemObject.stats;
     }
 }

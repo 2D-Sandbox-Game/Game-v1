@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e11ccc41d97be24ba1e7adf46284484, type: 3}
-  m_Name: Test3
+  m_Name: Gold Ingots
   m_EditorClassIdentifier: 
   recipeComponents:
-  - item: {fileID: 11400000, guid: 57a0d93b714a5c24eadf76b3ed9d4223, type: 2}
-    amountNeeded: 3
-  craftableItem: {fileID: 11400000, guid: 2b0572a89bda80f419a8c7a8d4b05ae3, type: 2}
+  - item: {fileID: 11400000, guid: f17c64ca0ea9ad641b3b57d6171c48fd, type: 2}
+    amountNeeded: 1
+  craftableItem: {fileID: 11400000, guid: ecfdcb1cfd9c1f04a89ee3c33a5bef11, type: 2}

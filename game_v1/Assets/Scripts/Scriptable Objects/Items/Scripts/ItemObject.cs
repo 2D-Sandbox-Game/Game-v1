@@ -23,11 +23,13 @@ public class Item
     public int id;
     public ItemType type;
     public float stats;
+    public Sprite sprite;
     public Item(ItemObject itemObject)
     {
         name = itemObject.name;
         id = itemObject.id;
         type = itemObject.type;
         stats = itemObject.stats;
+        sprite = itemObject.uiDisplay;
     }
 }

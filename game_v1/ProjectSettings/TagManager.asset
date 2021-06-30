@@ -15,7 +15,7 @@ TagManager:
   - Animations
   - Water
   - UI
-  - 
+  - BG
   - 
   - 
   - 
@@ -48,9 +48,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Player
+    uniqueID: 1560688959
+    locked: 0
   - name: Animations
     uniqueID: 1585098873
     locked: 0
-  - name: Player
-    uniqueID: 1560688959
+  - name: Minimap
+    uniqueID: 3893450639
     locked: 0

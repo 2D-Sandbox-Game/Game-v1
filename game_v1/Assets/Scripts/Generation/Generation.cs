@@ -8,8 +8,8 @@ using System.Linq;
 
 public class Generation : MonoBehaviour
 {
-    public static int height = 512;
-    public static int width = 512;
+    public static int height = 450;
+    public static int width = 800;
 
     public float smooth = 90;
     //public float oreFrequency = 40;

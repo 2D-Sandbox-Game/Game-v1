@@ -38,8 +38,8 @@ public class DayAndNightCycle : MonoBehaviour
         bottomLeft = tilemapFG.WorldToCell(Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0)));
         //sun.transform.position = bottomLeft;
 
-        Debug.Log(bottomLeft);
-        Debug.Log(topRight);
+        //Debug.Log(bottomLeft);
+        //Debug.Log(topRight);
     }
 
     // Update is called once per frame
@@ -50,24 +50,27 @@ public class DayAndNightCycle : MonoBehaviour
             time = 0;
         }
 
-        if ((int)time == 125 && canChangeDay)
+        if ((int)time == 125)
         {
-            days++;
-            canChangeDay = false;
-            DayChanged();
+            
             celestialBody.sprite = moonSprite;
             isDay = false;
         }
 
-        if ((int)time == 130)
-        {
-            canChangeDay = true;
-        }
+        
 
-        if ((int)time == 375)
+        if ((int)time == 375 && canChangeDay)
         {
+            days++;
+            canChangeDay = false;
+            DayChanged();
             celestialBody.sprite = sunSprite;
             isDay = true;
+        }
+
+        if ((int)time == 380)
+        {
+            canChangeDay = true;
         }
 
         if (Input.GetKeyDown(KeyCode.Z))

@@ -8,6 +8,7 @@ public class PlayerToolSelect : MonoBehaviour
     public GameObject pickaxe;
     public GameObject sword;
     public GameObject axe;
+    //public Sprite[] sprites;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,22 +18,13 @@ public class PlayerToolSelect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (inventory.Container.Items[inventory.selectedSlot].id == 11)
-        {
-            pickaxe.SetActive(true);
-            GetComponent<PlayerMine>().enabled = true;
-            GameObject.Find("Trees").GetComponent<MineSapling>().enabled = true;
-        }
-        else
-        {
-            pickaxe.SetActive(false);
-            GetComponent<PlayerMine>().enabled = false;
-            GameObject.Find("Trees").GetComponent<MineSapling>().enabled = false;
-        }
+        
 
-        if (inventory.Container.Items[inventory.selectedSlot].id == 10)
+        if (inventory.Container.Items[inventory.selectedSlot].item.name.ToLower().Contains("sword"))
         {
             sword.SetActive(true);
+            sword.GetComponent<SpriteRenderer>().sprite = inventory.Container.Items[inventory.selectedSlot].item.sprite;
+            sword.transform.GetChild(0).GetComponent<SendDamageCollision>().damageValue = (int)inventory.Container.Items[inventory.selectedSlot].item.stats;
             GetComponent<PlayerAttack>().enabled = true;
         }
         else
@@ -41,15 +33,35 @@ public class PlayerToolSelect : MonoBehaviour
             GetComponent<PlayerAttack>().enabled = false;
         }
 
-        if (inventory.Container.Items[inventory.selectedSlot].id == 12)
+        if (inventory.Container.Items[inventory.selectedSlot].item.name.ToLower().Contains("axe") && !inventory.Container.Items[inventory.selectedSlot].item.name.ToLower().Contains("pick"))
         {
             axe.SetActive(true);
-            //GetComponent<PlayerAttack>().enabled = true;
+            axe.GetComponent<SpriteRenderer>().sprite = inventory.Container.Items[inventory.selectedSlot].item.sprite;
+            axe.GetComponent<CutTrees>().miningSpeed = inventory.Container.Items[inventory.selectedSlot].item.stats;
         }
         else
         {
             axe.SetActive(false);
-            //GetComponent<PlayerAttack>().enabled = false;
         }
+
+
+        if (inventory.Container.Items[inventory.selectedSlot].item.name.ToLower().Contains("pickaxe"))
+        {
+            pickaxe.SetActive(true);
+            pickaxe.GetComponent<SpriteRenderer>().sprite = inventory.Container.Items[inventory.selectedSlot].item.sprite;
+            GetComponent<PlayerMine>().enabled = true;
+            GetComponent<PlayerMine>().miningSpeed = inventory.Container.Items[inventory.selectedSlot].item.stats;
+            GameObject.Find("Trees").GetComponent<MineSapling>().enabled = true;
+            GameObject.Find("Trees").GetComponent<MineSapling>().miningSpeed = inventory.Container.Items[inventory.selectedSlot].item.stats;
+
+        }
+        else
+        {
+            pickaxe.SetActive(false);
+            GetComponent<PlayerMine>().enabled = false;
+            GameObject.Find("Trees").GetComponent<MineSapling>().enabled = false;
+        }
+
     }
+
 }

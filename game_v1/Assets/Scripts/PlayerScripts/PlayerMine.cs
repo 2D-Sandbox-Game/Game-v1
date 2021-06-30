@@ -16,7 +16,7 @@ public class PlayerMine : MonoBehaviour
     Animator breakingAnim;
     public float miningSpeed = 3;
     public float reach = 5;
-    float miningDuration;
+    public float miningDuration;
 
     Animator pickaxeAnim;
 
@@ -34,8 +34,6 @@ public class PlayerMine : MonoBehaviour
     {
         breakingAnim = blockBreaking.GetComponent<Animator>();
         pickaxeAnim = pickaxe.GetComponent<Animator>();
-        breakingAnim.speed = miningSpeed;
-        miningDuration = 1 / miningSpeed;
 
         mapArr = Generation.perlinArr;
         trees = GenerateTrees.trees;
@@ -44,6 +42,10 @@ public class PlayerMine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        breakingAnim.speed = miningSpeed;
+        //pickaxeAnim.speed = miningSpeed;
+        miningDuration = 1 / miningSpeed;
+
         //World Space
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //Mouse Position On tile Map
@@ -59,7 +61,7 @@ public class PlayerMine : MonoBehaviour
             posSelectedTile = mousePosTranslated;
         }
 
-        if (Input.GetKey(KeyCode.Mouse0) && BlockExists(posSelectedTile, mapArr) && !TreeOnBlock(posSelectedTile, trees) && WithinBounds(posSelectedTile, reach))
+        if (Input.GetKey(KeyCode.Mouse0) && IsInMap(posSelectedTile) && WithinBounds(posSelectedTile, reach) && BlockExists(posSelectedTile, mapArr) && !TreeOnBlock(posSelectedTile, trees))
         {
             blockBreaking.transform.position = new Vector3(0.5f + posSelectedTile.x, 0.5f + posSelectedTile.y);
             breakingAnim.Play("BlockBreaking");
@@ -79,7 +81,7 @@ public class PlayerMine : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyUp(KeyCode.Mouse0) || (!BlockExists(posSelectedTile, mapArr) && !SaplingExists(posSelectedTile)))
+        if (Input.GetKeyUp(KeyCode.Mouse0) || !IsInMap(posSelectedTile) || (!BlockExists(posSelectedTile, mapArr) && !SaplingExists(posSelectedTile)))
         {
             breakingAnim.Play("Idle");
             pickaxeAnim.Play("Idle");
@@ -161,6 +163,13 @@ public class PlayerMine : MonoBehaviour
         }
 
         return false;
+    }
+
+    bool IsInMap(Vector3Int clickPos)
+    {
+        //Debug.Log(clickPos);
+        //Debug.Log(clickPos.x >= 0 && clickPos.x < Generation.width && clickPos.y >= 0 && clickPos.y < Generation.height);
+        return clickPos.x >= 0 && clickPos.x < Generation.width && clickPos.y >= 0 && clickPos.y < Generation.height;
     }
 }
 

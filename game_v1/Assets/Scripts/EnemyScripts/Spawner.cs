@@ -21,7 +21,7 @@ public class Spawner : MonoBehaviour
     bool spawnSuccessful = false;
     int spawnRadius = 10;
     Generation.BlockType[,] mapArr;
-    int spawncap = 1;
+    int spawncap = 10;
     int enemyCount = 0;
     // Start is called before the first frame update
     void Start()
@@ -107,8 +107,8 @@ public class Spawner : MonoBehaviour
 
     void SpawnEnemy(Vector3 spawnpoint)
     {
-        //int randEnemy = Random.Range(0, enemyPrefabs.Length);
-        int randEnemy = 1;
+        int randEnemy = Random.Range(0, enemyPrefabs.Length);
+        //int randEnemy = 2;
         //instantiates enemy
         GameObject enemy = Instantiate(enemyPrefabs[randEnemy], spawnpoint, transform.rotation);
         enemy.transform.parent = gameObject.transform;
@@ -130,42 +130,42 @@ public class Spawner : MonoBehaviour
         enemy.GetComponent<HealthBar>().healthBarBackground = hbB;
     }
 
-    void SpawnEnemiesOld()
-    {
-        elapsedTime += Time.deltaTime;
-        if (elapsedTime >= waitTime)
-        {
-            //generates random position
-            System.Random random = new System.Random();
-            int playerPosition = (int)player.transform.position.x;
-            int enemyNewPosition = random.Next(playerPosition + 50, playerPosition + 150);
-            spawnPoints[0].position = new Vector3(enemyNewPosition, highestPointArray[enemyNewPosition], 1f);
-            spawnPoints[1].position = new Vector3(enemyNewPosition - 200, highestPointArray[enemyNewPosition - 200], 1f);
+    //void SpawnEnemiesOld()
+    //{
+    //    elapsedTime += Time.deltaTime;
+    //    if (elapsedTime >= waitTime)
+    //    {
+    //        //generates random position
+    //        System.Random random = new System.Random();
+    //        int playerPosition = (int)player.transform.position.x;
+    //        int enemyNewPosition = random.Next(playerPosition + 50, playerPosition + 150);
+    //        spawnPoints[0].position = new Vector3(enemyNewPosition, highestPointArray[enemyNewPosition], 1f);
+    //        spawnPoints[1].position = new Vector3(enemyNewPosition - 200, highestPointArray[enemyNewPosition - 200], 1f);
 
-            int randEnemy = Random.Range(0, enemyPrefabs.Length);
-            int randSpwanPoint = Random.Range(0, spawnPoints.Length);
+    //        int randEnemy = Random.Range(0, enemyPrefabs.Length);
+    //        int randSpwanPoint = Random.Range(0, spawnPoints.Length);
 
-            //instantiates enemy
-            GameObject enemy = Instantiate(enemyPrefabs[randEnemy], spawnPoints[randSpwanPoint].position, transform.rotation);
-            enemy.GetComponent<Direction>().target = GameObject.Find("Player").transform;
+    //        //instantiates enemy
+    //        GameObject enemy = Instantiate(enemyPrefabs[randEnemy], spawnPoints[randSpwanPoint].position, transform.rotation);
+    //        enemy.GetComponent<Direction>().target = GameObject.Find("Player").transform;
 
-            //instantiates HealthbarForeground
-            GameObject hbF = Instantiate(prefabHbF, prefabHbF.transform.position, prefabHbF.transform.rotation) as GameObject;
-            hbF.transform.parent = life.transform;
-            hbF.GetComponent<HealthBarPosition>().enemy = enemy;
-            hbF.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);
+    //        //instantiates HealthbarForeground
+    //        GameObject hbF = Instantiate(prefabHbF, prefabHbF.transform.position, prefabHbF.transform.rotation) as GameObject;
+    //        hbF.transform.parent = life.transform;
+    //        hbF.GetComponent<HealthBarPosition>().enemy = enemy;
+    //        hbF.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);
 
-            //instantiates HealthbarBackground
-            GameObject hbB = Instantiate(prefabHbB, prefabHbB.transform.position, prefabHbB.transform.rotation) as GameObject;
-            hbB.transform.parent = life.transform;
-            hbB.GetComponent<HealthBarPosition>().enemy = enemy;
-            hbB.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);
+    //        //instantiates HealthbarBackground
+    //        GameObject hbB = Instantiate(prefabHbB, prefabHbB.transform.position, prefabHbB.transform.rotation) as GameObject;
+    //        hbB.transform.parent = life.transform;
+    //        hbB.GetComponent<HealthBarPosition>().enemy = enemy;
+    //        hbB.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);
 
-            enemy.GetComponent<HealthBar>().healthBar = hbF;
-            enemy.GetComponent<HealthBar>().healthBarBackground = hbB;
+    //        enemy.GetComponent<HealthBar>().healthBar = hbF;
+    //        enemy.GetComponent<HealthBar>().healthBarBackground = hbB;
 
-            elapsedTime = 0f;
-            waitTime = random.Next(5, 10);
-        }
-    }
+    //        elapsedTime = 0f;
+    //        waitTime = random.Next(5, 10);
+    //    }
+    //}
 }

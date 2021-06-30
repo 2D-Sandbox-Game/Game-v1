@@ -35,7 +35,7 @@ public class DayAndNightCycle : MonoBehaviour
         DayChanged += new OnDayChanged(trees.GetComponent<PlaceSapling>().GrowSapling);
 
         topRight = tilemapFG.WorldToCell(Camera.main.ScreenToWorldPoint(new Vector3(Camera.main.pixelWidth, Camera.main.pixelHeight, 0)));
-        bottomLeft = tilemapFG.WorldToCell(Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0)));
+        bottomLeft = tilemapFG.WorldToCell(Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)));
         //sun.transform.position = bottomLeft;
 
         //Debug.Log(bottomLeft);
@@ -84,7 +84,7 @@ public class DayAndNightCycle : MonoBehaviour
 
         time += Time.deltaTime * multiplier;
         lightColor.mode = GradientMode.Blend;
-        celestialBody.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0)) + new Vector3(0, 0.7f * (topRight.y - bottomLeft.y), 10) + GetSunPosition((((time + 125) % 250) / 250f) * (topRight.x - bottomLeft.x), (topRight.x - bottomLeft.x));
+        celestialBody.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)) + new Vector3(0, 0.7f * (topRight.y - bottomLeft.y), 10) + GetSunPosition((((time + 125) % 250) / 250f) * (topRight.x - bottomLeft.x), (topRight.x - bottomLeft.x));
         light2D.color = lightColor.Evaluate(time * 0.002f);
     }
 

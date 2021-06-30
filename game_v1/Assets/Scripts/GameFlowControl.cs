@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class GameFlowControl : MonoBehaviour
 {
     public GameObject player;
+    public GameObject mapPointer;
     public GameObject enemySpawner;
     public GameObject MinimapCamera;
     public GameObject MinimapCanvas;
@@ -21,7 +23,9 @@ public class GameFlowControl : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.M) && !mapIsOpen)
         {
-            player.SetActive(false);
+            player.GetComponent<PlayerMovement>().enabled = false;
+            player.GetComponent<PlayerToolSelect>().enabled = false;
+            mapPointer.SetActive(true);
             enemySpawner.SetActive(false);
             MinimapCamera.SetActive(true);
             MinimapCanvas.SetActive(true);
@@ -30,7 +34,9 @@ public class GameFlowControl : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.M) && mapIsOpen)
         {
-            player.SetActive(true);
+            player.GetComponent<PlayerMovement>().enabled = true;
+            player.GetComponent<PlayerToolSelect>().enabled = true;
+            mapPointer.SetActive(false);
             enemySpawner.SetActive(true);
             MinimapCamera.SetActive(false);
             MinimapCanvas.SetActive(false);

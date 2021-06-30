@@ -105,7 +105,7 @@ public class Spawner : MonoBehaviour
         return GetComponentsInChildren<Transform>().Length - 1;
     }
 
-    void SpawnEnemy(Vector3 spawnpoint)
+    void SpawnEnemyOld(Vector3 spawnpoint)
     {
         int randEnemy = Random.Range(0, enemyPrefabs.Length);
         //int randEnemy = 2;
@@ -123,6 +123,34 @@ public class Spawner : MonoBehaviour
         //instantiates HealthbarBackground
         GameObject hbB = Instantiate(prefabHbB, prefabHbB.transform.position, prefabHbB.transform.rotation) as GameObject;
         hbB.transform.parent = life.transform;
+        hbB.GetComponent<HealthBarPosition>().enemy = enemy;
+        hbB.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);
+
+        enemy.GetComponent<HealthBar>().healthBar = hbF;
+        enemy.GetComponent<HealthBar>().healthBarBackground = hbB;
+    }
+
+    void SpawnEnemy(Vector3 spawnpoint)
+    {
+        int randEnemy = Random.Range(0, enemyPrefabs.Length);
+        //int randEnemy = 2;
+        //instantiates enemy
+        GameObject enemy = Instantiate(enemyPrefabs[randEnemy], spawnpoint, transform.rotation);
+        //enemy.transform.parent = gameObject.transform;
+        enemy.transform.SetParent(gameObject.transform);
+        enemy.GetComponent<Direction>().target = GameObject.Find("Player").transform;
+
+        //instantiates HealthbarForeground
+        GameObject hbF = Instantiate(prefabHbF, prefabHbF.transform.position, prefabHbF.transform.rotation) as GameObject;
+        //hbF.transform.parent = life.transform;
+        hbF.transform.SetParent(life.transform);
+        hbF.GetComponent<HealthBarPosition>().enemy = enemy;
+        hbF.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);
+
+        //instantiates HealthbarBackground
+        GameObject hbB = Instantiate(prefabHbB, prefabHbB.transform.position, prefabHbB.transform.rotation) as GameObject;
+        //hbB.transform.parent = life.transform;
+        hbB.transform.SetParent(life.transform);
         hbB.GetComponent<HealthBarPosition>().enemy = enemy;
         hbB.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);
 

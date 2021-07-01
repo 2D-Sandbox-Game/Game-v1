@@ -20,7 +20,12 @@ public class PlayerDie : MonoBehaviour
         if (PlayerHealth.health == 0)
         {
             animator.Play("Die");
+            GetComponent<PlayerMovement>().enabled = false;
+            GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePosition;
         }
+
+        //GetComponent<SpriteRenderer>().color = Color.blue;
+
     }
 
     void Die()
@@ -32,7 +37,11 @@ public class PlayerDie : MonoBehaviour
         player.transform.position = PlayerSpawn.playerSpawn;
         player.rotation = new Quaternion(0, 0, 0, 0);
         PlayerHealth.health = 10;
-        //animator.Play("Idle");
+        animator.Play("Idle3");
         gameObject.SetActive(true);
+        GetComponent<PlayerMovement>().enabled = true;
+        //GetComponent<SpriteRenderer>().color = Color.white;
+        GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+        GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 }

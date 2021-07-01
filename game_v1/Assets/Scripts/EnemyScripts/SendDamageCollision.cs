@@ -22,7 +22,7 @@ public class SendDamageCollision : MonoBehaviour
     {
         if (collision.gameObject.tag == tags)
         {
-            collision.gameObject.SendMessage("ApplyDamage", damageValue, SendMessageOptions.DontRequireReceiver);
+            collision.gameObject.SendMessage("ApplyDamage", gameObject, SendMessageOptions.DontRequireReceiver);
         }
     }
 }

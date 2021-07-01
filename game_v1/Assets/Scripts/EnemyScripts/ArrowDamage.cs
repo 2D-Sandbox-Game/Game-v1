@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ArrowDamage : MonoBehaviour
 {
-    public int damageGeist = 1;
+    public int damage = 1;
     void Start()
     {
     }
@@ -18,13 +18,18 @@ public class ArrowDamage : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //if (collision.gameObject.tag == "Player")
+        //{
+        //    if (collision.transform.position.x < transform.position.x)
+        //        collision.gameObject.SendMessage("HealthDamage", -damageGeist, SendMessageOptions.DontRequireReceiver);
+        //    else
+        //        collision.gameObject.SendMessage("HealthDamage", damageGeist, SendMessageOptions.DontRequireReceiver);
+
+        //}
+
         if (collision.gameObject.tag == "Player")
         {
-            if (collision.transform.position.x < transform.position.x)
-                collision.gameObject.SendMessage("HealthDamage", -damageGeist, SendMessageOptions.DontRequireReceiver);
-            else
-                collision.gameObject.SendMessage("HealthDamage", damageGeist, SendMessageOptions.DontRequireReceiver);
-
+            collision.gameObject.SendMessage("HealthDamage", gameObject, SendMessageOptions.DontRequireReceiver);
         }
     }
 

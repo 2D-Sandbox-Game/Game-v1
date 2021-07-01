@@ -5,7 +5,7 @@ using UnityEngine;
 public class ZombieCollider : MonoBehaviour
 {
     bool doAttack = true;
-    public int damageGeist = 1;
+    public int damage = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -21,23 +21,25 @@ public class ZombieCollider : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
+        //if (collision.gameObject.tag == "Enemy")
+        //{
+        //    Physics2D.IgnoreCollision(transform.parent.gameObject.GetComponent<Collider2D>(), collision, true);
+        //}
+
         if (collision.gameObject.tag == "Player" && doAttack)
         {
-            if (collision.transform.position.x < transform.position.x)
-                collision.gameObject.SendMessage("HealthDamage", -damageGeist, SendMessageOptions.DontRequireReceiver);
-            else
-                collision.gameObject.SendMessage("HealthDamage", damageGeist, SendMessageOptions.DontRequireReceiver);
+
+            collision.gameObject.SendMessage("HealthDamage", transform.parent.gameObject, SendMessageOptions.DontRequireReceiver);
 
             doAttack = false;
             StartCoroutine(WaitForSecondAttack());
         }
-
         //Debug.Log("teeeest");
     }
 
     private IEnumerator WaitForSecondAttack()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         doAttack = true;
     }
 }

@@ -18,7 +18,7 @@ public class Toggle : MonoBehaviour
     }
     public void ToggleCrafting()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             if (craftingPanel.active == true)
             {

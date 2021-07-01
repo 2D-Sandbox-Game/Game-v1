@@ -2,18 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAutoJump : MonoBehaviour
+public class AutomaticJump : MonoBehaviour
 {
-    public float yOffset = 1.8f;
+    public float yOffset = 2f;
     public float xOffset = 0.6f;
 
-    GameObject player;
+    GameObject enemy;
     Generation.BlockType[,] mapArr;
 
     // Start is called before the first frame update
     void Start()
     {
-        player = gameObject.transform.parent.gameObject;
+        enemy = gameObject.transform.parent.gameObject;
         mapArr = Generation.perlinArr;
     }
 
@@ -25,12 +25,17 @@ public class PlayerAutoJump : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        float dir = player.GetComponent<PlayerMovement>().mx;
+        int dir = enemy.GetComponent<Direction>().dir;
 
-        if (collision.gameObject.tag == "Ground" && Mathf.Abs(collision.contacts[0].normal.x) > 0.5f && !IsBlockedByWall(player.transform.position, dir))
+        if (collision.gameObject.tag == "Enemy")
+        {
+            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collision.gameObject.GetComponent<Collider2D>(), true);
+        }
+
+        if (collision.gameObject.tag == "Ground" && Mathf.Abs(collision.contacts[0].normal.x) > 0.5f && !IsBlockedByWall(enemy.transform.position, dir))
         {
             //Debug.Log(player.GetComponent<PlayerMovement>().mx);
-            player.transform.position = new Vector3(transform.position.x + dir * xOffset, transform.position.y + yOffset, transform.position.z);
+            enemy.transform.position = new Vector3(transform.position.x + dir * xOffset, transform.position.y + yOffset, transform.position.z);
         }
     }
 

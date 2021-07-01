@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
     float curentSpeed = 1;
     public float movementSpeed = 10;
     public float JumpForce = 1;
+
+    bool godModeActivated;
     
     public static Rigidbody2D rb;
     Animator animator;
@@ -33,26 +35,53 @@ public class PlayerMovement : MonoBehaviour
         //    this.transform.localScale = new Vector3(1, 1, 1);
         //}
 
-        mx = Input.GetAxisRaw("Horizontal");
-        if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.O))
         {
-            if(curentSpeed < movementSpeed)
-                curentSpeed+=Time.deltaTime*10;
+            godModeActivated = !godModeActivated;
+            GetComponent<Rigidbody2D>().simulated = !GetComponent<Rigidbody2D>().simulated;
         }
-        else    
+
+        if (godModeActivated)
+        {
+            GodMode();
+        }
+        else
+        {
+            NormalMode();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if(!animator.GetBool("Damage"))
+        {
+            Vector2 movement = new Vector2(mx * curentSpeed, rb.velocity.y);
+            rb.velocity = movement;
+        }
+    }
+    
+    void NormalMode()
+    {
+        mx = Input.GetAxisRaw("Horizontal");
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
+        {
+            if (curentSpeed < movementSpeed)
+                curentSpeed += Time.deltaTime * 10;
+        }
+        else
             curentSpeed = 1;
 
-        
+
         animator.SetFloat("Speed", Mathf.Abs(mx * curentSpeed));
         if (mx != prevMx && mx != 0)
         {
-            if (mx < 0 )
+            if (mx < 0)
             {
-                transform.localScale = new Vector3(-1,1,1);
+                transform.localScale = new Vector3(-1, 1, 1);
             }
             else
             {
-                transform.localScale = new Vector3(1,1,1);
+                transform.localScale = new Vector3(1, 1, 1);
             }
 
             //Debug.Log($"mx: {mx}");
@@ -72,15 +101,23 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    void GodMode()
     {
-        if(!animator.GetBool("Damage"))
+        if (Input.GetKey(KeyCode.A))
         {
-            Vector2 movement = new Vector2(mx * curentSpeed, rb.velocity.y);
-            rb.velocity = movement;
+            transform.position += new Vector3(-1, 0, 0);
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            transform.position += new Vector3(1, 0, 0);
+        }
+        if (Input.GetKey(KeyCode.W))
+        {
+            transform.position += new Vector3(0, 1, 0);
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            transform.position += new Vector3(0, -1, 0);
         }
     }
-    
-
-
 }

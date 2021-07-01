@@ -14,6 +14,7 @@ public class PlayerHealth : MonoBehaviour
 
     Rigidbody2D rb;
     public static Animator animator;
+    bool IsGettingDamage;
     // Start is called before the first frame update
     void Start()
     {
@@ -48,21 +49,99 @@ public class PlayerHealth : MonoBehaviour
 
 
 
-    void HealthDamage(float damage)  // in testing mode
+    //void HealthDamage(float damage)  // in testing mode
+    //{
+    //    animator.Play("Damage");
+    //    if (damage < 0)
+    //    {
+    //        //rb.AddForce(new Vector2(0, 10f), ForceMode2D.Impulse); //
+
+    //        damage = damage * -1;
+    //    }
+    //    //else
+    //    //{
+    //    //    rb.AddForce(new Vector2(0, 10f), ForceMode2D.Impulse);
+    //    //    rb.velocity = new Vector2(5f, rb.velocity.y);
+    //    //}
+    //    health -= (int)damage;
+
+    //}
+
+    void HealthDamage(GameObject enemy)  // in testing mode
     {
-        animator.Play("Damage");
-        if (damage < 0)
+        float damage;
+
+        if (!IsGettingDamage)
         {
-            //rb.AddForce(new Vector2(0, 10f), ForceMode2D.Impulse); //
+            GetComponent<PlayerMovement>().enabled = false;
 
-            damage = damage * -1;
+            if (enemy.GetComponent<HealthBar>())
+            {
+                damage = enemy.GetComponent<HealthBar>().damage;
+            }
+            else
+            {
+                damage = enemy.GetComponent<ArrowDamage>().damage;
+            }
+
+            health -= (int)damage;
+
+            
+            animator.Play("Damage");
+            if (transform.position.x < enemy.transform.position.x)
+            {
+                rb.AddForce(new Vector2(-8f, 8f), ForceMode2D.Impulse); //
+                //rb.velocity = new Vector2(-50f, rb.velocity.y);
+                //rb.velocity = new Vector2(-50f, rb.velocity.y);
+                //damage = damage * -1;
+            }
+            else
+            {
+                rb.AddForce(new Vector2(8f, 8f), ForceMode2D.Impulse);
+                //rb.velocity = new Vector2(50f, rb.velocity.y);
+            }
         }
-        //else
-        //{
-        //    rb.AddForce(new Vector2(0, 10f), ForceMode2D.Impulse);
-        //    rb.velocity = new Vector2(5f, rb.velocity.y);
-        //}
-        health -= (int)damage;
+    }
 
+    void DamageAnimFinished()
+    {
+        GetComponent<PlayerMovement>().enabled = true;
+        //animator.Play("Idle");
+        animator.Play("Idle2");
+        //IsGettingDamage = false;
+        //Debug.Log("hhhhhhheeeeeeey");
+    }
+
+    void DamageAnimStarted()
+    {
+        //animator.enabled = false;
+        //animator.enabled = true;
+
+        //if (health == 0)
+        //{
+        //    animator.Play("Die");
+        //}
+
+        //IsGettingDamage = true;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        GetComponent<PlayerMovement>().enabled = false;
+
+        if (collision.gameObject.tag.Equals("Ground") && Fall_Damage.velocity < -30) // if the player falls more than 30 
+        {
+            PlayerHealth.animator.Play("Damage"); // Run animation of damage
+            PlayerHealth.health += (int)(Fall_Damage.velocity + 27) / 3;
+            Debug.Log(Fall_Damage.velocity);
+            Fall_Damage.velocity = 0;
+        }
+
+        GetComponent<PlayerMovement>().enabled = true;
+
+        if (collision.gameObject.tag != "Ground")
+        {
+            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collision.gameObject.GetComponent<Collider2D>(), true);
+        }
     }
 }

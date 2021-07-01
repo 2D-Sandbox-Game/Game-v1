@@ -35,8 +35,6 @@ public class CutTrees : MonoBehaviour
     {
         breakingAnim = blockBreaking.GetComponent<Animator>();
         axeAnim = gameObject.GetComponent<Animator>();
-        breakingAnim.speed = miningSpeed;
-        miningDuration = 1 / miningSpeed;
 
         mapArr = Generation.perlinArr;
         trees = GenerateTrees.trees;
@@ -45,6 +43,9 @@ public class CutTrees : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        breakingAnim.speed = miningSpeed;
+        miningDuration = 1 / miningSpeed;
+
         //World Space
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //Mouse Position On tile Map

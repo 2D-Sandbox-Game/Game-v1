@@ -342,6 +342,22 @@ PrefabInstance:
       value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 4307509643097586113, guid: f4f3e56513afd274ca4e13a4b21e027e, type: 3}
+      propertyPath: m_Size.x
+      value: 1.0267048
+      objectReference: {fileID: 0}
+    - target: {fileID: 4307509643097586113, guid: f4f3e56513afd274ca4e13a4b21e027e, type: 3}
+      propertyPath: m_Size.y
+      value: 1.1102867
+      objectReference: {fileID: 0}
+    - target: {fileID: 4307509643097586113, guid: f4f3e56513afd274ca4e13a4b21e027e, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.30052757
+      objectReference: {fileID: 0}
+    - target: {fileID: 4307509643097586113, guid: f4f3e56513afd274ca4e13a4b21e027e, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.99539375
+      objectReference: {fileID: 0}
+    - target: {fileID: 4307509643097586113, guid: f4f3e56513afd274ca4e13a4b21e027e, type: 3}
       propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}

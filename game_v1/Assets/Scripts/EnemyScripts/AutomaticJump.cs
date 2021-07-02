@@ -23,7 +23,7 @@ public class AutomaticJump : MonoBehaviour
 
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         int dir = enemy.GetComponent<Direction>().dir;
 
@@ -35,6 +35,7 @@ public class AutomaticJump : MonoBehaviour
         if (collision.gameObject.tag == "Ground" && Mathf.Abs(collision.contacts[0].normal.x) > 0.5f && !IsBlockedByWall(enemy.transform.position, dir))
         {
             //Debug.Log(player.GetComponent<PlayerMovement>().mx);
+            Debug.Log("My name jeff");
             enemy.transform.position = new Vector3(transform.position.x + dir * xOffset, transform.position.y + yOffset, transform.position.z);
         }
     }

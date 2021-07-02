@@ -6,6 +6,7 @@ public class PlayerDie : MonoBehaviour
 {
     Animator animator;
     Transform player;
+    //public Animator swordAnim;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +22,7 @@ public class PlayerDie : MonoBehaviour
         {
             animator.Play("Die");
             GetComponent<PlayerMovement>().enabled = false;
+            GetComponent<PlayerAttack>().enabled = false;
             GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePosition;
         }
 
@@ -38,8 +40,10 @@ public class PlayerDie : MonoBehaviour
         player.rotation = new Quaternion(0, 0, 0, 0);
         PlayerHealth.health = 10;
         animator.Play("Idle3");
+        //swordAnim.Play("Idle");
         gameObject.SetActive(true);
         GetComponent<PlayerMovement>().enabled = true;
+        GetComponent<PlayerAttack>().enabled = true;
         //GetComponent<SpriteRenderer>().color = Color.white;
         GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
         GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;

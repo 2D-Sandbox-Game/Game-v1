@@ -96,7 +96,7 @@ public class GenerateTrees : MonoBehaviour
 
     public bool TreeCanBePlaced(int xPos, int[] highestPoint)
     {
-        for (int i = xPos - 2; i < xPos + 2; i++)
+        for (int i = xPos - 2; i <= xPos + 2; i++)
         {
             if (i >= 0 && i < highestPoint.Length)
             {

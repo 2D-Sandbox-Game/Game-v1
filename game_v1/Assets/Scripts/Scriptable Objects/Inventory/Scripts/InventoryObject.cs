@@ -94,7 +94,10 @@ public class InventorySlot // combines a given item in a slot with an amount
         }
         else if (amount == value)
         {
-            UpdateSlot(-1, null, 0);
+            //UpdateSlot(-1, null, 0);
+            id = -1;
+            item.id = 0;
+            item.name = "";
         }
         else
         {

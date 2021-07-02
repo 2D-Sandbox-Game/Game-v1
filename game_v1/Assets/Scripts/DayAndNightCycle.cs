@@ -13,7 +13,7 @@ public class DayAndNightCycle : MonoBehaviour
     public static int days;
 
     public float time = 50;
-    public static float multiplier = 1;
+    public static float multiplier = 5;
     bool canChangeDay = true;
     public delegate void OnDayChanged();
     public OnDayChanged DayChanged;
@@ -50,16 +50,13 @@ public class DayAndNightCycle : MonoBehaviour
             time = 0;
         }
 
-        if ((int)time == 125)
+        if ((int)time >= 125 && (int)time <= 130)
         {
-            
             celestialBody.sprite = moonSprite;
             isDay = false;
-        }
+        }        
 
-        
-
-        if ((int)time == 375 && canChangeDay)
+        if ((int)time >= 375 && (int)time <= 380 && canChangeDay)
         {
             days++;
             canChangeDay = false;
@@ -68,16 +65,16 @@ public class DayAndNightCycle : MonoBehaviour
             isDay = true;
         }
 
-        if ((int)time == 380)
+        if ((int)time > 380 && (int)time <= 385)
         {
             canChangeDay = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.Z) && multiplier == 5)
         {
-            multiplier = 50;
+            multiplier = 100;
         }
-        if (Input.GetKeyUp(KeyCode.Z))
+        else if (Input.GetKeyDown(KeyCode.Z) && multiplier == 100)
         {
             multiplier = 5;
         }

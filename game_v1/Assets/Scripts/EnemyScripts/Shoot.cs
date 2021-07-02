@@ -31,9 +31,9 @@ public class Shoot : MonoBehaviour
         if (elapsedTime >= waitTime && distance < 20)
         {
             GameObject bullet = Instantiate(bulletObject, transform.position, transform.rotation);
-            //Destroy(bullet, 3f);
+            Destroy(bullet, 3f);
             elapsedTime = 0f;
-            Debug.Log("Pew pew");
+            //Debug.Log("Pew pew");
         }
     }
 }

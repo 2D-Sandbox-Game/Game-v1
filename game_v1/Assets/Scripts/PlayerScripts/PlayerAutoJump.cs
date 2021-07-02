@@ -23,7 +23,7 @@ public class PlayerAutoJump : MonoBehaviour
 
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         float dir = player.GetComponent<PlayerMovement>().mx;
 

@@ -4036,7 +4036,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9ee0dad8f7ac69429a74e3bf439a3c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swordAnim: {fileID: 243744465}
 --- !u!114 &1567399455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4049,7 +4048,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d973c28086ae7146b99b4f045e37661, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  map: {fileID: 960047560}
+  _map: {fileID: 960047560}
 --- !u!1001 &1692422146
 PrefabInstance:
   m_ObjectHideFlags: 0

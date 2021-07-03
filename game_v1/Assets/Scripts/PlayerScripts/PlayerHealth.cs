@@ -129,12 +129,12 @@ public class PlayerHealth : MonoBehaviour
     {
         GetComponent<PlayerMovement>().enabled = false;
 
-        if (collision.gameObject.tag.Equals("Ground") && Fall_Damage.velocity < -30) // if the player falls more than 30 
+        if (collision.gameObject.tag.Equals("Ground") && Fall_Damage.s_velocity < -30) // if the player falls more than 30 
         {
             PlayerHealth.animator.Play("Damage"); // Run animation of damage
-            PlayerHealth.health += (int)(Fall_Damage.velocity + 27) / 3;
-            Debug.Log(Fall_Damage.velocity);
-            Fall_Damage.velocity = 0;
+            PlayerHealth.health += (int)(Fall_Damage.s_velocity + 27) / 3;
+            Debug.Log(Fall_Damage.s_velocity);
+            Fall_Damage.s_velocity = 0;
         }
 
         GetComponent<PlayerMovement>().enabled = true;

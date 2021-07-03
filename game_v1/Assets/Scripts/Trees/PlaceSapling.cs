@@ -37,7 +37,7 @@ public class PlaceSapling : MonoBehaviour
         selectedTile = tilemap.GetTile(mousePosTranslated);
 
         // Sets the currently selected Inventory 
-        selectedInventorySlot = inventory.Container.Items[inventory.selectedSlot];
+        selectedInventorySlot = inventory.container.items[inventory.selectedSlot];
 
         if (Input.GetKey(KeyCode.Mouse0) && selectedInventorySlot.id != -1 && selectedInventorySlot.item.id == 8 && WithinBounds(mousePosTranslated, reach) && !BlockExists(mousePosTranslated, mapArr) && !BlockExists(mousePosTranslated + new Vector3Int(0, 1, 0), mapArr) && PlacedOnDirt(mousePosTranslated, mapArr))
         {

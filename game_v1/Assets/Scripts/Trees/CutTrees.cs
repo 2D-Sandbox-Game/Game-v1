@@ -91,13 +91,13 @@ public class CutTrees : MonoBehaviour
     {
         int amountWood = tree.GetComponentsInChildren<Transform>().Length * 4;
 
-        droppedWood.GetComponent<GroundItem>().item = database.Items[9];
+        droppedWood.GetComponent<GroundItem>().item = database.items[9];
         for (int i = 0; i < amountWood; i++)
         {
             Instantiate(droppedWood, posSelectedTile + new Vector3(0.4f, 0.5f, 0), Quaternion.identity);
         }
 
-        droppedAcorns.GetComponent<GroundItem>().item = database.Items[8];
+        droppedAcorns.GetComponent<GroundItem>().item = database.items[8];
         for (int i = 0; i < Random.Range(1, 3); i++)
         {
             Instantiate(droppedAcorns, posSelectedTile + new Vector3(0.6f, 0.5f, 0), Quaternion.identity);

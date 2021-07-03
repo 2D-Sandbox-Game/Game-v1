@@ -22,11 +22,11 @@ public class PlayerInventory : MonoBehaviour
     }
     public void Start()
     {
-        inventory.AddItem(new Item(database.Items[10]), 1);
-        inventory.AddItem(new Item(database.Items[11]), 1);
-        inventory.AddItem(new Item(database.Items[12]), 1);
+        inventory.AddItem(new Item(database.items[10]), 1);
+        inventory.AddItem(new Item(database.items[11]), 1);
+        inventory.AddItem(new Item(database.items[12]), 1);
 
-        inventory.AddItem(new Item(database.Items[6]), 50);
+        inventory.AddItem(new Item(database.items[6]), 50);
         //inventory.AddItem(new Item(database.Items[8]), 10);
     }
     public void Update()
@@ -35,7 +35,7 @@ public class PlayerInventory : MonoBehaviour
     }
     private void OnApplicationQuit() // clears the inventory after the game is quit
     {
-        inventory.Container.Items = new InventorySlot[36];
+        inventory.container.items = new InventorySlot[36];
     }
     public void ChangeSelectedSlot()
     {

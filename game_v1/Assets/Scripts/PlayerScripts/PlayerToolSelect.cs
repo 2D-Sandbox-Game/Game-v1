@@ -20,11 +20,11 @@ public class PlayerToolSelect : MonoBehaviour
     {
         
 
-        if (inventory.Container.Items[inventory.selectedSlot].item.name.ToLower().Contains("sword"))
+        if (inventory.container.items[inventory.selectedSlot].item.name.ToLower().Contains("sword"))
         {
             sword.SetActive(true);
-            sword.GetComponent<SpriteRenderer>().sprite = inventory.Container.Items[inventory.selectedSlot].item.sprite;
-            sword.transform.GetChild(0).GetComponent<SendDamageCollision>().damageValue = (int)inventory.Container.Items[inventory.selectedSlot].item.stats;
+            sword.GetComponent<SpriteRenderer>().sprite = inventory.container.items[inventory.selectedSlot].item.uiDisplay;
+            sword.transform.GetChild(0).GetComponent<SendDamageCollision>().damageValue = (int)inventory.container.items[inventory.selectedSlot].item.attribute;
             GetComponent<PlayerAttack>().enabled = true;
         }
         else
@@ -33,11 +33,11 @@ public class PlayerToolSelect : MonoBehaviour
             GetComponent<PlayerAttack>().enabled = false;
         }
 
-        if (inventory.Container.Items[inventory.selectedSlot].item.name.ToLower().Contains("axe") && !inventory.Container.Items[inventory.selectedSlot].item.name.ToLower().Contains("pick"))
+        if (inventory.container.items[inventory.selectedSlot].item.name.ToLower().Contains("axe") && !inventory.container.items[inventory.selectedSlot].item.name.ToLower().Contains("pick"))
         {
             axe.SetActive(true);
-            axe.GetComponent<SpriteRenderer>().sprite = inventory.Container.Items[inventory.selectedSlot].item.sprite;
-            axe.GetComponent<CutTrees>().miningSpeed = inventory.Container.Items[inventory.selectedSlot].item.stats;
+            axe.GetComponent<SpriteRenderer>().sprite = inventory.container.items[inventory.selectedSlot].item.uiDisplay;
+            axe.GetComponent<CutTrees>().miningSpeed = inventory.container.items[inventory.selectedSlot].item.attribute;
         }
         else
         {
@@ -45,14 +45,14 @@ public class PlayerToolSelect : MonoBehaviour
         }
 
 
-        if (inventory.Container.Items[inventory.selectedSlot].item.name.ToLower().Contains("pickaxe"))
+        if (inventory.container.items[inventory.selectedSlot].item.name.ToLower().Contains("pickaxe"))
         {
             pickaxe.SetActive(true);
-            pickaxe.GetComponent<SpriteRenderer>().sprite = inventory.Container.Items[inventory.selectedSlot].item.sprite;
+            pickaxe.GetComponent<SpriteRenderer>().sprite = inventory.container.items[inventory.selectedSlot].item.uiDisplay;
             GetComponent<PlayerMine>().enabled = true;
-            GetComponent<PlayerMine>().miningSpeed = inventory.Container.Items[inventory.selectedSlot].item.stats;
+            GetComponent<PlayerMine>().miningSpeed = inventory.container.items[inventory.selectedSlot].item.attribute;
             GameObject.Find("Trees").GetComponent<MineSapling>().enabled = true;
-            GameObject.Find("Trees").GetComponent<MineSapling>().miningSpeed = inventory.Container.Items[inventory.selectedSlot].item.stats;
+            GameObject.Find("Trees").GetComponent<MineSapling>().miningSpeed = inventory.container.items[inventory.selectedSlot].item.attribute;
 
         }
         else

@@ -26,7 +26,7 @@ public class DisplayInventory : MonoBehaviour
     public void CreateDisplay()
     {
         itemsDisplayed = new Dictionary<GameObject, InventorySlot>();
-        for (int i = 0; i < inventory.Container.Items.Length; i++)
+        for (int i = 0; i < inventory.container.items.Length; i++)
         {
             var obj = Instantiate(inventoryPrefab, Vector3.zero, Quaternion.identity, transform);
             obj.GetComponent<RectTransform>().localPosition = GetPosition(i);
@@ -37,7 +37,7 @@ public class DisplayInventory : MonoBehaviour
             AddEvent(obj, EventTriggerType.EndDrag, delegate { OnDragEnd(obj); });
             AddEvent(obj, EventTriggerType.Drag, delegate { OnDrag(obj); });
 
-            itemsDisplayed.Add(obj, inventory.Container.Items[i]);
+            itemsDisplayed.Add(obj, inventory.container.items[i]);
         }
     }
 
@@ -53,7 +53,7 @@ public class DisplayInventory : MonoBehaviour
         {
             if (slot.Value.id >= 0)
             {
-                slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = inventory.database.GetItem[slot.Value.item.id].uiDisplay;
+                slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = inventory.database.idToItem[slot.Value.item.id].uiDisplay;
                 slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
                 slot.Key.GetComponentInChildren<TextMeshProUGUI>().text = slot.Value.amount == 1 ? "" : slot.Value.amount.ToString();
                 slot.Key.transform.GetComponent<Image>().color = new Color(1, 1, 1, 1);
@@ -108,7 +108,7 @@ public class DisplayInventory : MonoBehaviour
         if (itemsDisplayed[obj].id >= 0)
         {
             var img = mouseObject.AddComponent<Image>();
-            img.sprite = inventory.database.GetItem[itemsDisplayed[obj].id].uiDisplay;
+            img.sprite = inventory.database.idToItem[itemsDisplayed[obj].id].uiDisplay;
             img.raycastTarget = false;
         }
         MouseData.obj = mouseObject;

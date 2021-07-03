@@ -17,7 +17,6 @@ public class CutTrees : MonoBehaviour
     Animator _axeAnim;
     Animator _breakingAnim;
     float _miningDuration;
-    TileBase _selectedTile = null;
     Vector3 _mousePos = Vector3.zero;
     Vector3Int _mousePosTranslated = Vector3Int.zero;
     Vector3Int _posSelectedTile = Vector3Int.zero;
@@ -46,7 +45,6 @@ public class CutTrees : MonoBehaviour
         _mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         // Converts worlds space click point to tile map click point.
         _mousePosTranslated = Tilemap.WorldToCell(_mousePos);
-        _selectedTile = Tilemap.GetTile(_mousePosTranslated);
 
         // Mouse position changed from the previous selection
         if (_mousePosTranslated != _posSelectedTile)
@@ -137,7 +135,7 @@ public class CutTrees : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Deletes the tree game object and creates a game object containing item objects.
     /// </summary>
     /// <param name="pos"></param>
     void DeleteTree(Vector3Int pos)
@@ -148,22 +146,33 @@ public class CutTrees : MonoBehaviour
             {
                 GenerateItem(tree);
                 RemoveTreeFromMap(tree, pos, _mapArr);
+
+                // Removes tree from tree array
                 _trees.Remove(tree);
+                // Destroys the game object
                 Destroy(tree);
                 return;
             }
         }
     }
 
+    /// <summary>
+    /// Deletes the tree from the 2D world map array.
+    /// </summary>
+    /// <param name="tree"></param>
+    /// <param name="pos"></param>
+    /// <param name="mapArr"></param>
     void RemoveTreeFromMap(GameObject tree, Vector3Int pos, Generation.BlockType[,] mapArr)
     {
         int trunkLength = tree.GetComponentsInChildren<Transform>().Length - 3;
 
+        // Removes tree trunk from the map
         for (int i = 0; i <= trunkLength; i++)
         {
             mapArr[pos.x, pos.y + i] = Generation.BlockType.None;
         }
 
+        // Removes tree crown from the map
         for (int i = pos.x - 1; i < pos.x + 2; i++)
         {
             for (int j = pos.y + trunkLength + 1; j < pos.y + trunkLength + 4; j++)
@@ -176,10 +185,15 @@ public class CutTrees : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks if the mouse position is within the player's reach.
+    /// </summary>
+    /// <param name="clickPos"></param>
+    /// <param name="reach"></param>
+    /// <returns></returns>
     bool WithinBounds(Vector3Int clickPos, float reach)
     {
         Vector3 playerPos = gameObject.transform.parent.parent.transform.position;
-
         return (playerPos - clickPos).magnitude <= reach;
     }
 }

@@ -9,122 +9,77 @@ public class PlayerMine : MonoBehaviour
     public Tilemap tilemap;
     public GameObject blockBreaking;
     public GameObject pickaxe;
-
     public ItemDatabaseObject database;
     public GameObject createableItem;
-
-    Animator breakingAnim;
     public float miningSpeed = 3;
     public float reach = 5;
     public float miningDuration;
 
-    Animator pickaxeAnim;
-
-    TileBase selectedTile = null;
-    Vector3 mousePos = Vector3.zero;
-    Vector3Int mousePosTranslated = Vector3Int.zero;
-    Vector3Int posSelectedTile = Vector3Int.zero;
-    float timeSinceMiningStart;
-
-    Generation.BlockType[,] mapArr;
-    List<GameObject> trees;
+    Animator _pickaxeAnim;
+    Animator _breakingAnim;
+    TileBase _selectedTile = null;
+    Vector3 _mousePos = Vector3.zero;
+    Vector3Int _mousePosTranslated = Vector3Int.zero;
+    Vector3Int _posSelectedTile = Vector3Int.zero;
+    float _timeSinceMiningStart;
+    Generation.BlockType[,] _mapArr;
+    List<GameObject> _trees;
 
     // Start is called before the first frame update
     void Start()
     {
-        breakingAnim = blockBreaking.GetComponent<Animator>();
-        pickaxeAnim = pickaxe.GetComponent<Animator>();
-
-        mapArr = Generation.perlinArr;
-        trees = GenerateTrees.trees;
+        _breakingAnim = blockBreaking.GetComponent<Animator>();
+        _pickaxeAnim = pickaxe.GetComponent<Animator>();
+        _mapArr = Generation.perlinArr;
+        _trees = GenerateTrees.trees;
     }
-
     // Update is called once per frame
     void Update()
     {
-        breakingAnim.speed = miningSpeed;
-        //pickaxeAnim.speed = miningSpeed;
+        _breakingAnim.speed = miningSpeed;
         miningDuration = 1 / miningSpeed;
-
-        //World Space
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //Mouse Position On tile Map
-        //Converts worlds space click point to tile map click point.
-        mousePosTranslated = tilemap.WorldToCell(mousePos);
-        selectedTile = tilemap.GetTile(mousePosTranslated);
-
-        if (mousePosTranslated != posSelectedTile)
+        _mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        _mousePosTranslated = tilemap.WorldToCell(_mousePos);
+        _selectedTile = tilemap.GetTile(_mousePosTranslated);
+        if (_mousePosTranslated != _posSelectedTile)
         {
-            timeSinceMiningStart = 0;
-            breakingAnim.Play("Idle");
-            pickaxeAnim.Play("Idle");
-            posSelectedTile = mousePosTranslated;
+            _timeSinceMiningStart = 0;
+            _breakingAnim.Play("Idle");
+            _pickaxeAnim.Play("Idle");
+            _posSelectedTile = _mousePosTranslated;
         }
-
-        if (Input.GetKey(KeyCode.Mouse0) && IsInMap(posSelectedTile) && WithinBounds(posSelectedTile, reach) && BlockExists(posSelectedTile, mapArr) && !TreeOnBlock(posSelectedTile, trees))
+        if (Input.GetKey(KeyCode.Mouse0) && IsInMap(_posSelectedTile) && WithinBounds(_posSelectedTile, reach) && BlockExists(_posSelectedTile, _mapArr) && !TreeOnBlock(_posSelectedTile, _trees))
         {
-            blockBreaking.transform.position = new Vector3(0.5f + posSelectedTile.x, 0.5f + posSelectedTile.y);
-            breakingAnim.Play("BlockBreaking");
-            pickaxeAnim.Play("Swinging");
-
-            timeSinceMiningStart += Time.deltaTime;
-
-            if (timeSinceMiningStart > miningDuration)
+            blockBreaking.transform.position = new Vector3(0.5f + _posSelectedTile.x, 0.5f + _posSelectedTile.y);
+            _breakingAnim.Play("BlockBreaking");
+            _pickaxeAnim.Play("Swinging");
+            _timeSinceMiningStart += Time.deltaTime;
+            if (_timeSinceMiningStart > miningDuration)
             {
-                breakingAnim.Play("Idle");
-                pickaxeAnim.Play("Idle");
-                timeSinceMiningStart = 0;
-
-                tilemap.SetTile(posSelectedTile, null);
-                GenerateItem(mapArr[posSelectedTile.x, posSelectedTile.y]);
-                mapArr[posSelectedTile.x, posSelectedTile.y] = Generation.BlockType.None;
+                _breakingAnim.Play("Idle");
+                _pickaxeAnim.Play("Idle");
+                _timeSinceMiningStart = 0;
+                tilemap.SetTile(_posSelectedTile, null);
+                GenerateItem(_mapArr[_posSelectedTile.x, _posSelectedTile.y]);
+                _mapArr[_posSelectedTile.x, _posSelectedTile.y] = Generation.BlockType.None;
             }
         }
-
-        if (Input.GetKeyUp(KeyCode.Mouse0) || !IsInMap(posSelectedTile) || (!BlockExists(posSelectedTile, mapArr) && !SaplingExists(posSelectedTile)))
+        if (Input.GetKeyUp(KeyCode.Mouse0) || !IsInMap(_posSelectedTile) || (!BlockExists(_posSelectedTile, _mapArr) && !SaplingExists(_posSelectedTile)))
         {
-            breakingAnim.Play("Idle");
-            pickaxeAnim.Play("Idle");
-            timeSinceMiningStart = 0;
+            _breakingAnim.Play("Idle");
+            _pickaxeAnim.Play("Idle");
+            _timeSinceMiningStart = 0;
         }
-
     }
     void GenerateItem(Generation.BlockType blockType)
     {
-        Debug.Log(blockType);
-
         if (blockType == Generation.BlockType.Grass)
         {
             blockType = Generation.BlockType.Dirt;
         }
-
         createableItem.GetComponent<GroundItem>().item = database.Items[(int)blockType];
-        Instantiate(createableItem, posSelectedTile + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
+        Instantiate(createableItem, _posSelectedTile + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
     }
-
-    //void GenerateItem(string name)
-    //{
-    //    //Debug.Log(name);
-
-    //    for (int i = 0; i < database.Items.Length; i++)
-    //    {
-    //        if (name.Contains("dirt") || name.Contains("grass")) //just a temporary fix, need to find a way to convert the name to an ID with various names for one ID
-    //        {
-    //            name = "Dirt";
-    //        }
-    //        else if (name.Contains("stone"))
-    //        {
-    //            name = "Stone";
-    //        }
-    //        if (name == database.Items[i].name)
-    //        {
-    //            createableItem.GetComponent<GroundItem>().item = database.Items[i];
-    //            Instantiate(createableItem, posSelectedTile + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
-    //            //createableItem.GetComponent<Rigidbody2D>().AddForce(new Vector2(20, 0),ForceMode2D.Impulse); attempt to give the items an inital velocity when they spawn
-    //        }
-    //    }
-    //}
-
     bool TreeOnBlock(Vector3Int pos, List<GameObject> trees)
     {
         foreach (GameObject tree in trees)
@@ -134,10 +89,8 @@ public class PlayerMine : MonoBehaviour
                 return true;
             }
         }
-
         return false;
     }
-
     bool WithinBounds(Vector3Int clickPos, float reach)
     {
         Vector3 playerPos = gameObject.transform.position;
@@ -146,29 +99,22 @@ public class PlayerMine : MonoBehaviour
 
     bool BlockExists(Vector3Int pos, Generation.BlockType[,] mapArr)
     {
-        //Debug.Log(pos);
         Generation.BlockType blockTypeAtPos = mapArr[pos.x, pos.y];
-        //Debug.Log(blockTypeAtPos);
         return blockTypeAtPos > Generation.BlockType.None && blockTypeAtPos < Generation.BlockType.Tree;
     }
-
     bool SaplingExists(Vector3Int pos)
     {
-        foreach (GameObject tree in trees)
+        foreach (GameObject tree in _trees)
         {
             if (tree.name.Contains("Sapling") && tree.transform.position == pos)
             {
                 return true;
             }
         }
-
         return false;
     }
-
     bool IsInMap(Vector3Int clickPos)
     {
-        //Debug.Log(clickPos);
-        //Debug.Log(clickPos.x >= 0 && clickPos.x < Generation.width && clickPos.y >= 0 && clickPos.y < Generation.height);
         return clickPos.x >= 0 && clickPos.x < Generation.width && clickPos.y >= 0 && clickPos.y < Generation.height;
     }
 }

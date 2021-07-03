@@ -10,8 +10,8 @@ public class Fall_Damage : MonoBehaviour
     {
         transform.parent.gameObject.GetComponent<PlayerMovement>().enabled = false;
         s_velocity = transform.parent.gameObject.GetComponent<Rigidbody2D>().velocity.y;
-
         transform.parent.gameObject.GetComponent<PlayerMovement>().enabled = true;
     }
 
 }
+    

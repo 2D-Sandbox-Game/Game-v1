@@ -5,43 +5,29 @@ using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
-    float curentSpeed = 1;
+    float _curentSpeed = 1;
+    bool _godModeActivated;
+    Animator _animator;
     public float movementSpeed = 10;
     public float JumpForce = 1;
-
-    bool godModeActivated;
-    
-    public static Rigidbody2D rb;
-    Animator animator;
+    public static Rigidbody2D s_rb;
     public float mx;
-    float prevMx = 1;
 
     // Start is called before the first frame update
-
     private void Start()
     {
-        animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
+        s_rb = GetComponent<Rigidbody2D>();
     }
-
     private void Update()
     {
-        //if (Input.mousePosition.x - Screen.width / 2 < 0)
-        //{
-        //    this.transform.localScale = new Vector3(-1, 1, 1);
-        //}
-        //else
-        //{
-        //    this.transform.localScale = new Vector3(1, 1, 1);
-        //}
-
         if (Input.GetKeyDown(KeyCode.O))
         {
-            godModeActivated = !godModeActivated;
+            _godModeActivated = !_godModeActivated;
             GetComponent<Rigidbody2D>().simulated = !GetComponent<Rigidbody2D>().simulated;
         }
 
-        if (godModeActivated)
+        if (_godModeActivated)
         {
             GodMode();
         }
@@ -50,30 +36,30 @@ public class PlayerMovement : MonoBehaviour
             NormalMode();
         }
     }
-
     private void FixedUpdate()
     {
-        if(!animator.GetBool("Damage"))
+        if(!_animator.GetBool("Damage"))
         {
-            Vector2 movement = new Vector2(mx * curentSpeed, rb.velocity.y);
-            rb.velocity = movement;
+            Vector2 movement = new Vector2(mx * _curentSpeed, s_rb.velocity.y);
+            s_rb.velocity = movement;
         }
     }
-    
     void NormalMode()
     {
         mx = Input.GetAxisRaw("Horizontal");
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
         {
-            if (curentSpeed < movementSpeed)
-                curentSpeed += Time.deltaTime * 10;
+            if (_curentSpeed < movementSpeed)
+            {
+                _curentSpeed += Time.deltaTime * 10;
+            }
         }
         else
-            curentSpeed = 1;
-
-
-        animator.SetFloat("Speed", Mathf.Abs(mx * curentSpeed));
-        if (mx != prevMx && mx != 0)
+        {
+            _curentSpeed = 1;
+        }
+        _animator.SetFloat("Speed", Mathf.Abs(mx * _curentSpeed));
+        if (mx != 0)
         {
             if (mx < 0)
             {
@@ -83,24 +69,17 @@ public class PlayerMovement : MonoBehaviour
             {
                 transform.localScale = new Vector3(1, 1, 1);
             }
-
-            //Debug.Log($"mx: {mx}");
-
-            prevMx = mx;
         }
-
-        if (Input.GetButtonDown("Jump") && Mathf.Abs(rb.velocity.y) < 0.001f)
+        if (Input.GetButtonDown("Jump") && Mathf.Abs(s_rb.velocity.y) < 0.001f)
         {
-            rb.AddForce(new Vector2(0, JumpForce), ForceMode2D.Impulse);
-            animator.SetBool("IsJumping", true);
+            s_rb.AddForce(new Vector2(0, JumpForce), ForceMode2D.Impulse);
+            _animator.SetBool("IsJumping", true);
         }
-
-        if (Mathf.Abs(rb.velocity.y) < 0.001f)
+        if (Mathf.Abs(s_rb.velocity.y) < 0.001f)
         {
-            animator.SetBool("IsJumping", false);
+            _animator.SetBool("IsJumping", false);
         }
     }
-
     void GodMode()
     {
         if (Input.GetKey(KeyCode.A))

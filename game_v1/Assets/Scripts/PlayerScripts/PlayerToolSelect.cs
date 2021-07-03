@@ -8,18 +8,10 @@ public class PlayerToolSelect : MonoBehaviour
     public GameObject pickaxe;
     public GameObject sword;
     public GameObject axe;
-    //public Sprite[] sprites;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
     {
-        
-
         if (inventory.Container.Items[inventory.selectedSlot].item.name.ToLower().Contains("sword"))
         {
             sword.SetActive(true);
@@ -32,7 +24,6 @@ public class PlayerToolSelect : MonoBehaviour
             sword.SetActive(false);
             GetComponent<PlayerAttack>().enabled = false;
         }
-
         if (inventory.Container.Items[inventory.selectedSlot].item.name.ToLower().Contains("axe") && !inventory.Container.Items[inventory.selectedSlot].item.name.ToLower().Contains("pick"))
         {
             axe.SetActive(true);
@@ -43,8 +34,6 @@ public class PlayerToolSelect : MonoBehaviour
         {
             axe.SetActive(false);
         }
-
-
         if (inventory.Container.Items[inventory.selectedSlot].item.name.ToLower().Contains("pickaxe"))
         {
             pickaxe.SetActive(true);
@@ -61,7 +50,5 @@ public class PlayerToolSelect : MonoBehaviour
             GetComponent<PlayerMine>().enabled = false;
             GameObject.Find("Trees").GetComponent<MineSapling>().enabled = false;
         }
-
     }
-
 }

@@ -1,72 +1,51 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using System.Reflection;
-using UnityEngine.Experimental.Rendering.Universal;
 
 public class GenerationFG : Generation
 {
-    //int[,] perlinArr;
-    Tilemap tilemapFG;
-    Tile[] tiles = new Tile[6];
+    // Public variables
+    public Tile Dirt;
+    public Tile Stone;
+    public Tile Grass;
+    public Tile Copper;
+    public Tile Iron;
+    public Tile Gold;
 
-    public Tile dirt;
-    public Tile stone;
-    public Tile grass;
-    public Tile copper;
-    public Tile iron;
-    public Tile gold;
+    // Private variables
+    Tilemap _tilemapFG;
+    Tile[] _tiles = new Tile[6];
 
+    // Start is called before the first frame update
     void Start()
     {
-        tiles[0] = dirt;
-        tiles[1] = stone;
-        tiles[2] = grass;
-        tiles[3] = copper;
-        tiles[4] = iron;
-        tiles[5] = gold;
+        _tiles[0] = Dirt;
+        _tiles[1] = Stone;
+        _tiles[2] = Grass;
+        _tiles[3] = Copper;
+        _tiles[4] = Iron;
+        _tiles[5] = Gold;
 
-
-        //perlinArr = Generation.perlinArr;
-        tilemapFG = GetComponent<Tilemap>();
-        GenerateForeground(perlinArr, tiles);
-        //GenerationFinished(perlinHeight);
-        //playerSpawn = SpawnPoint(new Vector3Int(0, 0, 0));
+        _tilemapFG = GetComponent<Tilemap>();
+        GenerateForeground(s_perlinArr, _tiles);
     }
 
+    /// <summary>
+    /// Sets the foreground components in the tilemap according to the 2D perlin array.
+    /// </summary>
+    /// <param name="perlinArr"></param>
+    /// <param name="tiles"></param>
     void GenerateForeground(BlockType[,] perlinArr, Tile[] tiles)
     {
         for (int x = 0; x < perlinArr.GetLength(0); x++)
         {
             for (int y = 0; y < perlinArr.GetLength(1); y++)
             {
+                // Checks if the blocktype is a foreground component
                 if(perlinArr[x, y] > BlockType.None && perlinArr[x, y] < BlockType.Wood)
                 {
-                    tilemapFG.SetTile(new Vector3Int(x, y, 0), tiles[(int)perlinArr[x, y] - 1]);
+                    _tilemapFG.SetTile(new Vector3Int(x, y, 0), tiles[(int)perlinArr[x, y] - 1]);
                 }
             }
         }
     }
-
-    //public Vector3 SpawnPoint(Vector3Int x)
-    //{
-    //    if (tilemapFG.GetTile(x) == null)
-    //    {
-    //        while (tilemapFG.GetTile(x) == null) // move down
-    //        {
-    //            Debug.Log(x);
-    //            x.y--;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        while (tilemapFG.GetTile(x) != null) // move up
-    //        {
-    //            Debug.Log(x);
-    //            x.y++;
-    //        }
-    //    }
-    //    return tilemapFG.CellToWorld(x); ;
-    //}
 }

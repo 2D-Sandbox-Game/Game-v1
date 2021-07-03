@@ -1,30 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System.Reflection;
-using UnityEngine.Experimental.Rendering.Universal;
-using UnityEngine.Tilemaps;
 
 public class SetBGSprite : MonoBehaviour
 {
-    int width, height;
+    // Private variables
+    int _width, _height;
 
     // Start is called before the first frame update
     void Start()
     {
-        height = Generation.height;
-        width = Generation.width;
+        _height = Generation.s_height;
+        _width = Generation.s_width;
         
-        gameObject.transform.localScale = new Vector3(width, height);
-        gameObject.transform.position = new Vector3(width/2, height/2, 0);
+        // Scales the bachground sprite to the size of the map
+        gameObject.transform.localScale = new Vector3(_width, _height);
+        // Repositions the sprite to the map position
+        gameObject.transform.position = new Vector3(_width / 2, _height / 2, 0);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    
-
 }

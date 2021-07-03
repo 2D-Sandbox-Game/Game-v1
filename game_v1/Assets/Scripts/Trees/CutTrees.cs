@@ -1,112 +1,131 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using System.Linq;
 
 public class CutTrees : MonoBehaviour
 {
-    public Tilemap tilemap;
-    public GameObject blockBreaking;
-    //public ItemDatabaseObject database;
-    //public GameObject createableItem;
-    public ItemDatabaseObject database;
-    public GameObject droppedWood;
-    public GameObject droppedAcorns;
+    // Public variables
+    public Tilemap Tilemap;
+    public GameObject BlockBreaking;
+    public ItemDatabaseObject Database;
+    public GameObject DroppedWood;
+    public GameObject DroppedAcorns;
+    public float MiningSpeed = 3;
+    public float Reach = 5;
 
-    Animator breakingAnim;
-    public float miningSpeed = 3;
-    public float reach = 5;
-    float miningDuration;
-
-    Animator axeAnim;
-
-    TileBase selectedTile = null;
-    Vector3 mousePos = Vector3.zero;
-    Vector3Int mousePosTranslated = Vector3Int.zero;
-    Vector3Int posSelectedTile = Vector3Int.zero;
-    float timeSinceMiningStart;
-
-    Generation.BlockType[,] mapArr;
-    List<GameObject> trees;
+    // Private variables
+    Animator _axeAnim;
+    Animator _breakingAnim;
+    float _miningDuration;
+    TileBase _selectedTile = null;
+    Vector3 _mousePos = Vector3.zero;
+    Vector3Int _mousePosTranslated = Vector3Int.zero;
+    Vector3Int _posSelectedTile = Vector3Int.zero;
+    float _timeSinceMiningStart;
+    Generation.BlockType[,] _mapArr;
+    List<GameObject> _trees;
 
     // Start is called before the first frame update
     void Start()
     {
-        breakingAnim = blockBreaking.GetComponent<Animator>();
-        axeAnim = gameObject.GetComponent<Animator>();
+        _breakingAnim = BlockBreaking.GetComponent<Animator>();
+        _axeAnim = gameObject.GetComponent<Animator>();
 
-        mapArr = Generation.perlinArr;
-        trees = GenerateTrees.trees;
+        _mapArr = Generation.s_perlinArr;
+        _trees = GenerateTrees.trees;
     }
 
     // Update is called once per frame
     void Update()
     {
-        breakingAnim.speed = miningSpeed;
-        miningDuration = 1 / miningSpeed;
+        _breakingAnim.speed = MiningSpeed;
+        // Mining duration is the inverse of mining speed
+        _miningDuration = 1 / MiningSpeed;
 
-        //World Space
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //Mouse Position On tile Map
-        //Converts worlds space click point to tile map click point.
-        mousePosTranslated = tilemap.WorldToCell(mousePos);
-        selectedTile = tilemap.GetTile(mousePosTranslated);
+        // World Space
+        _mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        // Converts worlds space click point to tile map click point.
+        _mousePosTranslated = Tilemap.WorldToCell(_mousePos);
+        _selectedTile = Tilemap.GetTile(_mousePosTranslated);
 
-        if (mousePosTranslated != posSelectedTile)
+        // Mouse position changed from the previous selection
+        if (_mousePosTranslated != _posSelectedTile)
         {
-            timeSinceMiningStart = 0;
-            breakingAnim.Play("Idle");
-            axeAnim.Play("Idle");
-            posSelectedTile = mousePosTranslated;
+            _timeSinceMiningStart = 0;
+            _breakingAnim.Play("Idle");
+            _axeAnim.Play("Idle");
+            _posSelectedTile = _mousePosTranslated;
         }
 
-        if (Input.GetKey(KeyCode.Mouse0) && TreeExists(posSelectedTile) && WithinBounds(posSelectedTile, reach))
+        // Conditions for cutting the tree are met
+        if (Input.GetKey(KeyCode.Mouse0) && TreeExists(_posSelectedTile) && WithinBounds(_posSelectedTile, Reach))
         {
-            blockBreaking.transform.position = new Vector3(0.5f + posSelectedTile.x, 0.5f + posSelectedTile.y);
-            breakingAnim.Play("BlockBreaking");
-            axeAnim.Play("AxeSwinging");
+            // Moves the gameobject containing the blockbreaking animation to the selected position
+            BlockBreaking.transform.position = new Vector3(0.5f + _posSelectedTile.x, 0.5f + _posSelectedTile.y);
+            // Plays the animations
+            _breakingAnim.Play("BlockBreaking");
+            _axeAnim.Play("AxeSwinging");
 
-            timeSinceMiningStart += Time.deltaTime;
+            _timeSinceMiningStart += Time.deltaTime;
 
-            if (timeSinceMiningStart > miningDuration)
+            // Cutting completed 
+            if (_timeSinceMiningStart > _miningDuration)
             {
-                breakingAnim.Play("Idle");
-                axeAnim.Play("Idle");
-                timeSinceMiningStart = 0;
+                // Stops animation
+                _breakingAnim.Play("Idle");
+                _axeAnim.Play("Idle");
 
-                DeleteTree(posSelectedTile);
+                _timeSinceMiningStart = 0;
+                DeleteTree(_posSelectedTile);
             }
         }
 
-        if (Input.GetKeyUp(KeyCode.Mouse0) || !TreeExists(posSelectedTile))
+        // Mouse press was interrupted
+        if (Input.GetKeyUp(KeyCode.Mouse0) || !TreeExists(_posSelectedTile))
         {
-            breakingAnim.Play("Idle");
-            axeAnim.Play("Idle");
-            timeSinceMiningStart = 0;
+            // Stops animation
+            _breakingAnim.Play("Idle");
+            _axeAnim.Play("Idle");
+
+            _timeSinceMiningStart = 0;
         }
     }
 
+    /// <summary>
+    /// Creates game objects containing the item objects "wood" and "acorn".
+    /// </summary>
+    /// <param name="tree"></param>
     void GenerateItem(GameObject tree)
     {
+        // Sets the amount of wood according to the tree size
         int amountWood = tree.GetComponentsInChildren<Transform>().Length * 4;
+        // Sets the item object to "wood"
+        DroppedWood.GetComponent<GroundItem>().item = Database.Items[9];
 
-        droppedWood.GetComponent<GroundItem>().item = database.Items[9];
         for (int i = 0; i < amountWood; i++)
         {
-            Instantiate(droppedWood, posSelectedTile + new Vector3(0.4f, 0.5f, 0), Quaternion.identity);
+            // Creates a gameobject containing the item object "wood"
+            Instantiate(DroppedWood, _posSelectedTile + new Vector3(0.4f, 0.5f, 0), Quaternion.identity);
         }
 
-        droppedAcorns.GetComponent<GroundItem>().item = database.Items[8];
+        // Sets the item object to "wood"
+        DroppedAcorns.GetComponent<GroundItem>().item = Database.Items[8];
+
         for (int i = 0; i < Random.Range(1, 3); i++)
         {
-            Instantiate(droppedAcorns, posSelectedTile + new Vector3(0.6f, 0.5f, 0), Quaternion.identity);
+            // Creates a gameobject containing the item object "acorn"
+            Instantiate(DroppedAcorns, _posSelectedTile + new Vector3(0.6f, 0.5f, 0), Quaternion.identity);
         }
     }
 
+    /// <summary>
+    /// Checks if a tree already exists at the position.
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <returns></returns>
     bool TreeExists(Vector3Int pos)
     {
-        foreach (GameObject tree in trees)
+        foreach (GameObject tree in _trees)
         {
             if (tree.name.Contains("Tree") && tree.transform.position == pos)
             {
@@ -117,15 +136,19 @@ public class CutTrees : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="pos"></param>
     void DeleteTree(Vector3Int pos)
     {
-        foreach (GameObject tree in trees)
+        foreach (GameObject tree in _trees)
         {
             if (tree.transform.position == pos)
             {
                 GenerateItem(tree);
-                RemoveTreeFromMap(tree, pos, mapArr);
-                trees.Remove(tree);
+                RemoveTreeFromMap(tree, pos, _mapArr);
+                _trees.Remove(tree);
                 Destroy(tree);
                 return;
             }
@@ -135,7 +158,6 @@ public class CutTrees : MonoBehaviour
     void RemoveTreeFromMap(GameObject tree, Vector3Int pos, Generation.BlockType[,] mapArr)
     {
         int trunkLength = tree.GetComponentsInChildren<Transform>().Length - 3;
-        //Debug.Log(trunkLength);
 
         for (int i = 0; i <= trunkLength; i++)
         {

@@ -1,108 +1,114 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class MineSapling : MonoBehaviour
 {
-    public GameObject player;
-    public Tilemap tilemap;
-    public GameObject blockBreaking;
-    public GameObject pickaxe;
+    // Public variables
+    public GameObject Player;
+    public Tilemap Tilemap;
+    public GameObject BlockBreaking;
+    public GameObject Pickaxe;
+    public ItemDatabaseObject Database;
+    public GameObject DroppedAcorns;
+    public float MiningSpeed = 3;
+    public float Reach = 5;
+    float MiningDuration;
 
-    public ItemDatabaseObject database;
-    public GameObject droppedAcorns;
-
-    Animator breakingAnim;
-    public float miningSpeed = 3;
-    public float reach = 5;
-    float miningDuration;
-
-    Animator pickaxeAnim;
-
-    TileBase selectedTile = null;
-    Vector3 mousePos = Vector3.zero;
-    Vector3Int mousePosTranslated = Vector3Int.zero;
-    Vector3Int posSelectedTile = Vector3Int.zero;
-    float timeSinceMiningStart;
-
-    Generation.BlockType[,] mapArr;
-    List<GameObject> trees;
+    // Private variables
+    Animator _pickaxeAnim;
+    Animator _breakingAnim;
+    Vector3 _mousePos = Vector3.zero;
+    Vector3Int _mousePosTranslated = Vector3Int.zero;
+    Vector3Int _posSelectedTile = Vector3Int.zero;
+    float _timeSinceMiningStart;
+    Generation.BlockType[,] _mapArr;
+    List<GameObject> _trees;
 
     // Start is called before the first frame update
     void Start()
     {
-        breakingAnim = blockBreaking.GetComponent<Animator>();
-        pickaxeAnim = pickaxe.GetComponent<Animator>();
-        breakingAnim.speed = miningSpeed;
-        miningDuration = 1 / miningSpeed;
+        _breakingAnim = BlockBreaking.GetComponent<Animator>();
+        _pickaxeAnim = Pickaxe.GetComponent<Animator>();
 
-        mapArr = Generation.perlinArr;
-        trees = GenerateTrees.trees;
+        _breakingAnim.speed = MiningSpeed;
+        // Mining duration is the inverse of mining speed
+        MiningDuration = 1 / MiningSpeed;
+
+        _mapArr = Generation.s_perlinArr;
+        _trees = GenerateTrees.s_trees;
     }
 
     // Update is called once per frame
     void Update()
     {
         //World Space
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //Mouse Position On tile Map
+        _mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //Converts worlds space click point to tile map click point.
-        mousePosTranslated = tilemap.WorldToCell(mousePos);
-        selectedTile = tilemap.GetTile(mousePosTranslated);
+        _mousePosTranslated = Tilemap.WorldToCell(_mousePos);
 
-        if (mousePosTranslated != posSelectedTile)
+        // Mouse position changed from the previous selection
+        if (_mousePosTranslated != _posSelectedTile)
         {
-            timeSinceMiningStart = 0;
-            breakingAnim.Play("Idle");
-            pickaxeAnim.Play("Idle");
-            posSelectedTile = mousePosTranslated;
+            _timeSinceMiningStart = 0;
+            _breakingAnim.Play("Idle");
+            _pickaxeAnim.Play("Idle");
+            _posSelectedTile = _mousePosTranslated;
         }
 
-
-        if (Input.GetKey(KeyCode.Mouse0) && SaplingExists(posSelectedTile) && WithinBounds(posSelectedTile, reach))
+        // Conditions for mining a sapling are met
+        if (Input.GetKey(KeyCode.Mouse0) && SaplingExists(_posSelectedTile) && WithinBounds(_posSelectedTile, Reach))
         {
-            blockBreaking.transform.position = new Vector3(0.5f + posSelectedTile.x, 0.5f + posSelectedTile.y);
-            breakingAnim.Play("BlockBreaking");
-            pickaxeAnim.Play("Swinging");
+            // Moves the gameobject containing the blockbreaking animation to the selected position
+            BlockBreaking.transform.position = new Vector3(0.5f + _posSelectedTile.x, 0.5f + _posSelectedTile.y);
+            // Plays the animations
+            _breakingAnim.Play("BlockBreaking");
+            _pickaxeAnim.Play("Swinging");
 
-            timeSinceMiningStart += Time.deltaTime;
+            _timeSinceMiningStart += Time.deltaTime;
 
-            if (timeSinceMiningStart > miningDuration)
+            // Mining completed
+            if (_timeSinceMiningStart > MiningDuration)
             {
-                breakingAnim.Play("Idle");
-                pickaxeAnim.Play("Idle");
-                timeSinceMiningStart = 0;
+                // Stops animation
+                _breakingAnim.Play("Idle");
+                _pickaxeAnim.Play("Idle");
+                _timeSinceMiningStart = 0;
 
-                mapArr[posSelectedTile.x, posSelectedTile.y] = Generation.BlockType.None;
-                mapArr[posSelectedTile.x, posSelectedTile.y + 1] = Generation.BlockType.None;
-                DeleteSapling(posSelectedTile);
+                DeleteSapling(_posSelectedTile);
             }
         }
-
-        //if (Input.GetKeyUp(KeyCode.Mouse0) || !SaplingExists(posSelectedTile))
-        //{
-        //    breakingAnim.Play("Idle");
-        //    pickaxeAnim.Play("Idle");
-        //    timeSinceMiningStart = 0;
-        //}
     }
 
+    /// <summary>
+    /// Creates a game object containing the item object "acorn".
+    /// </summary>
     void GenerateItem()
     {
-        droppedAcorns.GetComponent<GroundItem>().item = database.Items[8];
-        Instantiate(droppedAcorns, posSelectedTile + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
+        DroppedAcorns.GetComponent<GroundItem>().item = Database.Items[8];
+        Instantiate(DroppedAcorns, _posSelectedTile + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
     }
 
+    /// <summary>
+    /// Checks if the mouse position is within the player's reach.
+    /// </summary>
+    /// <param name="clickPos"></param>
+    /// <param name="reach"></param>
+    /// <returns></returns>
     bool WithinBounds(Vector3Int clickPos, float reach)
     {
-        Vector3 playerPos = player.transform.position;
+        Vector3 playerPos = Player.transform.position;
         return (playerPos - clickPos).magnitude <= reach;
     }
 
+    /// <summary>
+    /// Check if sapling exists at position.
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <returns></returns>
     bool SaplingExists(Vector3Int pos)
     {
-        foreach (GameObject tree in trees)
+        foreach (GameObject tree in _trees)
         {
             if (tree.name.Contains("Sapling") && tree.transform.position == pos)
             {
@@ -113,14 +119,22 @@ public class MineSapling : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Deletes the sapling from the map and destroys its game object.
+    /// </summary>
+    /// <param name="pos"></param>
     void DeleteSapling(Vector3Int pos)
     {
-        foreach (GameObject tree in trees)
+        // Deletes the sapling from the 2D world map array.
+        _mapArr[pos.x, pos.y] = Generation.BlockType.None;
+        _mapArr[pos.x, pos.y + 1] = Generation.BlockType.None;
+
+        foreach (GameObject tree in _trees)
         {
             if (tree.transform.position == pos)
             {
                 GenerateItem();
-                trees.Remove(tree);
+                _trees.Remove(tree);
                 Destroy(tree);
                 return;
             }

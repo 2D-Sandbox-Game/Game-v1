@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.Tilemaps;
@@ -7,84 +5,100 @@ using UnityEngine.UI;
 
 public class DayAndNightCycle : MonoBehaviour
 {
-    public Gradient lightColor;
-    Light2D light2D;
+    // Static variables
+    public static int s_days;
+    public static float s_multiplier = 5;
+    public static bool s_isDay = true;
 
-    public static int days;
+    // Public variables
+    public Gradient LightColor;
+    public float CurrentTime = 50;
+    public GameObject Trees;
+    public Image CelestialBody;
+    public Sprite SunSprite;
+    public Sprite MoonSprite;
+    public Tilemap TilemapFG;
 
-    public float time = 50;
-    public static float multiplier = 5;
-    bool canChangeDay = true;
+    // Private variables
+    Light2D _light2D;
+    bool _canChangeDay = true;
+    Vector3 _topRight;
+    Vector3 _bottomLeft;
+
+    // Delegates
     public delegate void OnDayChanged();
     public OnDayChanged DayChanged;
 
-    public GameObject trees;
-    public Image celestialBody;
-    public Sprite sunSprite;
-    public Sprite moonSprite;
-
-    public Tilemap tilemapFG;
-    Vector3 topRight;
-    Vector3 bottomLeft;
-
-    public static bool isDay = true;
     // Start is called before the first frame update
     void Start()
     {
-        light2D = gameObject.GetComponent<Light2D>();
-        DayChanged += new OnDayChanged(trees.GetComponent<PlaceSapling>().GrowSapling);
+        _light2D = gameObject.GetComponent<Light2D>();
+        DayChanged += new OnDayChanged(Trees.GetComponent<PlaceSapling>().GrowSapling);
 
-        topRight = tilemapFG.WorldToCell(Camera.main.ScreenToWorldPoint(new Vector3(Camera.main.pixelWidth, Camera.main.pixelHeight, 0)));
-        bottomLeft = tilemapFG.WorldToCell(Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)));
-        //sun.transform.position = bottomLeft;
-
-        //Debug.Log(bottomLeft);
-        //Debug.Log(topRight);
+        // Positions of the camera corner points in tilemap units
+        _topRight = TilemapFG.WorldToCell(Camera.main.ScreenToWorldPoint(new Vector3(Camera.main.pixelWidth, Camera.main.pixelHeight, 0)));
+        _bottomLeft = TilemapFG.WorldToCell(Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)));
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (time > 500)
+        // Resets time cycle
+        if (CurrentTime > 500)
         {
-            time = 0;
+            CurrentTime = 0;
         }
 
-        if ((int)time >= 125 && (int)time <= 130)
+        // Change: day -> night
+        if ((int)CurrentTime >= 125 && (int)CurrentTime <= 130)
         {
-            celestialBody.sprite = moonSprite;
-            isDay = false;
-        }        
+            CelestialBody.sprite = MoonSprite;
+            s_isDay = false;
+        }
 
-        if ((int)time >= 375 && (int)time <= 380 && canChangeDay)
+        // Change: night -> day
+        if ((int)CurrentTime >= 375 && (int)CurrentTime <= 380 && _canChangeDay)
         {
-            days++;
-            canChangeDay = false;
+            s_days++;
+            _canChangeDay = false;
             DayChanged();
-            celestialBody.sprite = sunSprite;
-            isDay = true;
+            CelestialBody.sprite = SunSprite;
+            s_isDay = true;
         }
 
-        if ((int)time > 380 && (int)time <= 385)
+        if ((int)CurrentTime > 380 && (int)CurrentTime <= 385)
         {
-            canChangeDay = true;
+            _canChangeDay = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.Z) && multiplier == 5)
+        // Changes time multiplier if "Z" key is pressed
+        if (Input.GetKeyDown(KeyCode.Z) && s_multiplier == 5)
         {
-            multiplier = 100;
+            s_multiplier = 100;
         }
-        else if (Input.GetKeyDown(KeyCode.Z) && multiplier == 100)
+        else if (Input.GetKeyDown(KeyCode.Z) && s_multiplier == 100)
         {
-            multiplier = 5;
+            s_multiplier = 5;
         }
 
-        time += Time.deltaTime * multiplier;
-        lightColor.mode = GradientMode.Blend;
-        celestialBody.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)) + new Vector3(0, 0.7f * (topRight.y - bottomLeft.y), 10) + GetSunPosition((((time + 125) % 250) / 250f) * (topRight.x - bottomLeft.x), (topRight.x - bottomLeft.x));
-        light2D.color = lightColor.Evaluate(time * 0.002f);
+        CurrentTime += Time.deltaTime * s_multiplier;
+
+        // Changes position of the sun / moon
+        CelestialBody.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)) +
+                                            new Vector3(0, 0.7f * (_topRight.y - _bottomLeft.y), 10) +
+                                            GetSunPosition((((CurrentTime + 125) % 250) / 250f) * (_topRight.x - _bottomLeft.x), (_topRight.x - _bottomLeft.x));
+
+        // Changes global lighting according to gradient
+        LightColor.mode = GradientMode.Blend;
+        _light2D.color = LightColor.Evaluate(CurrentTime * 0.002f);
     }
 
+    /// <summary>
+    /// Calculates the suns current position using a quadratic function.
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="width"></param>
+    /// <returns></returns>
     Vector3 GetSunPosition(float x, float width)
     {
         float y = (-1 / (4 * width)) * x * (x - width);

@@ -14,7 +14,7 @@ public class PlayerAutoJump : MonoBehaviour
     void Start()
     {
         player = gameObject.transform.parent.gameObject;
-        mapArr = Generation.perlinArr;
+        mapArr = Generation.s_perlinArr;
     }
 
     // Update is called once per frame

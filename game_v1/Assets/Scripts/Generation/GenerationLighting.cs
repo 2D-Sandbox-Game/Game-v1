@@ -18,7 +18,7 @@ public class GenerationLighting : MonoBehaviour
 
     void Start()
     {
-        perlinArr = Generation.perlinArr;
+        perlinArr = Generation.s_perlinArr;
         tilemapLight = GetComponent<Tilemap>();
 
         //bottomLeft = tilemapLight.WorldToCell(Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0)));

@@ -14,8 +14,8 @@ public class SkyLighting : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mapArr = Generation.perlinArr;
-        highestPointsArr = Generation.perlinHeight;
+        mapArr = Generation.s_perlinArr;
+        highestPointsArr = Generation.s_perlinHeight;
 
         //gameObject.transform.position = new Vector3(0, 0);
         //SetShapePath(GetComponent<Light2D>(), Test());

@@ -14,7 +14,7 @@ public class PlayerSpawn : MonoBehaviour
     void Start()
     {
         player = GetComponent<Transform>();
-        playerSpawn = map.CellToWorld(new Vector3Int(Generation.width / 2, Generation.perlinHeight[Generation.width / 2] + 2, 0));
+        playerSpawn = map.CellToWorld(new Vector3Int(Generation.s_width / 2, Generation.s_perlinHeight[Generation.s_width / 2] + 2, 0));
     }
 
 
@@ -33,7 +33,7 @@ public class PlayerSpawn : MonoBehaviour
     public void Spawn(int[] perlinHeight)
     {
         player = GetComponent<Transform>();
-        playerSpawn = map.CellToWorld(new Vector3Int(Generation.width / 2, perlinHeight[Generation.width / 2] + 2, 0));
+        playerSpawn = map.CellToWorld(new Vector3Int(Generation.s_width / 2, perlinHeight[Generation.s_width / 2] + 2, 0));
         player.transform.position = playerSpawn;
         player.GetComponent<SpriteRenderer>().color = Color.blue;
         Debug.Log("Miaaaaaau");

@@ -1,94 +1,98 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using System.Linq;
 
 public class PlayerMine : MonoBehaviour
 {
-    public Tilemap tilemap;
-    public GameObject blockBreaking;
-    public GameObject pickaxe;
+    // Public variables
+    public Tilemap Tilemap;
+    public GameObject BlockBreaking;
+    public GameObject Pickaxe;
+    public ItemDatabaseObject Database;
+    public GameObject CreateableItem;
+    public float MiningSpeed = 3;
+    public float Reach = 5;
+    public float MiningDuration;
 
-    public ItemDatabaseObject database;
-    public GameObject createableItem;
-
-    Animator breakingAnim;
-    public float miningSpeed = 3;
-    public float reach = 5;
-    public float miningDuration;
-
-    Animator pickaxeAnim;
-
-    TileBase selectedTile = null;
-    Vector3 mousePos = Vector3.zero;
-    Vector3Int mousePosTranslated = Vector3Int.zero;
-    Vector3Int posSelectedTile = Vector3Int.zero;
-    float timeSinceMiningStart;
-
-    Generation.BlockType[,] mapArr;
-    List<GameObject> trees;
+    // Private variables
+    Animator _pickaxeAnim;
+    Animator _breakingAnim;
+    Vector3 _mousePos = Vector3.zero;
+    Vector3Int _mousePosTranslated = Vector3Int.zero;
+    Vector3Int _posSelectedTile = Vector3Int.zero;
+    float _timeSinceMiningStart;
+    Generation.BlockType[,] _mapArr;
+    List<GameObject> _trees;
 
     // Start is called before the first frame update
     void Start()
     {
-        breakingAnim = blockBreaking.GetComponent<Animator>();
-        pickaxeAnim = pickaxe.GetComponent<Animator>();
+        _breakingAnim = BlockBreaking.GetComponent<Animator>();
+        _pickaxeAnim = Pickaxe.GetComponent<Animator>();
 
-        mapArr = Generation.perlinArr;
-        trees = GenerateTrees.trees;
+        _mapArr = Generation.s_perlinArr;
+        _trees = GenerateTrees.s_trees;
     }
 
     // Update is called once per frame
     void Update()
     {
-        breakingAnim.speed = miningSpeed;
-        //pickaxeAnim.speed = miningSpeed;
-        miningDuration = 1 / miningSpeed;
+        _breakingAnim.speed = MiningSpeed;
+        MiningDuration = 1 / MiningSpeed;
 
-        //World Space
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //Mouse Position On tile Map
-        //Converts worlds space click point to tile map click point.
-        mousePosTranslated = tilemap.WorldToCell(mousePos);
-        selectedTile = tilemap.GetTile(mousePosTranslated);
+        _mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        // Converts worlds space click point to tile map click point
+        _mousePosTranslated = Tilemap.WorldToCell(_mousePos);
 
-        if (mousePosTranslated != posSelectedTile)
+        // Mouse position changed from the previous selection
+        if (_mousePosTranslated != _posSelectedTile)
         {
-            timeSinceMiningStart = 0;
-            breakingAnim.Play("Idle");
-            pickaxeAnim.Play("Idle");
-            posSelectedTile = mousePosTranslated;
+            _timeSinceMiningStart = 0;
+            _breakingAnim.Play("Idle");
+            _pickaxeAnim.Play("Idle");
+            _posSelectedTile = _mousePosTranslated;
         }
 
-        if (Input.GetKey(KeyCode.Mouse0) && IsInMap(posSelectedTile) && WithinBounds(posSelectedTile, reach) && BlockExists(posSelectedTile, mapArr) && !TreeOnBlock(posSelectedTile, trees))
+        // Conditions are met for mining a block
+        if (Input.GetKey(KeyCode.Mouse0) && IsInMap(_posSelectedTile) && WithinBounds(_posSelectedTile, Reach) && BlockExists(_posSelectedTile, _mapArr) && !TreeOnBlock(_posSelectedTile, _trees))
         {
-            blockBreaking.transform.position = new Vector3(0.5f + posSelectedTile.x, 0.5f + posSelectedTile.y);
-            breakingAnim.Play("BlockBreaking");
-            pickaxeAnim.Play("Swinging");
+            // Moves the gameobject containing the blockbreaking animation to the selected position
+            BlockBreaking.transform.position = new Vector3(0.5f + _posSelectedTile.x, 0.5f + _posSelectedTile.y);
+            // Plays the animations
+            _breakingAnim.Play("BlockBreaking");
+            _pickaxeAnim.Play("Swinging");
 
-            timeSinceMiningStart += Time.deltaTime;
+            _timeSinceMiningStart += Time.deltaTime;
 
-            if (timeSinceMiningStart > miningDuration)
+            // Mining completed
+            if (_timeSinceMiningStart > MiningDuration)
             {
-                breakingAnim.Play("Idle");
-                pickaxeAnim.Play("Idle");
-                timeSinceMiningStart = 0;
+                // Stops animation
+                _breakingAnim.Play("Idle");
+                _pickaxeAnim.Play("Idle");
+                _timeSinceMiningStart = 0;
 
-                tilemap.SetTile(posSelectedTile, null);
-                GenerateItem(mapArr[posSelectedTile.x, posSelectedTile.y]);
-                mapArr[posSelectedTile.x, posSelectedTile.y] = Generation.BlockType.None;
+                // Romoves block from tilemap
+                Tilemap.SetTile(_posSelectedTile, null);
+                GenerateItem(_mapArr[_posSelectedTile.x, _posSelectedTile.y]);
+                // Deletes block from the 2D world map array.
+                _mapArr[_posSelectedTile.x, _posSelectedTile.y] = Generation.BlockType.None;
             }
         }
 
-        if (Input.GetKeyUp(KeyCode.Mouse0) || !IsInMap(posSelectedTile) || (!BlockExists(posSelectedTile, mapArr) && !SaplingExists(posSelectedTile)))
+        // Mining was interrupted
+        if (Input.GetKeyUp(KeyCode.Mouse0) || !IsInMap(_posSelectedTile) || (!BlockExists(_posSelectedTile, _mapArr) && !SaplingExists(_posSelectedTile)))
         {
-            breakingAnim.Play("Idle");
-            pickaxeAnim.Play("Idle");
-            timeSinceMiningStart = 0;
+            _breakingAnim.Play("Idle");
+            _pickaxeAnim.Play("Idle");
+            _timeSinceMiningStart = 0;
         }
-
     }
+
+    /// <summary>
+    /// Creates a game object containing the item object of the block.
+    /// </summary>
+    /// <param name="blockType"></param>
     void GenerateItem(Generation.BlockType blockType)
     {
         Debug.Log(blockType);
@@ -98,33 +102,16 @@ public class PlayerMine : MonoBehaviour
             blockType = Generation.BlockType.Dirt;
         }
 
-        createableItem.GetComponent<GroundItem>().item = database.Items[(int)blockType];
-        Instantiate(createableItem, posSelectedTile + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
+        CreateableItem.GetComponent<GroundItem>().item = Database.Items[(int)blockType];
+        Instantiate(CreateableItem, _posSelectedTile + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
     }
 
-    //void GenerateItem(string name)
-    //{
-    //    //Debug.Log(name);
-
-    //    for (int i = 0; i < database.Items.Length; i++)
-    //    {
-    //        if (name.Contains("dirt") || name.Contains("grass")) //just a temporary fix, need to find a way to convert the name to an ID with various names for one ID
-    //        {
-    //            name = "Dirt";
-    //        }
-    //        else if (name.Contains("stone"))
-    //        {
-    //            name = "Stone";
-    //        }
-    //        if (name == database.Items[i].name)
-    //        {
-    //            createableItem.GetComponent<GroundItem>().item = database.Items[i];
-    //            Instantiate(createableItem, posSelectedTile + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
-    //            //createableItem.GetComponent<Rigidbody2D>().AddForce(new Vector2(20, 0),ForceMode2D.Impulse); attempt to give the items an inital velocity when they spawn
-    //        }
-    //    }
-    //}
-
+    /// <summary>
+    /// Checks if there is a tree object on top of the block.
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <param name="trees"></param>
+    /// <returns></returns>
     bool TreeOnBlock(Vector3Int pos, List<GameObject> trees)
     {
         foreach (GameObject tree in trees)
@@ -138,23 +125,38 @@ public class PlayerMine : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Checks if the mouse position is within the player's reach.
+    /// </summary>
+    /// <param name="clickPos"></param>
+    /// <param name="reach"></param>
+    /// <returns></returns>
     bool WithinBounds(Vector3Int clickPos, float reach)
     {
         Vector3 playerPos = gameObject.transform.position;
         return (playerPos - clickPos).magnitude <= reach;
     }
 
+    /// <summary>
+    /// Checks if block exists at position.
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <param name="mapArr"></param>
+    /// <returns></returns>
     bool BlockExists(Vector3Int pos, Generation.BlockType[,] mapArr)
     {
-        //Debug.Log(pos);
         Generation.BlockType blockTypeAtPos = mapArr[pos.x, pos.y];
-        //Debug.Log(blockTypeAtPos);
         return blockTypeAtPos > Generation.BlockType.None && blockTypeAtPos < Generation.BlockType.Tree;
     }
 
+    /// <summary>
+    /// Checks if sapling exists at position.
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <returns></returns>
     bool SaplingExists(Vector3Int pos)
     {
-        foreach (GameObject tree in trees)
+        foreach (GameObject tree in _trees)
         {
             if (tree.name.Contains("Sapling") && tree.transform.position == pos)
             {
@@ -165,11 +167,13 @@ public class PlayerMine : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Checks if the position is inside the world map.
+    /// </summary>
+    /// <param name="clickPos"></param>
+    /// <returns></returns>
     bool IsInMap(Vector3Int clickPos)
     {
-        //Debug.Log(clickPos);
-        //Debug.Log(clickPos.x >= 0 && clickPos.x < Generation.width && clickPos.y >= 0 && clickPos.y < Generation.height);
-        return clickPos.x >= 0 && clickPos.x < Generation.width && clickPos.y >= 0 && clickPos.y < Generation.height;
+        return clickPos.x >= 0 && clickPos.x < Generation.s_width && clickPos.y >= 0 && clickPos.y < Generation.s_height;
     }
 }
-

@@ -1,67 +1,58 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerToolSelect : MonoBehaviour
 {
-    public InventoryObject inventory;
-    public GameObject pickaxe;
-    public GameObject sword;
-    public GameObject axe;
-    //public Sprite[] sprites;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    // Public variables
+    public InventoryObject Inventory;
+    public GameObject Pickaxe;
+    public GameObject Sword;
+    public GameObject Axe;
 
     // Update is called once per frame
     void Update()
     {
-        
-
-        if (inventory.Container.Items[inventory.selectedSlot].item.name.ToLower().Contains("sword"))
+        // Activates / deactivates the sword object and the "PlayerAttack" script
+        if (Inventory.Container.Items[Inventory.selectedSlot].item.name.ToLower().Contains("sword"))
         {
-            sword.SetActive(true);
-            sword.GetComponent<SpriteRenderer>().sprite = inventory.Container.Items[inventory.selectedSlot].item.sprite;
-            sword.transform.GetChild(0).GetComponent<SendDamageCollision>().damageValue = (int)inventory.Container.Items[inventory.selectedSlot].item.stats;
+            Sword.SetActive(true);
+            Sword.GetComponent<SpriteRenderer>().sprite = Inventory.Container.Items[Inventory.selectedSlot].item.sprite;
+            Sword.transform.GetChild(0).GetComponent<SendDamageCollision>().damageValue = (int)Inventory.Container.Items[Inventory.selectedSlot].item.stats;
             GetComponent<PlayerAttack>().enabled = true;
         }
         else
         {
-            sword.SetActive(false);
+            Sword.SetActive(false);
             GetComponent<PlayerAttack>().enabled = false;
         }
 
-        if (inventory.Container.Items[inventory.selectedSlot].item.name.ToLower().Contains("axe") && !inventory.Container.Items[inventory.selectedSlot].item.name.ToLower().Contains("pick"))
+        // Activates / deactivates the sword object and the "CutTrees" script
+        if (Inventory.Container.Items[Inventory.selectedSlot].item.name.ToLower().Contains("axe") && !Inventory.Container.Items[Inventory.selectedSlot].item.name.ToLower().Contains("pick"))
         {
-            axe.SetActive(true);
-            axe.GetComponent<SpriteRenderer>().sprite = inventory.Container.Items[inventory.selectedSlot].item.sprite;
-            axe.GetComponent<CutTrees>().miningSpeed = inventory.Container.Items[inventory.selectedSlot].item.stats;
+            Axe.SetActive(true);
+            Axe.GetComponent<SpriteRenderer>().sprite = Inventory.Container.Items[Inventory.selectedSlot].item.sprite;
+            Axe.GetComponent<CutTrees>().MiningSpeed = Inventory.Container.Items[Inventory.selectedSlot].item.stats;
         }
         else
         {
-            axe.SetActive(false);
+            Axe.SetActive(false);
         }
 
-
-        if (inventory.Container.Items[inventory.selectedSlot].item.name.ToLower().Contains("pickaxe"))
+        // Activates / deactivates the pickaxe object, the "PlayerMine" and the "MineSapling" script
+        if (Inventory.Container.Items[Inventory.selectedSlot].item.name.ToLower().Contains("pickaxe"))
         {
-            pickaxe.SetActive(true);
-            pickaxe.GetComponent<SpriteRenderer>().sprite = inventory.Container.Items[inventory.selectedSlot].item.sprite;
+            Pickaxe.SetActive(true);
+            Pickaxe.GetComponent<SpriteRenderer>().sprite = Inventory.Container.Items[Inventory.selectedSlot].item.sprite;
             GetComponent<PlayerMine>().enabled = true;
-            GetComponent<PlayerMine>().miningSpeed = inventory.Container.Items[inventory.selectedSlot].item.stats;
+            GetComponent<PlayerMine>().MiningSpeed = Inventory.Container.Items[Inventory.selectedSlot].item.stats;
             GameObject.Find("Trees").GetComponent<MineSapling>().enabled = true;
-            GameObject.Find("Trees").GetComponent<MineSapling>().miningSpeed = inventory.Container.Items[inventory.selectedSlot].item.stats;
+            GameObject.Find("Trees").GetComponent<MineSapling>().MiningSpeed = Inventory.Container.Items[Inventory.selectedSlot].item.stats;
 
         }
         else
         {
-            pickaxe.SetActive(false);
+            Pickaxe.SetActive(false);
             GetComponent<PlayerMine>().enabled = false;
             GameObject.Find("Trees").GetComponent<MineSapling>().enabled = false;
         }
-
     }
-
 }

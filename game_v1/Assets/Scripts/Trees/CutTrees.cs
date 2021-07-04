@@ -31,7 +31,7 @@ public class CutTrees : MonoBehaviour
         _axeAnim = gameObject.GetComponent<Animator>();
 
         _mapArr = Generation.s_perlinArr;
-        _trees = GenerateTrees.trees;
+        _trees = GenerateTrees.s_trees;
     }
 
     // Update is called once per frame
@@ -78,7 +78,7 @@ public class CutTrees : MonoBehaviour
             }
         }
 
-        // Mouse press was interrupted
+        // Tree cutting was interrupted
         if (Input.GetKeyUp(KeyCode.Mouse0) || !TreeExists(_posSelectedTile))
         {
             // Stops animation

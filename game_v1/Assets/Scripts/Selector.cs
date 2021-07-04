@@ -1,46 +1,46 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class Selector : MonoBehaviour
 {
-    public Tilemap tilemap;
+    // Public variables
+    public Tilemap Tilemap;
 
-    TileBase selectedTile = null;
-    Vector3 mousePos = Vector3.zero;
-    Vector3Int mousePosTranslated = Vector3Int.zero;
-    Vector3Int posSelectedTile = Vector3Int.zero;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    // Private variables
+    TileBase _selectedTile = null;
+    Vector3 _mousePos = Vector3.zero;
+    Vector3Int _mousePosTranslated = Vector3Int.zero;
+    Vector3Int _posSelectedTile = Vector3Int.zero;
 
     // Update is called once per frame
     void Update()
     {
-        //World Space
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //Mouse Position On tile Map
-        //Converts worlds space click point to tile map click point.
-        mousePosTranslated = tilemap.WorldToCell(mousePos);
-        selectedTile = tilemap.GetTile(mousePosTranslated);
+        // World Space
+        _mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        // Converts worlds space click point to tile map click point
+        _mousePosTranslated = Tilemap.WorldToCell(_mousePos);
+        _selectedTile = Tilemap.GetTile(_mousePosTranslated);
 
-        if (mousePosTranslated != posSelectedTile)
+        // Mouse position changed from the previous selection
+        if (_mousePosTranslated != _posSelectedTile)
         {
             GetComponent<SpriteRenderer>().color = Color.clear;
-            posSelectedTile = mousePosTranslated;
+            _posSelectedTile = _mousePosTranslated;
 
-            if (selectedTile != null || IsNextToExistingTile(posSelectedTile))
+            // Activates the selector
+            if (_selectedTile != null || IsNextToExistingTile(_posSelectedTile))
             {
-                transform.position = new Vector3(0.5f + posSelectedTile.x, 0.5f + posSelectedTile.y);
+                transform.position = new Vector3(0.5f + _posSelectedTile.x, 0.5f + _posSelectedTile.y);
                 GetComponent<SpriteRenderer>().color = Color.white;
             }
         }
     }
 
+    /// <summary>
+    /// Checks if position is next to existing tile in tilemap.
+    /// </summary>
+    /// <param name="tilePos"></param>
+    /// <returns></returns>
     bool IsNextToExistingTile(Vector3Int tilePos)
     {
         Vector3Int[] directions = { new Vector3Int(-1, 0, 0), new Vector3Int(0, 1, 0), new Vector3Int(1, 0, 0), new Vector3Int(0, -1, 0) };
@@ -48,7 +48,7 @@ public class Selector : MonoBehaviour
         foreach (var dir in directions)
         {
 
-            if (tilemap.GetTile(tilePos + dir) != null)
+            if (Tilemap.GetTile(tilePos + dir) != null)
             {
                 return true;
             }

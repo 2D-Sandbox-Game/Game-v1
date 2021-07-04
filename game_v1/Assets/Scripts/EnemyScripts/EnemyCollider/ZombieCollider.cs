@@ -1,42 +1,28 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ZombieCollider : MonoBehaviour
 {
-    bool doAttack = true;
+    // Public variables
     public int damage = 1;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    // Private variables
+    bool doAttack = true;
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        //if (collision.gameObject.tag == "Enemy")
-        //{
-        //    Physics2D.IgnoreCollision(transform.parent.gameObject.GetComponent<Collider2D>(), collision, true);
-        //}
-
+        // Collision enemy and player 
         if (collision.gameObject.tag == "Player" && doAttack)
         {
-
+            // Executes HealthDamage() with enemy object as parameter
             collision.gameObject.SendMessage("HealthDamage", transform.parent.gameObject, SendMessageOptions.DontRequireReceiver);
 
             doAttack = false;
             StartCoroutine(WaitForSecondAttack());
         }
-        //Debug.Log("teeeest");
     }
 
+    // 1 second delay
     private IEnumerator WaitForSecondAttack()
     {
         yield return new WaitForSeconds(1f);

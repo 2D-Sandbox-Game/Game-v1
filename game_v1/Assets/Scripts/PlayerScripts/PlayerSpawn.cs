@@ -11,12 +11,14 @@ public class PlayerSpawn : MonoBehaviour
     bool _playerSpawned = false;
 
     // Start is called before the first frame update
+    // Calculation of spawn point of player 
     void Start()
     {
         _player = GetComponent<Transform>();
         s_playerSpawn = _map.CellToWorld(new Vector3Int(Generation.width / 2, Generation.perlinHeight[Generation.width / 2] + 2, 0));
     }
     // Update is called once per frame
+    // Player spawn if dead
     void Update()
     {
         if (!_playerSpawned)
@@ -25,7 +27,8 @@ public class PlayerSpawn : MonoBehaviour
             _playerSpawned = true;
         }
     }
-    public void Spawn(int[] perlinHeight)
+    // Function updates the spawn point
+    public void SpawnPlayer(int[] perlinHeight)
     {
         _player = GetComponent<Transform>();
         s_playerSpawn = _map.CellToWorld(new Vector3Int(Generation.width / 2, perlinHeight[Generation.width / 2] + 2, 0));

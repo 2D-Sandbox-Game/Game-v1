@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerAttack : MonoBehaviour
 {
-    // Attak Variables 
+    // Attack Variables 
     bool _isAttacking = false;
     float _attackDuration;
     Animator _swordAnim;
@@ -14,18 +14,18 @@ public class PlayerAttack : MonoBehaviour
     public float attackSpeed;
 
     // Start is called before the first frame update
+    // Getting the components that are for attack needed
     void Start()
     {
         _swordAnim = sword.GetComponent<Animator>();
         _attackField = sword.transform.GetChild(0).gameObject;
-
         _swordAnim.speed = attackSpeed;
         _attackDuration = 1 / attackSpeed;
     }
     // Update is called once per frame
     void Update()
     {
-        // Attack 
+        // Turning ON of attack's field 
         if (Input.GetButtonDown("Fire1") && !_isAttacking)
         {
             _isAttacking = true;
@@ -33,6 +33,8 @@ public class PlayerAttack : MonoBehaviour
             StartCoroutine(DoAttack());
         }        
     }
+
+    // Function make a pause for _attackDuration seconds
     IEnumerator DoAttack()
     {
         _attackField.SetActive(true);

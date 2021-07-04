@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public float mx;
 
     // Start is called before the first frame update
+    // Getting components that are for movements needed
     private void Start()
     {
         _animator = GetComponent<Animator>();
@@ -29,11 +30,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (_godModeActivated)
         {
-            GodMode();
+            EnterGodMode();
         }
         else
         {
-            NormalMode();
+            EnterNormalMode();
         }
     }
     private void FixedUpdate()
@@ -44,9 +45,13 @@ public class PlayerMovement : MonoBehaviour
             s_rb.velocity = movement;
         }
     }
-    void NormalMode()
+
+    // Function move the player in normal game mode
+    void EnterNormalMode()
     {
         mx = Input.GetAxisRaw("Horizontal");
+
+        // Exponential growth of speed of players moving
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
         {
             if (_curentSpeed < movementSpeed)
@@ -59,6 +64,8 @@ public class PlayerMovement : MonoBehaviour
             _curentSpeed = 1;
         }
         _animator.SetFloat("Speed", Mathf.Abs(mx * _curentSpeed));
+
+        // Movimg of player
         if (mx != 0)
         {
             if (mx < 0)
@@ -70,6 +77,7 @@ public class PlayerMovement : MonoBehaviour
                 transform.localScale = new Vector3(1, 1, 1);
             }
         }
+        // Jumping of Player
         if (Input.GetButtonDown("Jump") && Mathf.Abs(s_rb.velocity.y) < 0.001f)
         {
             s_rb.AddForce(new Vector2(0, JumpForce), ForceMode2D.Impulse);
@@ -80,7 +88,8 @@ public class PlayerMovement : MonoBehaviour
             _animator.SetBool("IsJumping", false);
         }
     }
-    void GodMode()
+    // Function let to move player in the world out the game mode
+    void EnterGodMode()
     {
         if (Input.GetKey(KeyCode.A))
         {

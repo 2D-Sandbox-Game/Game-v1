@@ -15,6 +15,7 @@ public class PlayerAutoJump : MonoBehaviour
         _player = gameObject.transform.parent.gameObject;
         _mapArr = Generation.perlinArr;
     }
+    // Function moves the player up the steps
     private void OnCollisionStay2D(Collision2D collision)
     {
         float dir = _player.GetComponent<PlayerMovement>().mx;

@@ -24,7 +24,7 @@ public class PlayerHealth : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Health setting
+        // Display correction of health points
         if (s_health > lives.Length * 2)
         {
             s_health = lives.Length * 2;
@@ -49,7 +49,8 @@ public class PlayerHealth : MonoBehaviour
             lives[s_health / 2].sprite = halfHeart;
         }
     }
-    void HealthDamage(GameObject enemy) 
+    // Function do descrease in health of player and run animation of damage
+    void DamageHealth(GameObject enemy) 
     {
         float damage;
         if (!_IsGettingDamage)
@@ -75,15 +76,17 @@ public class PlayerHealth : MonoBehaviour
             }
         }
     }
-    void DamageAnimFinished()
+    // Function stops animation of damage
+    void FinishDamageAnimation()
     {
         GetComponent<PlayerMovement>().enabled = true;
         s_animator.Play("Idle2");
     }
+    // Fall damage function
     private void OnCollisionEnter2D(Collision2D collision)
     {
         GetComponent<PlayerMovement>().enabled = false;
-        // if the player falls more than 30 he get a damage
+        // if the player falls more than 30 points he get a damage
         if (collision.gameObject.tag.Equals("Ground") && Fall_Damage.s_velocity < -30) 
         {
              // Run animation of damage

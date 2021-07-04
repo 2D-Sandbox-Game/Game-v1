@@ -6,6 +6,7 @@ public class Fall_Damage : MonoBehaviour
 {
     public static float s_velocity = 0;
 
+    // Function saves to the public variable s_velocity players y-axis velocity 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         transform.parent.gameObject.GetComponent<PlayerMovement>().enabled = false;

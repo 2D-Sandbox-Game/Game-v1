@@ -40,7 +40,7 @@ public class Generation : MonoBehaviour
 
     private void Start()
     {
-        GenerationFinished += new Del(GameObject.Find("Player").GetComponent<PlayerSpawn>().Spawn);
+        GenerationFinished += new Del(GameObject.Find("Player").GetComponent<PlayerSpawn>().SpawnPlayer);
         //GenerationFinished(perlinHeight);
     }
 
@@ -51,7 +51,7 @@ public class Generation : MonoBehaviour
         //    string g = "";
 
         //    for (int x = 0; x < perlinArr.GetLength(0); x++)
-        //    {
+        //    {S
         //        string s = "";
 
         //        for (int y = 0; y < perlinArr.GetLength(1); y++)

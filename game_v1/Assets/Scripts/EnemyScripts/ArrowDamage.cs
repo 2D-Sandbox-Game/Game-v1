@@ -29,7 +29,7 @@ public class ArrowDamage : MonoBehaviour
 
         if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.SendMessage("HealthDamage", gameObject, SendMessageOptions.DontRequireReceiver);
+            collision.gameObject.SendMessage("DamageHealth", gameObject, SendMessageOptions.DontRequireReceiver);
         }
     }
 

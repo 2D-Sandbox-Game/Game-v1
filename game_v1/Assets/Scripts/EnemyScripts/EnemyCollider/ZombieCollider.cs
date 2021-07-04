@@ -29,7 +29,7 @@ public class ZombieCollider : MonoBehaviour
         if (collision.gameObject.tag == "Player" && doAttack)
         {
 
-            collision.gameObject.SendMessage("HealthDamage", transform.parent.gameObject, SendMessageOptions.DontRequireReceiver);
+            collision.gameObject.SendMessage("DamageHealth", transform.parent.gameObject, SendMessageOptions.DontRequireReceiver);
 
             doAttack = false;
             StartCoroutine(WaitForSecondAttack());

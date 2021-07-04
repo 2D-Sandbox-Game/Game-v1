@@ -39,9 +39,9 @@ public class HealthEnemy : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             if (collision.transform.position.x < transform.position.x)
-                collision.gameObject.SendMessage("HealthDamage", -damageGeist, SendMessageOptions.DontRequireReceiver);
+                collision.gameObject.SendMessage("DamageHealth", -damageGeist, SendMessageOptions.DontRequireReceiver);
             else
-                collision.gameObject.SendMessage("HealthDamage", damageGeist, SendMessageOptions.DontRequireReceiver);
+                collision.gameObject.SendMessage("DamageHealth", damageGeist, SendMessageOptions.DontRequireReceiver);
 
         }
     }

@@ -83,7 +83,7 @@ public class DisplayCrafting : MonoBehaviour
                 slot.Key.transform.GetComponent<Image>().color = new Color(1, 1, 1, 0);
                 // Image is set to null
                 slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().sprite = null;
-                // Defaultimage is set to invisible
+                // Default image is set to invisible
                 slot.Key.transform.GetChild(0).GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
                 // Amount is set to none
                 slot.Key.GetComponentInChildren<TextMeshProUGUI>().text = "";
@@ -104,7 +104,7 @@ public class DisplayCrafting : MonoBehaviour
         EventTrigger trigger = obj.GetComponent<EventTrigger>();
         // Creates a new trigger on the object
         var eventTrigger = new EventTrigger.Entry();
-        // Sets the type of the tripper
+        // Sets the type of the trigger
         eventTrigger.eventID = type;
         // Sets a delegate to the trigger
         eventTrigger.callback.AddListener(action);

@@ -5,47 +5,52 @@ using UnityEngine;
 public class PlayerInventory : MonoBehaviour
 {
     public ItemDatabaseObject database;
-    public InventoryObject inventory; // carries the player's inventory
-    /// <summary>
-    /// On collision add item to players inventory
-    /// </summary>
-    /// <param name="other"></param>
-    public void OnTriggerEnter2D(Collider2D other) // activates when the collider is triggered
+    public InventoryObject inventory;
+
+    // Activates when the collider of the gameobject is triggered
+    public void OnTriggerEnter2D(Collider2D other)
     {
-        var item = other.GetComponent<GroundItem>(); // tries to get the item component of the triggering object
+        // Tries to get the item component of the triggering object
+        var item = other.GetComponent<GroundItem>();
         if (item && !item.collected)
         {
+            // Set to true so the item can't be picked up twice
             item.collected = true;
-            inventory.AddItem(new Item(item.item), 1); // adds item to the inventory
-            Destroy(other.gameObject); // deletes the item as it is now in the inventory
+            // Adds item to the inventory
+            inventory.AddItem(new Item(item.item), 1);
+            // Deletes the item as it is now stored in the inventory
+            Destroy(other.gameObject);
         }
     }
     public void Start()
     {
+        // Initial items for the player are set
         inventory.AddItem(new Item(database.items[10]), 1);
         inventory.AddItem(new Item(database.items[11]), 1);
         inventory.AddItem(new Item(database.items[12]), 1);
 
         inventory.AddItem(new Item(database.items[6]), 50);
-        //inventory.AddItem(new Item(database.Items[8]), 10);
     }
     public void Update()
     {
         ChangeSelectedSlot();
     }
-    private void OnApplicationQuit() // clears the inventory after the game is quit
+    // Clears the inventory after the game is quit
+    private void OnApplicationQuit()
     {
         inventory.container.items = new InventorySlot[36];
     }
+
+    // Changes the selected slot based upon player input
     public void ChangeSelectedSlot()
     {
+        // Scroll input
         if (Input.mouseScrollDelta.y > 0)
         {
             if (inventory.selectedSlot < 8)
             {
                 inventory.selectedSlot++;
             }
-            //inventory.selectedSlot = inventory.selectedSlot % 9;
         }
         if (Input.mouseScrollDelta.y < 0)
         {
@@ -53,8 +58,8 @@ public class PlayerInventory : MonoBehaviour
             {
                 inventory.selectedSlot--;
             }
-            //inventory.selectedSlot = (inventory.selectedSlot + 9) % 9;
         }
+        // Numberkeys
         if (Input.GetKey(KeyCode.Alpha1))
         {
             inventory.selectedSlot = 0;

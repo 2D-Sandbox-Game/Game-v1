@@ -5,34 +5,29 @@ using UnityEngine;
 public class Recoil : MonoBehaviour
 {
     float force = 3;
-    public GameObject enemy;
+    public GameObject Enemy;
     float waitTime = 2.0f; 
     float elapsedTime = 0.0f;
-    Rigidbody2D r;
+    Rigidbody2D R;
 
 
-    public PlayerMovement playerMovement;
+    public PlayerMovement PlayerMovement;
     // Start is called before the first frame update
     void Start()
     {
-        r = GetComponent<Rigidbody2D>();     
+        R = GetComponent<Rigidbody2D>();     
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButtonDown("Fire1"))
-        {
-            /*enemy.GetComponent<Direction>().enabled = false;
-            enemy.GetComponent<Animator>().enabled = false;*/
-        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-            enemy.GetComponent<Direction>().enabled = false;
-            enemy.GetComponent<Animator>().enabled = false;
+            Enemy.GetComponent<Direction>().enabled = false;
+            Enemy.GetComponent<Animator>().enabled = false;
         }
 
     }

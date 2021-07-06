@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class HealthEnemy : MonoBehaviour
 {
-    public float currentHealth = 5; //health of the enemy
+    public float currentHealth = 5; // Health of the enemy
     // Start is called before the first frame update
-    public GameObject objectToDestroy;
-    public int damageGeist = 1;
+    public GameObject ObjectToDestroy;
+    public int damageEnemy = 1;
     void Start()
     {
 
@@ -28,7 +28,7 @@ public class HealthEnemy : MonoBehaviour
         if (currentHealth <= 0)
         {
             currentHealth = 0;
-            Destroy(objectToDestroy);
+            Destroy(ObjectToDestroy);
         }
 
 
@@ -39,9 +39,9 @@ public class HealthEnemy : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             if (collision.transform.position.x < transform.position.x)
-                collision.gameObject.SendMessage("HealthDamage", -damageGeist, SendMessageOptions.DontRequireReceiver);
+                collision.gameObject.SendMessage("HealthDamage", -damageEnemy, SendMessageOptions.DontRequireReceiver);
             else
-                collision.gameObject.SendMessage("HealthDamage", damageGeist, SendMessageOptions.DontRequireReceiver);
+                collision.gameObject.SendMessage("HealthDamage", damageEnemy, SendMessageOptions.DontRequireReceiver);
 
         }
     }

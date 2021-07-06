@@ -6,11 +6,11 @@ public class Direction : MonoBehaviour
 {
     public Vector3 newPos;
     public Vector3 startpos;
-    SpriteRenderer sr;
+    SpriteRenderer Sr;
     public GameObject go;
     Vector3 temp;
     public float speed;
-    public Transform target;
+    public Transform Target;
     public Animator animator;
     public bool pathBlocked;
     public int dir = 1;
@@ -18,16 +18,16 @@ public class Direction : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        sr = go.GetComponent<SpriteRenderer>();
+        Sr = go.GetComponent<SpriteRenderer>();
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Vector2.Distance(transform.position, target.position) > range && !pathBlocked)
+        if (Vector2.Distance(transform.position, Target.position) > range && !pathBlocked)
         {
-            transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, Target.position, speed * Time.deltaTime);
 
             if (animator)
             {
@@ -35,10 +35,9 @@ public class Direction : MonoBehaviour
             }
 
             
-            //temp = newPos;
         }
 
-        if (transform.position.x > target.position.x) //Enemies are flipped so that they always run forward
+        if (transform.position.x > Target.position.x) // Enemies are flipped so that they always run forward
         {
             transform.localScale = new Vector3(-1, 1, 1);
             dir = -1;

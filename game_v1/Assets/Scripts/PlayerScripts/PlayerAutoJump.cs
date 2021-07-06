@@ -6,38 +6,29 @@ public class PlayerAutoJump : MonoBehaviour
 {
     public float yOffset = 1.8f;
     public float xOffset = 0.6f;
-
-    GameObject player;
-    Generation.BlockType[,] mapArr;
+    GameObject _player;
+    Generation.BlockType[,] _mapArr;
 
     // Start is called before the first frame update
     void Start()
     {
-        player = gameObject.transform.parent.gameObject;
-        mapArr = Generation.s_perlinArr;
+        _player = gameObject.transform.parent.gameObject;
+        _mapArr = Generation.s_perlinArr;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    // Function moves the player up the steps
     private void OnCollisionStay2D(Collision2D collision)
     {
-        float dir = player.GetComponent<PlayerMovement>().mx;
+        float dir = _player.GetComponent<PlayerMovement>().mx;
 
-        if (collision.gameObject.tag == "Ground" && Mathf.Abs(collision.contacts[0].normal.x) > 0.5f && !IsBlockedByWall(player.transform.position, dir))
+        if (collision.gameObject.tag == "Ground" && Mathf.Abs(collision.contacts[0].normal.x) > 0.5f && !IsBlockedByWall(_player.transform.position, dir))
         {
-            //Debug.Log(player.GetComponent<PlayerMovement>().mx);
-            player.transform.position = new Vector3(transform.position.x + dir * xOffset, transform.position.y + yOffset, transform.position.z);
+            _player.transform.position = new Vector3(transform.position.x + dir * xOffset, transform.position.y + yOffset, transform.position.z);
         }
     }
 
     bool IsBlockedByWall(Vector3 pos, float dir)
     {
         Vector3Int vecDir;
-
         if (dir < 0)
         {
             vecDir = new Vector3Int(-1, 0, 0);
@@ -46,10 +37,8 @@ public class PlayerAutoJump : MonoBehaviour
         {
             vecDir = new Vector3Int(1, 0, 0);
         }
-
         Vector3Int posTranslated = new Vector3Int((int)pos.x, (int)pos.y, (int)pos.z);
-
-        return BlockExists(posTranslated + vecDir, mapArr);
+        return BlockExists(posTranslated + vecDir, _mapArr);
     }
 
     bool BlockExists(Vector3Int pos, Generation.BlockType[,] mapArr)

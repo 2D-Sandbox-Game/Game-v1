@@ -6,35 +6,36 @@ using UnityEngine.UI;
 public class PlayerHealth : MonoBehaviour
 {
     // Health Variables
-    public static int health = 10;
+    public static int s_health = 10;
+    public static Animator s_animator;
     public Image[] lives;
     public Sprite fullHeart;
     public Sprite hollowHeart;
     public Sprite halfHeart;
+    Rigidbody2D _rb;
+    bool _IsGettingDamage;
 
-    Rigidbody2D rb;
-    public static Animator animator;
-    bool IsGettingDamage;
     // Start is called before the first frame update
     void Start()
     {
-        animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
+        s_animator = GetComponent<Animator>();
+        _rb = GetComponent<Rigidbody2D>();
     }
-
     // Update is called once per frame
     void Update()
     {
-        // Health
-        if (health > lives.Length * 2)
-            health = lives.Length * 2;
-        else if (health < 0)
+        // Display correction of health points
+        if (s_health > lives.Length * 2)
         {
-            health = 0;
+            s_health = lives.Length * 2;
+        }
+        else if (s_health < 0)
+        {
+            s_health = 0;
         }
         for (int i = 0; i < lives.Length; i++)
         {
-            if (i < health / 2)
+            if (i < s_health / 2)
             {
                 lives[i].sprite = fullHeart;
             }
@@ -43,38 +44,18 @@ public class PlayerHealth : MonoBehaviour
                 lives[i].sprite = hollowHeart;
             }
         }
-        if (health % 2 != 0 && lives.Length > health / 2)
-            lives[health / 2].sprite = halfHeart;
+        if (s_health % 2 != 0 && lives.Length > s_health / 2)
+        {
+            lives[s_health / 2].sprite = halfHeart;
+        }
     }
-
-
-
-    //void HealthDamage(float damage)  // in testing mode
-    //{
-    //    animator.Play("Damage");
-    //    if (damage < 0)
-    //    {
-    //        //rb.AddForce(new Vector2(0, 10f), ForceMode2D.Impulse); //
-
-    //        damage = damage * -1;
-    //    }
-    //    //else
-    //    //{
-    //    //    rb.AddForce(new Vector2(0, 10f), ForceMode2D.Impulse);
-    //    //    rb.velocity = new Vector2(5f, rb.velocity.y);
-    //    //}
-    //    health -= (int)damage;
-
-    //}
-
-    void HealthDamage(GameObject enemy)  // in testing mode
+    // Function do descrease in health of player and run animation of damage
+    void DamageHealth(GameObject enemy) 
     {
         float damage;
-
-        if (!IsGettingDamage)
+        if (!_IsGettingDamage)
         {
             GetComponent<PlayerMovement>().enabled = false;
-
             if (enemy.GetComponent<HealthBar>())
             {
                 damage = enemy.GetComponent<HealthBar>().damage;
@@ -83,62 +64,37 @@ public class PlayerHealth : MonoBehaviour
             {
                 damage = enemy.GetComponent<ArrowDamage>().damage;
             }
-
-            health -= (int)damage;
-
-            
-            animator.Play("Damage");
+            s_health -= (int)damage;
+            s_animator.Play("Damage");
             if (transform.position.x < enemy.transform.position.x)
             {
-                rb.AddForce(new Vector2(-8f, 8f), ForceMode2D.Impulse); //
-                //rb.velocity = new Vector2(-50f, rb.velocity.y);
-                //rb.velocity = new Vector2(-50f, rb.velocity.y);
-                //damage = damage * -1;
+                _rb.AddForce(new Vector2(-8f, 8f), ForceMode2D.Impulse); 
             }
             else
             {
-                rb.AddForce(new Vector2(8f, 8f), ForceMode2D.Impulse);
-                //rb.velocity = new Vector2(50f, rb.velocity.y);
+                _rb.AddForce(new Vector2(8f, 8f), ForceMode2D.Impulse);
             }
         }
     }
-
-    void DamageAnimFinished()
+    // Function stops animation of damage
+    void FinishDamageAnimation()
     {
         GetComponent<PlayerMovement>().enabled = true;
-        //animator.Play("Idle");
-        animator.Play("Idle2");
-        //IsGettingDamage = false;
-        //Debug.Log("hhhhhhheeeeeeey");
+        s_animator.Play("Idle2");
     }
-
-    void DamageAnimStarted()
-    {
-        //animator.enabled = false;
-        //animator.enabled = true;
-
-        //if (health == 0)
-        //{
-        //    animator.Play("Die");
-        //}
-
-        //IsGettingDamage = true;
-    }
-
+    // Fall damage function
     private void OnCollisionEnter2D(Collision2D collision)
     {
         GetComponent<PlayerMovement>().enabled = false;
-
-        if (collision.gameObject.tag.Equals("Ground") && Fall_Damage.velocity < -30) // if the player falls more than 30 
+        // if the player falls more than 30 points he get a damage
+        if (collision.gameObject.tag.Equals("Ground") && Fall_Damage.s_velocity < -30) 
         {
-            PlayerHealth.animator.Play("Damage"); // Run animation of damage
-            PlayerHealth.health += (int)(Fall_Damage.velocity + 27) / 3;
-            Debug.Log(Fall_Damage.velocity);
-            Fall_Damage.velocity = 0;
+             // Run animation of damage
+            PlayerHealth.s_animator.Play("Damage");
+            PlayerHealth.s_health += (int)(Fall_Damage.s_velocity + 27) / 3;
+            Fall_Damage.s_velocity = 0;
         }
-
         GetComponent<PlayerMovement>().enabled = true;
-
         if (collision.gameObject.tag != "Ground")
         {
             Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collision.gameObject.GetComponent<Collider2D>(), true);

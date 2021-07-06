@@ -5,38 +5,35 @@ using UnityEngine.Tilemaps;
 
 public class PlayerSpawn : MonoBehaviour
 {
-    public static Vector3 playerSpawn;
-    [SerializeField] Tilemap map;
-    Transform player;
-    bool playerSpawned = false;
+    public static Vector3 s_playerSpawn;
+    [SerializeField] Tilemap _map;
+    Transform _player;
+    bool _playerSpawned = false;
 
     // Start is called before the first frame update
+    // Calculation of spawn point of player 
     void Start()
     {
-        player = GetComponent<Transform>();
-        playerSpawn = map.CellToWorld(new Vector3Int(Generation.s_width / 2, Generation.s_perlinHeight[Generation.s_width / 2] + 2, 0));
+        _player = GetComponent<Transform>();
+        s_playerSpawn = _map.CellToWorld(new Vector3Int(Generation.s_width / 2, Generation.s_perlinHeight[Generation.s_width / 2] + 2, 0));
     }
-
-
-
-
     // Update is called once per frame
+    // Player spawn if dead
     void Update()
     {
-        if (!playerSpawned)
+        if (!_playerSpawned)
         {
-            player.position = playerSpawn;
-            playerSpawned = true;
+            _player.position = s_playerSpawn;
+            _playerSpawned = true;
         }
     }
-
-    public void Spawn(int[] perlinHeight)
+    // Function updates the spawn point
+    public void SpawnPlayer(int[] perlinHeight)
     {
-        player = GetComponent<Transform>();
-        playerSpawn = map.CellToWorld(new Vector3Int(Generation.s_width / 2, perlinHeight[Generation.s_width / 2] + 2, 0));
-        player.transform.position = playerSpawn;
-        player.GetComponent<SpriteRenderer>().color = Color.blue;
-        Debug.Log("Miaaaaaau");
+        _player = GetComponent<Transform>();
+        s_playerSpawn = _map.CellToWorld(new Vector3Int(Generation.s_width / 2, perlinHeight[Generation.s_width / 2] + 2, 0));
+        _player.transform.position = s_playerSpawn;
+        _player.GetComponent<SpriteRenderer>().color = Color.blue;
     }
 
 }

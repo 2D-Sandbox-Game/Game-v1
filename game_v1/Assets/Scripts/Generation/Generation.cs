@@ -39,7 +39,7 @@ public class Generation : MonoBehaviour
     private void Start()
     {
         // Adds the Player's Spawn() Method to the GenerationFinished Delegate
-        GenerationFinished += new Del(GameObject.Find("Player").GetComponent<PlayerSpawn>().Spawn);
+        GenerationFinished += new Del(GameObject.Find("Player").GetComponent<PlayerSpawn>().SpawnPlayer);
     }
 
     /// <summary>

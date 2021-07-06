@@ -13,14 +13,14 @@ public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiv
 
     // Make sure the dictionary is filled with ids and itemobjects before the game is fully started
     public void OnAfterDeserialize()
-    { 
-        //idToItem = new Dictionary<int, ItemObject>();
+    {
+        idToItem = new Dictionary<int, ItemObject>();
 
-        //for (int i = 0; i < items.Length; i++)
-        //{
-        //    items[i].id = i;
-        //    idToItem.Add(i, items[i]);
-        //}
+        for (int i = 0; i < items.Length; i++)
+        {
+            items[i].id = i;
+            idToItem.Add(i, items[i]);
+        }
     }
     public void OnBeforeSerialize()
     {

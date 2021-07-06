@@ -98,7 +98,7 @@ public class CutTrees : MonoBehaviour
         // Sets the amount of wood according to the tree size
         int amountWood = tree.GetComponentsInChildren<Transform>().Length * 4;
         // Sets the item object to "wood"
-        DroppedWood.GetComponent<GroundItem>().item = Database.Items[9];
+        DroppedWood.GetComponent<GroundItem>().item = Database.items[9];
 
         for (int i = 0; i < amountWood; i++)
         {
@@ -107,7 +107,7 @@ public class CutTrees : MonoBehaviour
         }
 
         // Sets the item object to "wood"
-        DroppedAcorns.GetComponent<GroundItem>().item = Database.Items[8];
+        DroppedAcorns.GetComponent<GroundItem>().item = Database.items[8];
 
         for (int i = 0; i < Random.Range(1, 3); i++)
         {

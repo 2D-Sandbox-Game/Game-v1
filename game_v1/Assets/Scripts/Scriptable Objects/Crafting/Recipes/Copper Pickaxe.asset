@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeComponents:
   - item: {fileID: 11400000, guid: fe445355e5b80ec45abc8726ae274ac0, type: 2}
-    amountNeeded: 3
+    amountRequired: 3
   - item: {fileID: 11400000, guid: 4233bd31c5565764a8ef6c0e720f221d, type: 2}
-    amountNeeded: 5
+    amountRequired: 5
   craftableItem: {fileID: 11400000, guid: e2032fea2e7b70443b74ca2c52837cef, type: 2}

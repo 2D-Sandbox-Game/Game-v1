@@ -27,7 +27,7 @@ public class PlaceBlocks : MonoBehaviour
         _mousePosTranslated = Tilemap.WorldToCell(_mousePos);
 
         // Sets the currently selected Inventory 
-        _selectedInventorySlot = Inventory.Container.Items[Inventory.selectedSlot];
+        _selectedInventorySlot = Inventory.container.items[Inventory.selectedSlot];
 
         // Conditions for placing a block are met
         if (Input.GetKey(KeyCode.Mouse0) && 
@@ -53,7 +53,7 @@ public class PlaceBlocks : MonoBehaviour
         Tile tile = ScriptableObject.CreateInstance<Tile>();
 
         // Gets the sprite of the selected item from the database 
-        tile.sprite = Inventory.database.Items.Where(item => item.id == selectedSlot.item.id).ToList()[0].uiDisplay;
+        tile.sprite = Inventory.database.items.Where(item => item.id == selectedSlot.item.id).ToList()[0].uiDisplay;
         tile.name = tile.sprite.name;
 
         tilemap.SetTile(pos, tile);

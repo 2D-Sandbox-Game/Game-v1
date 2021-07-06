@@ -85,7 +85,7 @@ public class MineSapling : MonoBehaviour
     /// </summary>
     void GenerateItem()
     {
-        DroppedAcorns.GetComponent<GroundItem>().item = Database.Items[8];
+        DroppedAcorns.GetComponent<GroundItem>().item = Database.items[8];
         Instantiate(DroppedAcorns, _posSelectedTile + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
     }
 

@@ -73,37 +73,14 @@ public class HealthBar : MonoBehaviour
         {
             if (transform.position.x < player.transform.position.x)
             {
-                GetComponent<Rigidbody2D>().AddForce(new Vector2(-8f, 8), ForceMode2D.Impulse); //
-                                                                                                 //rb.velocity = new Vector2(-50f, rb.velocity.y);
-                                                                                                 //damage = damage * -1;
+                GetComponent<Rigidbody2D>().AddForce(new Vector2(-8f, 8), ForceMode2D.Impulse); 
             }
             else
             {
                 GetComponent<Rigidbody2D>().AddForce(new Vector2(8f, 8), ForceMode2D.Impulse);
-                //rb.velocity = new Vector2(50f, rb.velocity.y);
             }
         }
     }
-
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if (collision.gameObject.tag == "Player" && doAttack)
-    //    {
-
-    //        collision.gameObject.SendMessage("HealthDamage", gameObject, SendMessageOptions.DontRequireReceiver);
-
-    //        doAttack = false;
-    //        StartCoroutine(WaitForSecondAttack());
-    //    }
-
-    //    //Debug.Log("teeeest");
-    //}
-
-    //private IEnumerator WaitForSecondAttack()
-    //{
-    //    yield return new WaitForSeconds(0.5f);
-    //    doAttack = true;
-    //}
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

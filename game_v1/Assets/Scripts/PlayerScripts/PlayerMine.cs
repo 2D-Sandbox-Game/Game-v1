@@ -102,7 +102,7 @@ public class PlayerMine : MonoBehaviour
             blockType = Generation.BlockType.Dirt;
         }
 
-        CreateableItem.GetComponent<GroundItem>().item = Database.Items[(int)blockType];
+        CreateableItem.GetComponent<GroundItem>().item = Database.items[(int)blockType];
         Instantiate(CreateableItem, _posSelectedTile + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
     }
 

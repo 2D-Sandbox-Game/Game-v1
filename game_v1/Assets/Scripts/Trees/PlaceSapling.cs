@@ -34,7 +34,7 @@ public class PlaceSapling : MonoBehaviour
         _selectedTile = Tilemap.GetTile(_mousePosTranslated);
 
         // Sets the currently selected Inventory 
-        _selectedInventorySlot = Inventory.Container.Items[Inventory.selectedSlot];
+        _selectedInventorySlot = Inventory.container.items[Inventory.selectedSlot];
 
         // Conditions for placing a sapling are met
         if (Input.GetKey(KeyCode.Mouse0) &&

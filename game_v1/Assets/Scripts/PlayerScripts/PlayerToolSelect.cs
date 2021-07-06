@@ -12,11 +12,11 @@ public class PlayerToolSelect : MonoBehaviour
     void Update()
     {
         // Activates / deactivates the sword object and the "PlayerAttack" script
-        if (Inventory.Container.Items[Inventory.selectedSlot].item.name.ToLower().Contains("sword"))
+        if (Inventory.container.items[Inventory.selectedSlot].item.name.ToLower().Contains("sword"))
         {
             Sword.SetActive(true);
-            Sword.GetComponent<SpriteRenderer>().sprite = Inventory.Container.Items[Inventory.selectedSlot].item.sprite;
-            Sword.transform.GetChild(0).GetComponent<SendDamageCollision>().damageValue = (int)Inventory.Container.Items[Inventory.selectedSlot].item.stats;
+            Sword.GetComponent<SpriteRenderer>().sprite = Inventory.container.items[Inventory.selectedSlot].item.uiDisplay;
+            Sword.transform.GetChild(0).GetComponent<SendDamageCollision>().damageValue = (int)Inventory.container.items[Inventory.selectedSlot].item.attribute;
             GetComponent<PlayerAttack>().enabled = true;
         }
         else
@@ -26,11 +26,11 @@ public class PlayerToolSelect : MonoBehaviour
         }
 
         // Activates / deactivates the sword object and the "CutTrees" script
-        if (Inventory.Container.Items[Inventory.selectedSlot].item.name.ToLower().Contains("axe") && !Inventory.Container.Items[Inventory.selectedSlot].item.name.ToLower().Contains("pick"))
+        if (Inventory.container.items[Inventory.selectedSlot].item.name.ToLower().Contains("axe") && !Inventory.container.items[Inventory.selectedSlot].item.name.ToLower().Contains("pick"))
         {
             Axe.SetActive(true);
-            Axe.GetComponent<SpriteRenderer>().sprite = Inventory.Container.Items[Inventory.selectedSlot].item.sprite;
-            Axe.GetComponent<CutTrees>().MiningSpeed = Inventory.Container.Items[Inventory.selectedSlot].item.stats;
+            Axe.GetComponent<SpriteRenderer>().sprite = Inventory.container.items[Inventory.selectedSlot].item.uiDisplay;
+            Axe.GetComponent<CutTrees>().MiningSpeed = Inventory.container.items[Inventory.selectedSlot].item.attribute;
         }
         else
         {
@@ -38,14 +38,14 @@ public class PlayerToolSelect : MonoBehaviour
         }
 
         // Activates / deactivates the pickaxe object, the "PlayerMine" and the "MineSapling" script
-        if (Inventory.Container.Items[Inventory.selectedSlot].item.name.ToLower().Contains("pickaxe"))
+        if (Inventory.container.items[Inventory.selectedSlot].item.name.ToLower().Contains("pickaxe"))
         {
             Pickaxe.SetActive(true);
-            Pickaxe.GetComponent<SpriteRenderer>().sprite = Inventory.Container.Items[Inventory.selectedSlot].item.sprite;
+            Pickaxe.GetComponent<SpriteRenderer>().sprite = Inventory.container.items[Inventory.selectedSlot].item.uiDisplay;
             GetComponent<PlayerMine>().enabled = true;
-            GetComponent<PlayerMine>().MiningSpeed = Inventory.Container.Items[Inventory.selectedSlot].item.stats;
+            GetComponent<PlayerMine>().MiningSpeed = Inventory.container.items[Inventory.selectedSlot].item.attribute;
             GameObject.Find("Trees").GetComponent<MineSapling>().enabled = true;
-            GameObject.Find("Trees").GetComponent<MineSapling>().MiningSpeed = Inventory.Container.Items[Inventory.selectedSlot].item.stats;
+            GameObject.Find("Trees").GetComponent<MineSapling>().MiningSpeed = Inventory.container.items[Inventory.selectedSlot].item.attribute;
 
         }
         else

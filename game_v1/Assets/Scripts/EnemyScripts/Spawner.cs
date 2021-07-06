@@ -102,18 +102,18 @@ public class Spawner : MonoBehaviour
         // Instantiates enemy
         GameObject enemy = Instantiate(EnemyPrefabs[randEnemy], spawnpoint, transform.rotation);        
         enemy.transform.SetParent(gameObject.transform);
-        enemy.GetComponent<Direction>().target = GameObject.Find("Player").transform;
+        enemy.GetComponent<Direction>().Target = GameObject.Find("Player").transform;
 
         // Instantiates healthbarForeground
         GameObject hbF = Instantiate(PrefabHbF, PrefabHbF.transform.position, PrefabHbF.transform.rotation) as GameObject;
         hbF.transform.SetParent(Life.transform);
-        hbF.GetComponent<HealthBarPosition>().enemy = enemy;
+        hbF.GetComponent<HealthBarPosition>().Enemy = enemy;
         hbF.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);
 
         // Instantiates HealthbarBackground
         GameObject hbB = Instantiate(PrefabHbB, PrefabHbB.transform.position, PrefabHbB.transform.rotation) as GameObject;
         hbB.transform.SetParent(Life.transform);
-        hbB.GetComponent<HealthBarPosition>().enemy = enemy;
+        hbB.GetComponent<HealthBarPosition>().Enemy = enemy;
         hbB.GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);
 
         enemy.GetComponent<HealthBar>().healthBar = hbF;

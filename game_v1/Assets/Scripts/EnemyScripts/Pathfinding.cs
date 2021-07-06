@@ -6,7 +6,7 @@ public class Pathfinding : MonoBehaviour
 {
     // Start is called before the first frame update
     public float speed;
-    public Transform target;
+    public Transform Target;
     void Start()
     {
 
@@ -15,9 +15,9 @@ public class Pathfinding : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Vector2.Distance(transform.position, target.position) > 2)
+        if (Vector2.Distance(transform.position, Target.position) > 2)
         {
-            transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, Target.position, speed * Time.deltaTime);
         }
     }
 }

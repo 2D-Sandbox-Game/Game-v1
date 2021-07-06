@@ -6,11 +6,16 @@ public class CraftingInventory : MonoBehaviour
 {
     public RecipeDatabase database;
     public InventoryObject playerInventory;
+
+    // A unique inventory that is holding the items which can be crafted based upon the player inventory
+    // Is used to display the items a player can craft
     public InventoryObject craftingInventory;
-    Dictionary<int, CraftingRecipe> itemsToRecipe;
+    public Dictionary<int, CraftingRecipe> itemsToRecipe;
+
     // Start is called before the first frame update
     void Start()
     {
+        // Links all craftable items to their recipe in a dictionary
         itemsToRecipe = new Dictionary<int, CraftingRecipe>();
         foreach (CraftingRecipe recipe in database.recipeDatabase)
         {
@@ -18,27 +23,25 @@ public class CraftingInventory : MonoBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        
-    }
     // Update is called once per frame
     void Update()
     {
         foreach (CraftingRecipe recipe in database.recipeDatabase)
         {
-            if (CanCraft(recipe) && !AlreadyDisplayed(recipe.craftableItem))
+            if (CanCraft(recipe) && !IsAlreadyAdded(recipe.craftableItem))
             {
-               craftingInventory.AddItem(new Item(recipe.craftableItem), 1);
-                Debug.Log("Item added");
+                // Adds craftable item to the craftinginventory
+                // If it can be crafted does not yet exist
+                craftingInventory.AddItem(new Item(recipe.craftableItem), 1);
             }
         }
     }
-    private bool AlreadyDisplayed(ItemObject craftableItem)
+    private bool IsAlreadyAdded(ItemObject craftableItem)
     {
-        for (int i = 0; i < craftingInventory.Container.Items.Length; i++)
+        for (int i = 0; i < craftingInventory.container.items.Length; i++)
         {
-            if (craftingInventory.Container.Items[i].id == craftableItem.id)
+            // Checks if an item is already in the inventory
+            if (craftingInventory.container.items[i].id == craftableItem.id)
             {
                 return true;
             }
@@ -49,20 +52,24 @@ public class CraftingInventory : MonoBehaviour
     {
         foreach (RecipeComponent component in recipe.recipeComponents)
         {
-            if (!ComponentPresent(component))
+            // If all components in a recipe are in the player inventory it can be crafted
+            if (!IsComponentPresent(component))
             {
+                // If only one component is missing it can't be crafted
                 return false;
             }
         }
         return true;
     }
-    private bool ComponentPresent(RecipeComponent component)
+    private bool IsComponentPresent(RecipeComponent component)
     {
-        for (int i = 0; i < playerInventory.Container.Items.Length; i++)
+        for (int i = 0; i < playerInventory.container.items.Length; i++)
         {
-            if (playerInventory.Container.Items[i].id == component.item.id)
+            // Checks if an Item is in the player inventory
+            if (playerInventory.container.items[i].id == component.item.id)
             {
-                if (playerInventory.Container.Items[i].amount >= component.amountNeeded)
+                // Checks if the required amount is in the inventory
+                if (playerInventory.container.items[i].amount >= component.amountRequired)
                 {
                     return true;
                 }
@@ -70,35 +77,37 @@ public class CraftingInventory : MonoBehaviour
         }
         return false;
     }
-    public CraftingRecipe ItemsToRecipe(int id)
+    public void CraftItem(int id)
     {
-        return itemsToRecipe[id];
-    }
-    public void Craft(int id)
-    {
+        // Get the recipe for the given id
         CraftingRecipe recipe = itemsToRecipe[id];
+        // If a recipe exists
         if (recipe != null)
         {
             foreach (RecipeComponent component in recipe.recipeComponents)
             {
-                for (int i = 0; i < playerInventory.Container.Items.Length; i++)
+                for (int i = 0; i < playerInventory.container.items.Length; i++)
                 {
-                    if (playerInventory.Container.Items[i].id == component.item.id)
+                    if (playerInventory.container.items[i].id == component.item.id)
                     {
-                        playerInventory.Container.Items[i].SubAmount(component.amountNeeded);                        
+                        // Removes all recipecomponents from the player inventory
+                        playerInventory.container.items[i].SubAmountFromSlot(component.amountRequired);
                         break;
                     }
                 }
             }
-            foreach (InventorySlot slot in craftingInventory.Container.Items)
+            foreach (InventorySlot slot in craftingInventory.container.items)
             {
-                slot.SubAmount(slot.amount);
+                // Removes the craftable item from the craftinginventory
+                slot.SubAmountFromSlot(slot.amount);
             }
+            // Adds the craftable item to the player inventory
             playerInventory.AddItem(new Item(recipe.craftableItem), 1);
         }
     }
-    private void OnApplicationQuit() // clears the inventory after the game is quit
+    private void OnApplicationQuit()
     {
-        craftingInventory.Container.Items = new InventorySlot[36];
+        // clears the inventory after the game is quit
+        craftingInventory.container.items = new InventorySlot[36];
     }
 }

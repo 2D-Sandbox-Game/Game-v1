@@ -5,9 +5,11 @@ using UnityEngine;
 public class Toggle : MonoBehaviour
 {
     GameObject craftingPanel;
+
     // Start is called before the first frame update
     void Start()
     {
+        // Finds the crafting panel in the scene
         craftingPanel = GameObject.Find("CraftingPanel");
     }
 
@@ -18,6 +20,7 @@ public class Toggle : MonoBehaviour
     }
     public void ToggleCrafting()
     {
+        // Enables the player to toggle the crafting display on and off
         if (Input.GetKeyDown(KeyCode.C))
         {
             if (craftingPanel.active == true)

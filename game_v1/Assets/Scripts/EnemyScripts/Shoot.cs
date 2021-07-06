@@ -7,10 +7,10 @@ public class Shoot : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject bulletObject;
-    float waitTime = 2.5f; //time until new arrow is instantiate
+    float waitTime = 2.5f; // Time until new arrow is instantiate
     float elapsedTime = 0.0f;
     string levelName = "";
-    public GameObject player;
+    public GameObject Player;
     public GameObject enemy;
 
     public void Ini(float waitT, string level)
@@ -20,20 +20,19 @@ public class Shoot : MonoBehaviour
     }
     void Start()
     {
-        player = GameObject.Find("Player");
+        Player = GameObject.Find("Player");
     }
 
     // Update is called once per frame
     void Update()
     {
         elapsedTime += Time.deltaTime;
-        double distance = Math.Abs(player.transform.position.x - enemy.transform.position.x);
+        double distance = Math.Abs(Player.transform.position.x - enemy.transform.position.x);
         if (elapsedTime >= waitTime && distance < 20)
         {
-            GameObject bullet = Instantiate(bulletObject, transform.position, transform.rotation);
-            Destroy(bullet, 3f);
+            GameObject Bullet = Instantiate(bulletObject, transform.position, transform.rotation);
+            Destroy(Bullet, 3f);
             elapsedTime = 0f;
-            //Debug.Log("Pew pew");
         }
     }
 }
